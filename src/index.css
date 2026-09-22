@@ -1,0 +1,583 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Dark theme default */
+    --bg-base: #0B0E14;
+    --bg-card: #12151B;
+    --bg-surface: #171C26;
+    --bg-surface-raised: #1E2433;
+    --bg-contrast: #07090D;
+    --text-primary: #F1F5F9;
+    --text-muted: #8F9CAE;
+    --text-dim: #64748B;
+    --border-line: rgba(255, 255, 255, 0.09);
+    --border-line-strong: rgba(255, 255, 255, 0.16);
+    --beacon-color: #10B981;
+    --beacon-dim: rgba(16, 185, 129, 0.14);
+    --beacon-bright: #34D399;
+  }
+
+  html.light {
+    /* Light editorial paper theme (matching Vidhan's palette) */
+    --bg-base: #FAFAF7;
+    --bg-card: #FFFFFF;
+    --bg-surface: #F3F3EE;
+    --bg-surface-raised: #ECECE6;
+    --bg-contrast: #12151B;
+    --text-primary: #12151B;
+    --text-muted: #545B65;
+    --text-dim: #6E757D;
+    --border-line: rgba(18, 21, 27, 0.08);
+    --border-line-strong: rgba(18, 21, 27, 0.15);
+    --beacon-color: #0A7A5F;
+    --beacon-dim: rgba(10, 122, 95, 0.09);
+    --beacon-bright: #12A97F;
+  }
+
+  body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow-x: hidden;
+    margin: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  code,
+  pre,
+  .font-mono {
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-display {
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: -0.015em;
+  }
+}
+
+/* =========================================
+   ACCENTS, EYEBROWS & GRID VEIL
+   ========================================= */
+
+.tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--beacon-color);
+}
+
+.tag-invert {
+  color: #12A97F;
+}
+
+/* Subtle architectural grid pattern */
+.grid-veil {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+html.light .grid-veil {
+  background-image:
+    linear-gradient(rgba(18, 21, 27, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(18, 21, 27, 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* =========================================
+   CARD & GLASS STYLES
+   ========================================= */
+
+.samay-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-line);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 10px 28px -14px rgba(0, 0, 0, 0.2);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.light .samay-card {
+  box-shadow: 0 1px 2px rgba(18, 21, 27, 0.04), 0 10px 28px -14px rgba(18, 21, 27, 0.12);
+}
+
+.samay-card-hover:hover {
+  border-color: var(--beacon-color);
+  transform: translateY(-3px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 20px 44px -20px rgba(0, 0, 0, 0.3);
+}
+
+html.light .samay-card-hover:hover {
+  box-shadow: 0 2px 6px rgba(18, 21, 27, 0.06), 0 20px 44px -20px rgba(18, 21, 27, 0.18);
+}
+
+/* Contrast dark section (Metrics Strip & Footer) */
+.bg-contrast-block {
+  background-color: #12151B;
+  color: #F7F7F4;
+}
+
+html.dark .bg-contrast-block {
+  background-color: #06080D;
+  color: #F7F7F4;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Glass panel */
+.glass-panel {
+  background: rgba(18, 21, 27, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-line);
+}
+
+html.light .glass-panel {
+  background: rgba(250, 250, 247, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-line);
+}
+
+/* Selection highlight */
+::selection {
+  background-color: #0A7A5F;
+  color: #FFFFFF;
+}
+
+/* Focus Visible */
+:focus-visible {
+  outline: 2px solid var(--beacon-color);
+  outline-offset: 3px;
+}
+
+/* =========================================
+   KEYFRAME ANIMATIONS
+   ========================================= */
+
+@keyframes pulseBeacon {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+}
+
+.animate-beacon {
+  animation: pulseBeacon 2.4s ease-in-out infinite;
+}
+
+@keyframes dashOffset {
+  to {
+    stroke-dashoffset: -200;
+  }
+}
+
+.animate-dash {
+  animation: dashOffset 8s linear infinite;
+}
+
+@keyframes floatGentle {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-float-gentle {
+  animation: floatGentle 5s ease-in-out infinite;
+}
+
+@keyframes marqueeLeft {
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-l {
+  animation: marqueeLeft 35s linear infinite;
+}
+
+.animate-marquee-l:hover {
+  animation-play-state: paused;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-base);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 6px;
+}
+
+html.light ::-webkit-scrollbar-thumb {
+  background: #CFCFC6;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--beacon-color);
+}
+
+/* =========================================
+   HERO PLANETARY ORBIT SYSTEM
+   ========================================= */
+
+:root {
+  --orbit-radius-blue: clamp(250px, 28vw, 360px);
+  --orbit-radius-green: clamp(430px, 46vw, 620px);
+}
+
+.hero-orbit-system {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Central Gravitational Anchor Point */
+.gravitational-anchor {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Central Cosmic Sun Core */
+.central-sun {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.central-sun-core {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #34D399 0%, #10B981 40%, rgba(6, 78, 59, 0.4) 75%, transparent 100%);
+  box-shadow: 0 0 28px rgba(52, 211, 153, 0.65), 0 0 55px rgba(16, 185, 129, 0.35);
+  animation: pulseBeacon 3.2s ease-in-out infinite;
+}
+
+.central-sun-corona {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 160px;
+  height: 160px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(52, 211, 153, 0.18) 0%, rgba(16, 185, 129, 0.06) 50%, transparent 70%);
+  pointer-events: none;
+}
+
+/* -----------------------------------------
+   Orbit Keyframe Animations
+   ----------------------------------------- */
+@keyframes orbitRotate {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes counterRotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+/* -----------------------------------------
+   Orbit Containers
+   ----------------------------------------- */
+.orbit-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  pointer-events: none;
+  transform-origin: center center;
+}
+
+/* Blue Planet Orbit Container (Tighter radius, 30s rotation speed) */
+.orbit-blue {
+  width: calc(var(--orbit-radius-blue) * 2);
+  height: calc(var(--orbit-radius-blue) * 2);
+  border: 1px dashed rgba(56, 189, 248, 0.15);
+  animation: orbitRotate 30s linear infinite;
+  animation-delay: -3.75s;
+  /* Initial placement at Top-Left */
+}
+
+/* Green Planet Orbit Container (Wider radius, 60s rotation speed) */
+.orbit-green {
+  width: calc(var(--orbit-radius-green) * 2);
+  height: calc(var(--orbit-radius-green) * 2);
+  border: 1px dashed rgba(52, 211, 153, 0.12);
+  animation: orbitRotate 60s linear infinite;
+  animation-delay: -22.5s;
+  /* Initial placement at Top-Right */
+}
+
+html.light .orbit-blue {
+  border-color: rgba(2, 132, 199, 0.14);
+}
+
+html.light .orbit-green {
+  border-color: rgba(10, 122, 95, 0.14);
+}
+
+/* -----------------------------------------
+   Planet Positioning to Edge of Orbit
+   ----------------------------------------- */
+.planet-offset {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* -----------------------------------------
+   Counter-Rotation on Planet Elements
+   ----------------------------------------- */
+.planet-image {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center center;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: filter 0.3s ease;
+}
+
+.planet-image:hover {
+  filter: brightness(1.15) drop-shadow(0 0 22px rgba(52, 211, 153, 0.55));
+}
+
+.planet-blue-image {
+  width: 140px;
+  height: 140px;
+  animation: counterRotate 30s linear infinite;
+  animation-delay: -3.75s;
+  /* Perfectly synchronizes with orbit-blue */
+}
+
+.planet-green-image {
+  width: 240px;
+  height: 240px;
+  animation: counterRotate 60s linear infinite;
+  animation-delay: -22.5s;
+  /* Perfectly synchronizes with orbit-green */
+}
+
+/* -----------------------------------------
+   Blue Planet Visuals (Poseidon-Prime)
+   ----------------------------------------- */
+.planet-blue-corona {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.45) 0%, rgba(37, 99, 235, 0.18) 45%, transparent 70%);
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+.planet-blue-sphere {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 28%,
+      #E0F2FE 0%,
+      #93C5FD 18%,
+      #3B82F6 45%,
+      #2563EB 70%,
+      #1E3A8A 90%,
+      #0F172A 100%);
+  box-shadow:
+    0 0 28px rgba(59, 130, 246, 0.55),
+    inset -7px -7px 18px rgba(15, 23, 42, 0.95),
+    inset 5px 5px 12px rgba(255, 255, 255, 0.6);
+  overflow: hidden;
+  z-index: 2;
+}
+
+.planet-blue-texture {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: repeating-linear-gradient(180deg,
+      transparent 0px,
+      transparent 8px,
+      rgba(255, 255, 255, 0.2) 8px,
+      rgba(255, 255, 255, 0.2) 14px,
+      transparent 14px,
+      transparent 20px,
+      rgba(15, 23, 42, 0.25) 20px,
+      rgba(15, 23, 42, 0.25) 26px);
+  mix-blend-mode: overlay;
+}
+
+/* Blue Rings (Tilted +22deg) */
+.planet-blue-ring-back,
+.planet-blue-ring-front {
+  position: absolute;
+  width: 136px;
+  height: 38px;
+  border-radius: 50%;
+  border: 7px solid rgba(147, 197, 253, 0.75);
+  box-shadow: 0 0 14px rgba(96, 165, 250, 0.7), inset 0 0 8px rgba(59, 130, 246, 0.5);
+  transform: rotate(22deg);
+  pointer-events: none;
+}
+
+.planet-blue-ring-back {
+  clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+  z-index: 1;
+}
+
+.planet-blue-ring-front {
+  clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+  z-index: 3;
+}
+
+/* Blue Orbiting Moon */
+.planet-blue-moon {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #BAE6FD;
+  box-shadow: 0 0 10px #38BDF8;
+  z-index: 4;
+  top: 50%;
+  left: 50%;
+  transform: translate(44px, -24px);
+}
+
+/* -----------------------------------------
+   Green Planet Visuals (Chronos)
+   ----------------------------------------- */
+.planet-green-corona {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(52, 211, 153, 0.5) 0%, rgba(16, 185, 129, 0.22) 42%, transparent 70%);
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+.planet-green-sphere {
+  position: relative;
+  width: 116px;
+  height: 116px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 28%,
+      #FFFFFF 0%,
+      #A7F3D0 16%,
+      #34D399 38%,
+      #10B981 65%,
+      #047857 88%,
+      #064E3B 100%);
+  box-shadow:
+    0 0 40px rgba(52, 211, 153, 0.55),
+    inset -10px -10px 24px rgba(6, 78, 59, 0.95),
+    inset 6px 6px 14px rgba(255, 255, 255, 0.65);
+  overflow: hidden;
+  z-index: 2;
+}
+
+.planet-green-texture {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: repeating-linear-gradient(180deg,
+      transparent 0px,
+      transparent 12px,
+      rgba(255, 255, 255, 0.22) 12px,
+      rgba(255, 255, 255, 0.22) 22px,
+      transparent 22px,
+      transparent 32px,
+      rgba(6, 78, 59, 0.3) 32px,
+      rgba(6, 78, 59, 0.3) 42px);
+  mix-blend-mode: overlay;
+}
+
+/* Green Rings (Tilted -26deg) */
+.planet-green-ring-back,
+.planet-green-ring-front {
+  position: absolute;
+  width: 232px;
+  height: 64px;
+  border-radius: 50%;
+  border: 14px solid rgba(110, 231, 183, 0.85);
+  box-shadow: 0 0 20px rgba(52, 211, 153, 0.7), inset 0 0 10px rgba(56, 189, 248, 0.6);
+  transform: rotate(-26deg);
+  pointer-events: none;
+}
+
+.planet-green-ring-back {
+  clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+  z-index: 1;
+}
+
+.planet-green-ring-front {
+  clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+  z-index: 3;
+}
+
+/* Accessibility: reduce motion */
+@media (prefers-reduced-motion: reduce) {
+
+  .orbit-container,
+  .planet-image,
+  .central-sun-core {
+    animation: none !important;
+  }
+}
