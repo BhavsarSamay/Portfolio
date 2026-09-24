@@ -110,7 +110,7 @@ export default function Intro() {
             </p>
 
             <p>
-              I design and build scalable distributed systems, real-time backend services, and multi-role operational platforms. My work spans the full lifecycle — from system design and API contracts to engineering collaboration and production rollout.
+              I design and build scalable distributed systems, real-time backend services, and multi-role operational platforms. My work spans the full lifecycle, from system design and API contracts to engineering collaboration and production rollout.
             </p>
 
             <div className="p-6 rounded-xl border-l-2 border-emerald-500 bg-[var(--bg-surface)] border-y border-r border-[var(--border-line)] shadow-sm">
@@ -124,7 +124,7 @@ export default function Intro() {
             </p>
 
             <p className="font-medium text-[var(--text-primary)] pt-2 border-t border-[var(--border-line)]">
-              I don't just write PRDs — I build backend architectures, write production code, design API contracts, and engineer the distributed mechanics that make large-scale platforms run smoothly.
+              Beyond writing PRDs, I actively build backend architectures, write production code, design API contracts, and engineer the mechanics that keep platforms running smoothly.
             </p>
           </div>
         </div>

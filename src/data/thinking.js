@@ -9,7 +9,7 @@ export const howIThink = [
   },
   {
     title: 'Automate repetitive decisions',
-    body: 'If a process repeatedly happens in spreadsheets, that’s a signal — investigate whether the system can make the decision instead of a person re-deriving it every week.',
+    body: 'If a process repeatedly happens in spreadsheets, that’s a clear signal: investigate whether the system can make the decision instead of a person re-deriving it every week.',
   },
   {
     title: 'Product should survive production',

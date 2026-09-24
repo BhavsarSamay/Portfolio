@@ -53,7 +53,7 @@ export default function ResumeModal({ isOpen, onClose }) {
 
   const handleDownload = () => {
     playSuccessChime();
-    const resumeText = `SAMAY BHAVSAR — ASSOCIATE PRODUCT MANAGER & SYSTEMS ARCHITECT
+    const resumeText = `SAMAY BHAVSAR | ASSOCIATE PRODUCT MANAGER & SYSTEMS ARCHITECT
 Email: ${samayProfile.email} | Phone: ${samayProfile.phone} | Location: ${samayProfile.location}
 LinkedIn: ${samayProfile.linkedin} | GitHub: ${samayProfile.github}
 
@@ -61,7 +61,7 @@ EXECUTIVE SUMMARY:
 Associate Product Manager and Systems Architect at Veracity Supply Chain Limited. Designs end-to-end systems architecture for workforce, recruitment, and compliance platforms. Background in distributed systems, backend engineering, and production AI automation.
 
 EXPERIENCE:
-${experience.map(e => `${e.role} (${e.subrole || ''}) — ${e.company} [${e.period}]\n${(e.points || []).map(p => `• ${p}`).join("\n")}`).join("\n\n")}
+${experience.map(e => `${e.role} (${e.subrole || ''}) | ${e.company} [${e.period}]\n${(e.points || []).map(p => `• ${p}`).join("\n")}`).join("\n\n")}
 
 TECHNICAL ECOSYSTEM:
 • Languages: JavaScript (ES2022+), Python, Java, SQL
@@ -70,7 +70,7 @@ TECHNICAL ECOSYSTEM:
 • Databases & Infra: MongoDB, PostgreSQL, Redis (Caching), Aggregation Pipelines, Docker, Git, Swagger / OpenAPI
 
 EDUCATION:
-Bachelor of Information Technology — LJ Institute of Engineering and Technology [Nov 2022 – Present]
+Bachelor of Information Technology | LJ Institute of Engineering and Technology [Nov 2022 - Present]
 CPI: 8.45 / 10.0
 `;
     const blob = new Blob([resumeText], { type: "text/plain" });

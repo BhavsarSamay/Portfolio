@@ -22,11 +22,6 @@ export default function Projects() {
           </div>
         </div>
 
-        {/* NDA Notice */}
-        <p className="mt-4 font-mono text-xs text-[var(--text-dim)] italic">
-          Product names and details are confidential under NDA. Happy to walk through my role and approach in conversation.
-        </p>
-
         {/* Veracity Platform Overview Cards */}
         <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {veracityPlatforms.map((platform) => {
@@ -79,7 +74,7 @@ export default function Projects() {
 
         <div className="mt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-6 border-t border-[var(--border-line)]">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--text-dim)]">
-            Enterprise Platforms &amp; Workflows — Veracity Supply Chain Limited
+            Enterprise Platforms &amp; Workflows at Veracity Supply Chain Limited
           </p>
           <div className="flex items-center gap-2 font-mono text-xs text-emerald-600 dark:text-emerald-400">
             <CheckCircle2 size={15} />

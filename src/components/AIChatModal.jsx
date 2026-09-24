@@ -16,7 +16,7 @@ export default function AIChatModal({ isOpen, onClose }) {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      text: "Hello! I am Samay AI — an assistant trained on Samay Bhavsar's systems architecture and full-stack engineering work at Veracity Supply Chain Limited. How can I help you today?"
+      text: "Hello! I am Samay AI, an assistant trained on Samay Bhavsar's systems architecture and full-stack engineering work at Veracity Supply Chain Limited. How can I help you today?"
     }
   ]);
   const [input, setInput] = useState("");

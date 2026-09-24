@@ -32,11 +32,11 @@ export default function Hero({ onOpenTerminal }) {
 
             {/* Subtitle / Description */}
             <p className="mt-6 text-lg sm:text-xl leading-relaxed text-[var(--text-muted)] max-w-xl">
-              I'm <span className="font-semibold text-[var(--text-primary)]">{samayProfile.name}</span> — an <span className="font-medium text-[var(--text-primary)]">Associate Product Manager &amp; Systems Architect</span> at{" "}
+              I'm <span className="font-semibold text-[var(--text-primary)]">{samayProfile.name}</span>, an <span className="font-medium text-[var(--text-primary)]">Associate Product Manager &amp; Systems Architect</span> at{" "}
               <span className="font-medium text-[var(--text-primary)]">{samayProfile.company}</span>. I design end-to-end systems architecture for{" "}
               <span className="text-emerald-500 font-semibold">workforce</span>,{" "}
               <span className="text-emerald-500 font-semibold">recruitment</span>, and{" "}
-              <span className="text-emerald-500 font-semibold">compliance</span> platforms — turning complex ground operations into robust, high-performance digital systems.
+              <span className="text-emerald-500 font-semibold">compliance</span> platforms, turning complex ground operations into reliable digital systems.
             </p>
 
             {/* Quick Metrics Badges */}

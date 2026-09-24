@@ -47,7 +47,7 @@ export default function ProductEngineering() {
               </p>
 
               <p>
-                Across the platforms I architect, that means working hand-in-hand with engineering on <strong className="text-[var(--text-primary)]">distributed system design</strong>, mobile app release lifecycles, relational schemas, module behaviour, API contracts, and App Store compliance — not just handing off a Figma link or spec and waiting for a sprint demo.
+                Across the platforms I architect, that means working hand-in-hand with engineering on <strong className="text-[var(--text-primary)]">distributed system design</strong>, mobile app release lifecycles, relational schemas, module behaviour, API contracts, and App Store compliance, rather than just handing off a Figma link or spec and waiting for a sprint demo.
               </p>
 
               <div className="p-5 rounded-xl border border-emerald-500/30 bg-emerald-500/5 text-[var(--text-primary)] font-medium">

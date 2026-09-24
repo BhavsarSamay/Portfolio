@@ -58,7 +58,7 @@ export default function Contact() {
 
             <p className="mt-4 text-sm sm:text-base leading-relaxed text-slate-300 max-w-xl">
               I'm open to freelance and consulting work across product management, full-stack engineering,
-              systems architecture, and AI automation — and always happy to talk through a complex problem.
+              systems architecture, and AI automation, and I'm always open to discussing complex technical problems.
             </p>
 
             <div className="mt-7 flex flex-wrap items-center gap-3">

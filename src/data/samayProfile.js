@@ -19,34 +19,34 @@ export const samayProfile = {
 
   aiKnowledge: [
     {
-      keywords: ['who', 'samay', 'about', 'background', 'bio', 'role', 'nda'],
+      keywords: ['who', 'samay', 'about', 'background', 'bio', 'role'],
       answer:
         'Samay Bhavsar is an Associate Product Manager and Systems Architect at Veracity Supply Chain Limited. He designs end-to-end systems architecture for workforce, recruitment, and compliance platforms. Previously recognized as Star Performer of the Month at Saturncube Technology.'
     },
     {
       keywords: ['siteassist', 'chat', 'widget', 'rag', 'socket'],
       answer:
-        'SiteAssist (https://github.com/BhavsarSamay/SiteAssist) is a comprehensive full-stack chat platform created by Samay. It combines a Node.js REST and WebSocket API, two React front-ends (Client Panel and Super-Admin Dashboard), embeddable widgets, RAG (retrieval-augmented generation) capabilities, and Firebase push messaging.'
+        'SiteAssist (https://github.com/BhavsarSamay/SiteAssist) is a full-stack chat platform created by Samay. It combines a Node.js REST and WebSocket API, two React front-ends (Client Panel and Super-Admin Dashboard), embeddable widgets, RAG (retrieval-augmented generation) capabilities, and Firebase push messaging.'
     },
     {
       keywords: ['saturncube', 'backend', 'developer', 'experience', 'award', 'star performer'],
       answer:
-        'At Saturncube Technology, Samay worked as a Node.js Backend Developer. He built autonomous LangChain agentic systems, real-time trading engines with Socket.io, Stripe payment workflows, microservices architectures, and was awarded Star Performer of the Month in February 2026.'
+        'At Saturncube Technology, Samay worked as a Node.js Backend Developer. He built autonomous LangChain agentic systems, real-time trading engines with Socket.io, Stripe payment workflows, and microservices architectures, winning Star Performer of the Month in February 2026.'
     },
     {
       keywords: ['gig', 'workforce', 'marketplace'],
       answer:
-        'At Veracity Supply Chain Limited, Samay designed the end-to-end architecture for a gig workforce platform — a two-sided marketplace connecting gig workers with businesses. Product names are confidential under NDA.'
+        'At Veracity Supply Chain Limited, Samay designed the end-to-end architecture for a gig workforce platform, a two-sided marketplace connecting gig workers with businesses.'
     },
     {
       keywords: ['recruitment', 'hiring', 'candidates'],
       answer:
-        'At Veracity Supply Chain Limited, Samay designed the end-to-end architecture for a recruitment platform — a system for managing recruitment and hiring. Product names are confidential under NDA.'
+        'At Veracity Supply Chain Limited, Samay designed the end-to-end architecture for a recruitment platform, a comprehensive system for candidate lifecycle management and hiring.'
     },
     {
       keywords: ['payroll', 'hrms', 'compliance', 'statutory'],
       answer:
-        'At Veracity Supply Chain Limited, Samay works on the end-to-end architecture for a payroll and compliance platform — an enterprise payroll and statutory compliance system. Product names are confidential under NDA.'
+        'At Veracity Supply Chain Limited, Samay works on the end-to-end architecture for a payroll and compliance platform, an enterprise multi-state labor compliance and statutory calculation engine.'
     },
     {
       keywords: ['skills', 'stack', 'tech', 'languages'],
