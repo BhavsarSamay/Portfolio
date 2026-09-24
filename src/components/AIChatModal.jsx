@@ -5,9 +5,8 @@ import { playCyberClick, playCyberChirp } from "../utils/soundEffects";
 import { useTheme } from "../context/ThemeContext";
 
 const QUICK_PROMPTS = [
-  "What is BharatGIG?",
-  "Tell me about RicRoot",
-  "What is PayEaze?",
+  "What does Samay work on?",
+  "Tell me about the platforms",
   "What is Samay's role at Veracity?",
   "How to get in touch?"
 ];
@@ -17,7 +16,7 @@ export default function AIChatModal({ isOpen, onClose }) {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      text: "Hello! I am Samay AI — an assistant trained on Samay Bhavsar's product management leadership and full-stack engineering systems across BharatGIG, RicRoot, and PayEaze at Veracity Supply Chain Limited. How can I help you today?"
+      text: "Hello! I am Samay AI — an assistant trained on Samay Bhavsar's systems architecture and full-stack engineering work at Veracity Supply Chain Limited. How can I help you today?"
     }
   ]);
   const [input, setInput] = useState("");
@@ -91,7 +90,7 @@ export default function AIChatModal({ isOpen, onClose }) {
       }
 
       if (!matchedAnswer) {
-        matchedAnswer = `Samay Bhavsar is a Product Manager + Full Stack Engineer at Veracity Supply Chain Limited (RCSL). He bridges product strategy and deep engineering for BharatGIG (gig workforce deployment), RicRoot (blue/grey-collar hiring platform), and PayEaze (statutory compliance HRMS). You can reach him at ${samayProfile.email}.`;
+        matchedAnswer = `Samay Bhavsar is an Associate Product Manager & Systems Architect at Veracity Supply Chain Limited. He designs end-to-end systems architecture for workforce, recruitment, and compliance platforms. You can reach him at ${samayProfile.email}.`;
       }
 
       setMessages((prev) => [...prev, { role: "assistant", text: matchedAnswer }]);
@@ -129,7 +128,7 @@ export default function AIChatModal({ isOpen, onClose }) {
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-beacon" />
               </div>
               <p className="text-[11px] text-[var(--text-dim)] font-mono">
-                Model: BharatGIG & RicRoot Knowledge Base
+                Model: Systems Architecture Knowledge Base
               </p>
             </div>
           </div>
@@ -219,7 +218,7 @@ export default function AIChatModal({ isOpen, onClose }) {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask about BharatGIG, RicRoot, PayEaze, or Samay's product work..."
+            placeholder="Ask about Samay's systems architecture work..."
             className="flex-1 bg-[var(--bg-card)] border border-[var(--border-line)] rounded-xl px-4 py-2.5 text-xs text-[var(--text-primary)] placeholder-[var(--text-dim)] outline-none focus:border-emerald-500 transition-colors font-sans"
           />
           <button

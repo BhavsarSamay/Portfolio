@@ -47,7 +47,7 @@ export default function ProductEngineering() {
               </p>
 
               <p>
-                Across BharatGIG and RicRoot, that means working hand-in-hand with engineering on <strong className="text-[var(--text-primary)]">two-sided geographic pricing algorithms</strong>, mobile app release lifecycles, relational schemas, module behaviour, API contracts, and App Store compliance — not just handing off a Figma link or spec and waiting for a sprint demo.
+                Across the platforms I architect, that means working hand-in-hand with engineering on <strong className="text-[var(--text-primary)]">distributed system design</strong>, mobile app release lifecycles, relational schemas, module behaviour, API contracts, and App Store compliance — not just handing off a Figma link or spec and waiting for a sprint demo.
               </p>
 
               <div className="p-5 rounded-xl border border-emerald-500/30 bg-emerald-500/5 text-[var(--text-primary)] font-medium">
@@ -55,7 +55,7 @@ export default function ProductEngineering() {
               </div>
 
               <p>
-                Whether it's debugging webhook payloads, orchestrating SLA penalty ladders, configuring DPDP Act privacy rules, or tuning matching latency across 92,250+ candidate profiles, engineering depth makes product leadership significantly more effective.
+                Whether it's debugging webhook payloads, orchestrating SLA penalty ladders, configuring privacy compliance rules, or tuning matching latency across large candidate pools, engineering depth makes systems architecture significantly more effective.
               </p>
             </div>
           </div>

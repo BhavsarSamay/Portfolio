@@ -69,12 +69,12 @@ export default function Intro() {
                         {samayProfile.name}
                       </h4>
                       <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-500/25 text-emerald-300 border border-emerald-500/40">
-                        PM + SWE
+                        APM + SA
                       </span>
                     </div>
 
                     <p className="mt-1 font-mono text-xs text-emerald-400 font-medium">
-                      Product Manager + Full Stack Engineer
+                      Associate Product Manager &amp; Systems Architect
                     </p>
                     <p className="mt-0.5 text-xs text-slate-300">
                       {samayProfile.company}
@@ -104,14 +104,11 @@ export default function Intro() {
           {/* Right Column: Editorial Narrative */}
           <div className="space-y-6 text-base sm:text-lg leading-relaxed text-[var(--text-muted)]">
             <p className="text-xl text-[var(--text-primary)] font-medium leading-relaxed">
-              I'm a <strong className="text-emerald-500">Product Manager + Full Stack Engineer</strong> at Veracity Supply Chain Limited, bridging high-level product strategy with deep technical architecture and code execution across{" "}
-              <span className="text-emerald-500 font-semibold">BharatGIG</span>,{" "}
-              <span className="text-emerald-500 font-semibold">RicRoot</span>, and{" "}
-              <span className="text-emerald-500 font-semibold">PayEaze</span>.
+              I'm an <strong className="text-emerald-500">Associate Product Manager &amp; Systems Architect</strong> at Veracity Supply Chain Limited, designing end-to-end systems architecture for workforce, recruitment, and compliance platforms.
             </p>
 
             <p>
-              I build and scale high-throughput two-sided marketplaces, real-time backend systems, and distributed platforms across India. On <strong className="text-[var(--text-primary)]">BharatGIG</strong>, I architected a 4-panel operations platform powered by dynamic location-based pricing — connecting enterprise clients with direct and vendor gig workforces through independent billing and payout tiers.
+              I design and build scalable distributed systems, real-time backend services, and multi-role operational platforms. My work spans the full lifecycle — from system design and API contracts to engineering collaboration and production rollout.
             </p>
 
             <div className="p-6 rounded-xl border-l-2 border-emerald-500 bg-[var(--bg-surface)] border-y border-r border-[var(--border-line)]">
@@ -121,11 +118,7 @@ export default function Intro() {
             </div>
 
             <p>
-              On <strong className="text-[var(--text-primary)]">RicRoot</strong>, I manage a recruitment platform built specifically for India’s blue and grey-collar workforce — backed by a structured taxonomy of over <strong>92,250+ candidate records</strong>, <strong>709 designations</strong>, and <strong>212 job profiles</strong> across candidate mobile apps and an enterprise employer portal.
-            </p>
-
-            <p>
-              From complex geo-pricing resolution and dynamic Form Builders to Apple ATT App Store compliance, real-time WebSockets, and state-by-state statutory labour rules, I bridge ground-floor operational realities with scalable systems architecture.
+              From distributed system topologies and multi-role workflows to App Store compliance and statutory regulations, I bridge ground-floor operational realities with scalable systems architecture.
             </p>
 
             <p className="font-medium text-[var(--text-primary)] pt-2 border-t border-[var(--border-line)]">

@@ -3,14 +3,13 @@ import { X, Maximize2, Minimize2, Terminal as TerminalIcon } from "lucide-react"
 import { samayProfile } from "../data/samayProfile";
 import { earlierProjects } from "../data/projects";
 import { techEcosystem } from "../data/skills";
-import { bharatGigData, ricRootData, payEazeData } from "../data/products";
 import { playTerminalBeep, playCyberClick } from "../utils/soundEffects";
 
 export default function TerminalDrawer({ isOpen, onClose }) {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState([
-    { type: "system", text: "SamayOS CLI v3.0 (Product & Systems Environment)" },
-    { type: "system", text: "Type 'help' to list commands. Try 'bharatgig', 'ricroot', 'payeaze', or 'about'. Press [~] or click [X] to exit." },
+    { type: "system", text: "SamayOS CLI v3.0 (Systems Architecture Environment)" },
+    { type: "system", text: "Type 'help' to list commands. Try 'about', 'projects', 'skills', or 'contact'. Press [~] or click [X] to exit." },
   ]);
   const [commandHistory, setCommandHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
@@ -50,9 +49,6 @@ export default function TerminalDrawer({ isOpen, onClose }) {
           text: `AVAILABLE COMMANDS:
   help        - List all available terminal commands
   about       - Overview of Samay Bhavsar & operational background
-  bharatgig   - Inspect BharatGIG 4-panel gig workforce platform & geo-pricing
-  ricroot     - Inspect RicRoot hiring platform (92,250+ candidates & taxonomy)
-  payeaze     - Inspect PayEaze multi-tenant statutory compliance HRMS
   projects    - Print all active systems & developer tooling
   skills      - View the 5 grouped technical ecosystems
   contact     - Reveal coordinates & transmission channels
@@ -67,53 +63,12 @@ export default function TerminalDrawer({ isOpen, onClose }) {
       case "about":
         newEntries.push({
           type: "output",
-          text: `SAMAY BHAVSAR // Product Manager + Full Stack Engineer
+          text: `SAMAY BHAVSAR // Associate Product Manager & Systems Architect
 Role:       ${samayProfile.role}
 Company:    ${samayProfile.company}
 Product:    ${samayProfile.product}
 Location:   ${samayProfile.location}
 Philosophy: "Start with the operation. Build for the user that exists. Production behaviour is the real spec."`,
-        });
-        break;
-
-      case "bharatgig":
-        newEntries.push({
-          type: "output",
-          text: `BHARATGIG // Geographic Gig Workforce Deployment Platform
-Organization: Veracity Supply Chain Limited
-Role:         Product Manager (Product Flow, Architecture & Engineering)
-Architecture: 4 Panels (Admin, Client, Branch Manager, GIG Worker App)
-Pricing:      Branch-Wise (distance radius) & Pincode-Wise (inner/outer city zones)
-Resolution:   Dual-Tier Independent (Client Billing Tier vs. Worker/Vendor Payout)
-Core Engines: Dynamic Form Builder (Feed/Capture/Supervisor), SLA & Penalty Engine, GIG Wallet
-Summary:      ${bharatGigData.summary}`,
-        });
-        break;
-
-      case "ricroot":
-        newEntries.push({
-          type: "output",
-          text: `RICROOT // Blue & Grey-Collar Recruitment Platform
-Role:         Product Manager (Product Flow, Architecture & Engineering)
-Platforms:    Candidate Mobile Apps & Enterprise Employer Web Portal
-Taxonomy:     92,250+ Candidate Records | 212 Job Profiles | 709 Designations | 515 Degrees
-Features:     AI Recruiter, Bulk Job Posting, Interview Scheduling, Automated Offer Letters
-Compliance:   iOS App Store (Meta Ads SDK & Apple ATT Framework), DPDP Act 2023
-Live URL:     https://ricroot.in
-Summary:      ${ricRootData.summary}`,
-        });
-        break;
-
-      case "payeaze":
-        newEntries.push({
-          type: "output",
-          text: `PAYEAZE // Multi-Tenant Statutory Compliance HRMS
-Role:         Product Manager (Product Flow, Architecture & Engineering)
-Architecture: Subdomain-partitioned multi-tenant client instances
-Compliance:   Pan-India State-Wise Statutory Rules (PF, ESI, Professional Tax, LWF)
-Roles:        3 Dedicated Portals (Superadmin, SPOC Client Admin, Employee Self-Service)
-GTM Phase:    Comprehensive 90-Day Launch Roadmap & Redesign in progress
-Summary:      ${payEazeData.summary}`,
         });
         break;
 
@@ -161,11 +116,10 @@ Summary:      ${payEazeData.summary}`,
     /     \\     -----------------------------
    | () () |    OS: SamayOS Linux 6.8
     \\  _  /     Organization: Veracity Supply Chain (RCSL)
-                Role: Product Manager + Full Stack Engineer
-                Platforms Architected: BharatGIG | RicRoot | PayEaze
-                Candidate Taxonomy: 92,250+ Records (RicRoot)
-                Core Engines: 4-Panel Gig Ops & Multi-Tenant HRMS
-                Stack: Odoo 18, Python, FastAPI, React, SQL, iOS ATT
+                Role: Associate Product Manager & Systems Architect
+                Platforms Architected: 3 Enterprise Platforms
+                Focus: Systems Architecture & Full-Stack Engineering
+                Stack: Python, FastAPI, React, Node.js, SQL, iOS ATT
           `,
         });
         break;

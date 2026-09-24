@@ -18,7 +18,7 @@ export default function Hero({ onOpenTerminal }) {
             {/* Eyebrow badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--border-line)] bg-[var(--bg-surface)] backdrop-blur-md">
               <span className="h-2 w-2 rounded-full bg-emerald-500 animate-beacon" />
-              <span className="tag">Product Manager + Full Stack Engineer</span>
+              <span className="tag">Associate Product Manager & Systems Architect</span>
             </div>
 
             {/* Main Title */}
@@ -28,11 +28,11 @@ export default function Hero({ onOpenTerminal }) {
 
             {/* Subtitle / Description */}
             <p className="mt-6 text-lg sm:text-xl leading-relaxed text-[var(--text-muted)] max-w-xl">
-              I'm <span className="font-semibold text-[var(--text-primary)]">{samayProfile.name}</span> — a <span className="font-medium text-[var(--text-primary)]">Product Manager + Full Stack Engineer</span> at{" "}
-              <span className="font-medium text-[var(--text-primary)]">{samayProfile.company}</span>. I bridge product strategy and deep technical architecture, building scalable workflows, distributed APIs, and system design for{" "}
-              <span className="text-emerald-500 font-semibold">BharatGIG</span> and{" "}
-              <span className="text-emerald-500 font-semibold">RicRoot</span>, alongside{" "}
-              <span className="text-emerald-500 font-semibold">PayEaze</span> — turning complex ground operations into robust, high-performance digital platforms.
+              I'm <span className="font-semibold text-[var(--text-primary)]">{samayProfile.name}</span> — an <span className="font-medium text-[var(--text-primary)]">Associate Product Manager &amp; Systems Architect</span> at{" "}
+              <span className="font-medium text-[var(--text-primary)]">{samayProfile.company}</span>. I design end-to-end systems architecture for{" "}
+              <span className="text-emerald-500 font-semibold">workforce</span>,{" "}
+              <span className="text-emerald-500 font-semibold">recruitment</span>, and{" "}
+              <span className="text-emerald-500 font-semibold">compliance</span> platforms — turning complex ground operations into robust, high-performance digital systems.
             </p>
 
             {/* Quick Metrics Badges */}

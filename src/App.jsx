@@ -97,7 +97,7 @@ function AppContent() {
         {/* 3. Intro: Where Software Meets Operations */}
         <Intro />
 
-        {/* 4. Selected Work: BharatGIG, RicRoot & PayEaze Product Architecture */}
+        {/* 4. Selected Work: Enterprise Platform Architecture */}
         <Projects />
 
         {/* 5. Product + Engineering: 7-Stage Flow Sequence */}

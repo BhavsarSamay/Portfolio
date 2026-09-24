@@ -1,9 +1,9 @@
 export const samayProfile = {
   name: 'Samay Bhavsar',
-  role: 'Product Manager + Full Stack Engineer',
-  companyRole: 'Product Manager',
+  role: 'Associate Product Manager & Systems Architect',
+  companyRole: 'Associate Product Manager & Systems Architect',
   company: 'Veracity Supply Chain Limited',
-  product: 'Product Flow, Systems Architecture & Full-Stack Engineering',
+  product: 'Systems Architecture & Full-Stack Engineering',
   email: 'samaybhavsar24oct@gmail.com',
   phone: '+91 92651 96524',
   linkedin: 'https://www.linkedin.com/in/samay-bhavsar-b82a1b27a',
@@ -12,16 +12,16 @@ export const samayProfile = {
 
   heroMetrics: [
     { value: '3', label: 'Platforms Architected' },
-    { value: '4 Panels', label: 'Multi-Role Operations Flow' },
-    { value: '90,000+', label: 'Workforce Taxonomy' },
+    { value: 'End-to-End', label: 'Systems Architecture' },
+    { value: 'Full-Stack', label: 'Engineering Depth' },
     { value: '6+', label: 'AI & Production Systems' },
   ],
 
   aiKnowledge: [
     {
-      keywords: ['who', 'samay', 'about', 'background', 'bio', 'role', 'ownership', 'nda'],
+      keywords: ['who', 'samay', 'about', 'background', 'bio', 'role', 'nda'],
       answer:
-        'Samay Bhavsar is a Product Manager and Full-Stack Engineer at Veracity Supply Chain Limited. He bridges high-level product strategy with deep technical engineering, specializing in product flow design, distributed systems architecture, and production AI automation across platforms including BharatGIG, RicRoot, and PayEaze (operating under standard confidentiality/NDA). Previously recognized as Star Performer of the Month at Saturncube Technology.'
+        'Samay Bhavsar is an Associate Product Manager and Systems Architect at Veracity Supply Chain Limited. He designs end-to-end systems architecture for workforce, recruitment, and compliance platforms. Previously recognized as Star Performer of the Month at Saturncube Technology.'
     },
     {
       keywords: ['siteassist', 'chat', 'widget', 'rag', 'socket'],
@@ -34,19 +34,19 @@ export const samayProfile = {
         'At Saturncube Technology, Samay worked as a Node.js Backend Developer. He built autonomous LangChain agentic systems, real-time trading engines with Socket.io, Stripe payment workflows, microservices architectures, and was awarded Star Performer of the Month in February 2026.'
     },
     {
-      keywords: ['bharatgig', 'gig', 'workforce', 'deployment', 'panels', 'pricing'],
+      keywords: ['gig', 'workforce', 'marketplace'],
       answer:
-        'BharatGIG is a gig workforce deployment platform engineered at Veracity Supply Chain Limited. Samay architected the 4-panel operational system (Admin, Enterprise Client, Branch Manager, and Field Worker App), location-aware task dispatch, dynamic Form Builder schemas, and approval workflows.'
+        'At Veracity Supply Chain Limited, Samay designed the end-to-end architecture for a gig workforce platform — a two-sided marketplace connecting gig workers with businesses. Product names are confidential under NDA.'
     },
     {
-      keywords: ['ricroot', 'recruitment', 'hiring', 'candidates', 'app', 'blue collar'],
+      keywords: ['recruitment', 'hiring', 'candidates'],
       answer:
-        'RicRoot (https://ricroot.in) is a blue/grey-collar recruitment platform. Samay designed the candidate mobile app experience, employer web portal flows, broad job taxonomies (90,000+ candidate network), and guided iOS App Store compliance with Apple ATT and DPDP Act 2023.'
+        'At Veracity Supply Chain Limited, Samay designed the end-to-end architecture for a recruitment platform — a system for managing recruitment and hiring. Product names are confidential under NDA.'
     },
     {
-      keywords: ['payeaze', 'payroll', 'hrms', 'compliance', 'statutory'],
+      keywords: ['payroll', 'hrms', 'compliance', 'statutory'],
       answer:
-        'PayEaze is a multi-tenant payroll and statutory compliance HRMS designed for Indian enterprise labor laws (PF, ESI, Professional Tax). Samay architected the multi-tenant role workflows and formulated the product launch roadmap.'
+        'At Veracity Supply Chain Limited, Samay works on the end-to-end architecture for a payroll and compliance platform — an enterprise payroll and statutory compliance system. Product names are confidential under NDA.'
     },
     {
       keywords: ['skills', 'stack', 'tech', 'languages'],

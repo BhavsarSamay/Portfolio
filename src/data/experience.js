@@ -2,29 +2,24 @@ export const experience = [
   {
     id: 'veracity',
     company: 'Veracity Supply Chain Limited',
-    role: 'Product Manager',
-    subrole: 'Product Flow, Systems Architecture & Full-Stack Engineering',
+    role: 'Associate Product Manager & Systems Architect',
+    subrole: 'Systems Architecture & Full-Stack Engineering',
     period: 'June 2026 — Present',
     status: 'CURRENT ROLE',
     points: [
-      'Lead product flow architecture, functional specifications, and user journeys for BharatGIG (gig workforce platform) and RicRoot (recruitment platform), alongside PayEaze (compliance HRMS).',
-      'Architected BharatGIG’s 4-panel operational system: Admin panel (ops & rate config), Client panel (request tracking), Branch Manager portal (branch-scoped requests), and GIG Worker mobile app.',
-      'Designed dynamic location-based pricing: branch-wise distance calculation and pincode-wise territorial zones (inner-city vs. outer-city) with independent client billing and worker payout resolution.',
-      'Engineered dynamic Form Builder schemas with Feed fields (for field workers), Capture fields (on-site photos/data), and Supervisor fields with automated branded dossier PDF generation upon approval.',
-      'Constructed SLA & turnaround monitoring (city tiers, delay penalty ladders, worker auto-release) and digital wallet accounting with admin-governed withdrawal limits.',
-      'Designed RicRoot recruitment flows: mapped candidate mobile journeys, structured the industrial job taxonomy, and engineered Employer Portal candidate review tools.',
-      'Directed RicRoot iOS App Store compliance and resubmission, integrating Meta Ads SDK, Apple AppTrackingTransparency (ATT), guest-browsing flows, and DPDP Act 2023 privacy framework.',
-      'Formulated PayEaze multi-tenant HRMS architecture (subdomain-isolated client tenancy, state-wise PF, ESI, and Professional Tax compliance) and 90-day commercial GTM launch plan.'
+      'Design end-to-end systems architecture for a gig workforce platform, a recruitment platform, and a payroll & compliance platform at Veracity Supply Chain Limited.',
+      'Architect multi-role operational systems, distributed workflows, and scalable backend services across all three platforms.',
+      'Design system flows, functional specifications, and user journeys spanning web portals and mobile applications.',
+      'Collaborate on engineering sprints, API contracts, data modelling, and App Store compliance lifecycles.',
     ],
     tech: [
-      'Product Management',
+      'Systems Architecture',
+      'System Design',
       'Two-Sided Marketplaces',
-      'Geo-Pricing Engines',
-      'Form Builder Schemas',
-      'SLA & Quality Engines',
-      'Apple ATT & Meta SDK',
-      'DPDP Act 2023',
-      'Multi-Tenant HRMS'
+      'Recruitment Systems',
+      'Payroll & Compliance',
+      'API Design',
+      'Mobile & Web Platforms',
     ]
   },
   {
@@ -32,7 +27,7 @@ export const experience = [
     company: 'Saturncube Technology',
     role: 'Node.js Backend Developer',
     subrole: 'Star Performer of the Month (Feb 2026)',
-    period: 'December 2024 — Present',
+    period: 'December 2024 — June 2026',
     status: 'ON-SITE · AHMEDABAD',
     points: [
       'Awarded Star Performer of the Month (February 2026) for outstanding backend engineering, AI system development, and consistent delivery of production-critical features.',

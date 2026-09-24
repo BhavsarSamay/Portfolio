@@ -53,12 +53,12 @@ export default function ResumeModal({ isOpen, onClose }) {
 
   const handleDownload = () => {
     playSuccessChime();
-    const resumeText = `SAMAY BHAVSAR — PRODUCT MANAGER & SYSTEMS ARCHITECT
+    const resumeText = `SAMAY BHAVSAR — ASSOCIATE PRODUCT MANAGER & SYSTEMS ARCHITECT
 Email: ${samayProfile.email} | Phone: ${samayProfile.phone} | Location: ${samayProfile.location}
 LinkedIn: ${samayProfile.linkedin} | GitHub: ${samayProfile.github}
 
 EXECUTIVE SUMMARY:
-Associate Product Manager specializing in product flow design, functional specifications, and systems architecture at Veracity Supply Chain Limited. Leads product journeys and system design for BharatGIG (gig workforce platform) and RicRoot (blue/grey-collar hiring platform), alongside PayEaze (statutory compliance HRMS). Proven record architecting multi-role platforms, location-based dispatch models, industrial recruitment taxonomies, and Apple App Store ATT compliance.
+Associate Product Manager and Systems Architect at Veracity Supply Chain Limited. Designs end-to-end systems architecture for workforce, recruitment, and compliance platforms. Background in distributed systems, backend engineering, and production AI automation.
 
 EXPERIENCE:
 ${experience.map(e => `${e.role} (${e.subrole || ''}) — ${e.company} [${e.period}]\n${(e.points || []).map(p => `• ${p}`).join("\n")}`).join("\n\n")}
@@ -162,7 +162,7 @@ CPI: 8.45 / 10.0
               // Summary
             </h3>
             <p className="text-sm leading-relaxed text-[var(--text-muted)]">
-              Product Manager + Full Stack Engineer specializing in product flow design, distributed systems architecture, and production code execution across <strong className="text-[var(--text-primary)]">BharatGIG</strong> and <strong className="text-[var(--text-primary)]">RicRoot</strong> at Veracity Supply Chain Limited. Expert in architecting multi-panel operational platforms, location-aware task dispatch workflows, non-desk recruitment journeys, Apple App Store ATT compliance, and multi-tenant SaaS compliance systems.
+              Associate Product Manager and Systems Architect at Veracity Supply Chain Limited. Designs end-to-end systems architecture for workforce, recruitment, and compliance platforms. Background in distributed systems, scalable backend engineering, and production AI automation.
             </p>
           </div>
 

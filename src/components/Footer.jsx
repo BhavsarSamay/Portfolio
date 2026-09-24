@@ -13,9 +13,9 @@ export default function Footer({ onOpenTerminal }) {
   };
 
   const platforms = [
-    { label: 'BharatGIG', desc: 'Gig Operations Platform', href: '#work' },
-    { label: 'RicRoot', desc: 'Industrial Recruitment', href: '#work' },
-    { label: 'PayEaze', desc: 'Compliance HRMS Engine', href: '#work' },
+    { label: 'Gig Workforce Platform', desc: 'Two-Sided Marketplace', href: '#work' },
+    { label: 'Recruitment Platform', desc: 'Hiring & Talent Systems', href: '#work' },
+    { label: 'Payroll & Compliance', desc: 'Statutory HRMS Engine', href: '#work' },
     { label: 'SiteAssist', desc: 'Full-Stack RAG Chat', href: '#work' },
   ];
 
@@ -35,13 +35,13 @@ export default function Footer({ onOpenTerminal }) {
                   {samayProfile.name}
                 </span>
                 <span className="font-mono text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold tracking-wide">
-                  Product × Engineering × Systems
+                  Architecture × Engineering × Systems
                 </span>
               </div>
             </div>
 
             <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed max-w-sm">
-              Product Manager + Full-Stack Engineer · Product Flow, Distributed Architecture &amp; Systems at Veracity Supply Chain Limited. Building two-sided marketplaces and high-throughput enterprise platforms.
+              Associate Product Manager &amp; Systems Architect · Systems Architecture &amp; Full-Stack Engineering at Veracity Supply Chain Limited. Designing workforce, recruitment, and compliance platforms.
             </p>
 
             {/* Location & Status Beacon */}

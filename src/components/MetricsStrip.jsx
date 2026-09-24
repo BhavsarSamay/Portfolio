@@ -8,7 +8,7 @@ export default function MetricsStrip() {
         <div className="flex items-center gap-3">
           <span className="h-2 w-2 rounded-full bg-emerald-400 animate-beacon" />
           <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-slate-400 font-semibold">
-            Currently Building — BharatGIG, RicRoot &amp; PayEaze at Veracity Supply Chain Limited
+            Currently Building — Workforce, Recruitment &amp; Compliance Platforms at Veracity Supply Chain Limited
           </p>
         </div>
 
