@@ -20,7 +20,7 @@ export default function Hero({ onOpenTerminal }) {
             <div className="flex flex-wrap items-center gap-3">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--border-line)] bg-[var(--bg-surface)] backdrop-blur-md">
                 <span className="h-2 w-2 rounded-full bg-emerald-500 animate-beacon" />
-                <span className="tag">Associate Product Manager & Systems Architect</span>
+                <span className="tag">Product Manager &amp; Full-Stack Engineer</span>
               </div>
               <ExperienceTicker />
             </div>
@@ -32,7 +32,7 @@ export default function Hero({ onOpenTerminal }) {
 
             {/* Subtitle / Description */}
             <p className="mt-6 text-lg sm:text-xl leading-relaxed text-[var(--text-muted)] max-w-xl">
-              I'm <span className="font-semibold text-[var(--text-primary)]">{samayProfile.name}</span>, an <span className="font-medium text-[var(--text-primary)]">Associate Product Manager &amp; Systems Architect</span> at{" "}
+              I'm <span className="font-semibold text-[var(--text-primary)]">{samayProfile.name}</span>, a <span className="font-medium text-[var(--text-primary)]">Product Manager &amp; Full-Stack Engineer</span> at{" "}
               <span className="font-medium text-[var(--text-primary)]">{samayProfile.company}</span>. I design end-to-end systems architecture for{" "}
               <span className="text-emerald-500 font-semibold">workforce</span>,{" "}
               <span className="text-emerald-500 font-semibold">recruitment</span>, and{" "}

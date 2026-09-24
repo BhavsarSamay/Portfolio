@@ -53,12 +53,12 @@ export default function ResumeModal({ isOpen, onClose }) {
 
   const handleDownload = () => {
     playSuccessChime();
-    const resumeText = `SAMAY BHAVSAR | ASSOCIATE PRODUCT MANAGER & SYSTEMS ARCHITECT
+    const resumeText = `SAMAY BHAVSAR | PRODUCT MANAGER & FULL-STACK ENGINEER
 Email: ${samayProfile.email} | Phone: ${samayProfile.phone} | Location: ${samayProfile.location}
 LinkedIn: ${samayProfile.linkedin} | GitHub: ${samayProfile.github}
 
 EXECUTIVE SUMMARY:
-Associate Product Manager and Systems Architect at Veracity Supply Chain Limited. Designs end-to-end systems architecture for workforce, recruitment, and compliance platforms. Background in distributed systems, backend engineering, and production AI automation.
+Product Manager and Full-Stack Engineer at Veracity Supply Chain Limited. Designs end-to-end systems architecture for workforce, recruitment, and compliance platforms. Background in distributed systems, backend engineering, and production AI automation.
 
 EXPERIENCE:
 ${experience.map(e => `${e.role} (${e.subrole || ''}) | ${e.company} [${e.period}]\n${(e.points || []).map(p => `• ${p}`).join("\n")}`).join("\n\n")}
@@ -162,7 +162,7 @@ CPI: 8.45 / 10.0
               // Summary
             </h3>
             <p className="text-sm leading-relaxed text-[var(--text-muted)]">
-              Associate Product Manager and Systems Architect at Veracity Supply Chain Limited. Designs end-to-end systems architecture for workforce, recruitment, and compliance platforms. Background in distributed systems, scalable backend engineering, and production AI automation.
+              Product Manager and Full-Stack Engineer at Veracity Supply Chain Limited. Designs end-to-end systems architecture for workforce, recruitment, and compliance platforms. Background in distributed systems, scalable backend engineering, and production AI automation.
             </p>
           </div>
 

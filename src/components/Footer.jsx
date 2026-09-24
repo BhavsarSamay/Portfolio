@@ -41,7 +41,7 @@ export default function Footer({ onOpenTerminal }) {
             </div>
 
             <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed max-w-sm">
-              Associate Product Manager &amp; Systems Architect · Systems Architecture &amp; Full-Stack Engineering at Veracity Supply Chain Limited. Designing workforce, recruitment, and compliance platforms.
+              Product Manager &amp; Full-Stack Engineer at Veracity Supply Chain Limited. Designing workforce, recruitment, and compliance platforms.
             </p>
 
             {/* Location & Status Beacon */}

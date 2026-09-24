@@ -90,7 +90,7 @@ export default function AIChatModal({ isOpen, onClose }) {
       }
 
       if (!matchedAnswer) {
-        matchedAnswer = `Samay Bhavsar is an Associate Product Manager & Systems Architect at Veracity Supply Chain Limited. He designs end-to-end systems architecture for workforce, recruitment, and compliance platforms. You can reach him at ${samayProfile.email}.`;
+        matchedAnswer = `Samay Bhavsar is a Product Manager & Full-Stack Engineer at Veracity Supply Chain Limited. He designs end-to-end systems architecture for workforce, recruitment, and compliance platforms. You can reach him at ${samayProfile.email}.`;
       }
 
       setMessages((prev) => [...prev, { role: "assistant", text: matchedAnswer }]);

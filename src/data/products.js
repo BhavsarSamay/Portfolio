@@ -1,6 +1,6 @@
 /**
  * Veracity Supply Chain Limited | Enterprise Platforms
- * Systems Architecture by Samay Bhavsar (Associate Product Manager & Systems Architect)
+ * Systems Architecture by Samay Bhavsar (Product Manager & Full-Stack Engineer)
  * Product names and details are confidential under NDA.
  */
 

@@ -2,7 +2,7 @@ export const experience = [
   {
     id: 'veracity',
     company: 'Veracity Supply Chain Limited',
-    role: 'Associate Product Manager & Systems Architect',
+    role: 'Product Manager & Full-Stack Engineer',
     subrole: 'Systems Architecture & Full-Stack Engineering',
     period: 'June 2026 to Present',
     status: 'CURRENT ROLE',

@@ -72,12 +72,12 @@ export default function Intro() {
                       {samayProfile.name}
                     </h4>
                     <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-500/25 text-emerald-300 border border-emerald-500/40">
-                      APM + SA
+                      PM + FSE
                     </span>
                   </div>
 
                   <p className="mt-1 font-mono text-xs text-emerald-400 font-medium">
-                    Associate Product Manager &amp; Systems Architect
+                    Product Manager &amp; Full-Stack Engineer
                   </p>
                   <p className="mt-0.5 text-xs text-slate-300">
                     {samayProfile.company}
@@ -106,7 +106,7 @@ export default function Intro() {
           {/* Right Column: Editorial Narrative (Starts aligned with top of Photo) */}
           <div className="space-y-6 text-base sm:text-lg leading-relaxed text-[var(--text-muted)]">
             <p className="text-xl text-[var(--text-primary)] font-medium leading-relaxed">
-              I'm an <strong className="text-emerald-500">Associate Product Manager &amp; Systems Architect</strong> at Veracity Supply Chain Limited, designing end-to-end systems architecture for workforce, recruitment, and compliance platforms.
+              I'm a <strong className="text-emerald-500">Product Manager &amp; Full-Stack Engineer</strong> at Veracity Supply Chain Limited, designing end-to-end systems architecture for workforce, recruitment, and compliance platforms.
             </p>
 
             <p>

@@ -63,7 +63,7 @@ export default function TerminalDrawer({ isOpen, onClose }) {
       case "about":
         newEntries.push({
           type: "output",
-          text: `SAMAY BHAVSAR // Associate Product Manager & Systems Architect
+          text: `SAMAY BHAVSAR // Product Manager & Full-Stack Engineer
 Role:       ${samayProfile.role}
 Company:    ${samayProfile.company}
 Product:    ${samayProfile.product}
@@ -116,7 +116,7 @@ Philosophy: "Start with the operation. Build for the user that exists. Productio
     /     \\     -----------------------------
    | () () |    OS: SamayOS Linux 6.8
     \\  _  /     Organization: Veracity Supply Chain (RCSL)
-                Role: Associate Product Manager & Systems Architect
+                Role: Product Manager & Full-Stack Engineer
                 Platforms Architected: 3 Enterprise Platforms
                 Focus: Systems Architecture & Full-Stack Engineering
                 Stack: Python, FastAPI, React, Node.js, SQL, iOS ATT

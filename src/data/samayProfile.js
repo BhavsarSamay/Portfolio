@@ -1,7 +1,7 @@
 export const samayProfile = {
   name: 'Samay Bhavsar',
-  role: 'Associate Product Manager & Systems Architect',
-  companyRole: 'Associate Product Manager & Systems Architect',
+  role: 'Product Manager & Full-Stack Engineer',
+  companyRole: 'Product Manager & Full-Stack Engineer',
   company: 'Veracity Supply Chain Limited',
   product: 'Systems Architecture & Full-Stack Engineering',
   email: 'samaybhavsar24oct@gmail.com',
@@ -21,7 +21,7 @@ export const samayProfile = {
     {
       keywords: ['who', 'samay', 'about', 'background', 'bio', 'role'],
       answer:
-        'Samay Bhavsar is an Associate Product Manager and Systems Architect at Veracity Supply Chain Limited. He designs end-to-end systems architecture for workforce, recruitment, and compliance platforms. Previously recognized as Star Performer of the Month at Saturncube Technology.'
+        'Samay Bhavsar is a Product Manager and Full-Stack Engineer at Veracity Supply Chain Limited. He designs end-to-end systems architecture for workforce, recruitment, and compliance platforms. Previously recognized as Star Performer of the Month at Saturncube Technology.'
     },
     {
       keywords: ['siteassist', 'chat', 'widget', 'rag', 'socket'],
