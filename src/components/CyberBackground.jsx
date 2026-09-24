@@ -585,7 +585,7 @@ export default function CyberBackground() {
         }
 
         const twinkle = Math.sin(frame * s.twinkleSpeed + s.twinklePhase);
-        const currentAlpha = Math.max(0.12, s.baseAlpha + twinkle * 0.28);
+        const currentAlpha = Math.max(0.62, s.baseAlpha + twinkle * 0.20);
 
         ctx.fillStyle = s.color;
         ctx.globalAlpha = currentAlpha;
@@ -634,12 +634,12 @@ export default function CyberBackground() {
         if (objY > height + 40) objY -= totalH;
 
         if (objY > -30 && objY < height + 30) {
-          const pulse = Math.sin(frame * 0.03 + mo.pulsePhase) * 0.2;
+          const pulse = Math.sin(frame * 0.03 + mo.pulsePhase) * 0.15;
           ctx.save();
           ctx.translate(mo.x, objY);
           ctx.rotate(mo.rotation);
           ctx.fillStyle = mo.color;
-          ctx.globalAlpha = Math.max(0.18, mo.baseAlpha + pulse);
+          ctx.globalAlpha = Math.max(0.65, mo.baseAlpha + pulse);
 
           if (mo.type === "dust") {
             ctx.beginPath();
@@ -697,11 +697,11 @@ export default function CyberBackground() {
           ctx.strokeRect(-10, -2, 6, 4);
           ctx.strokeRect(4, -2, 6, 4);
 
-          // Blinking LED Beacon
+          // Blinking LED Beacon (High Min Brightness)
           const beaconBlink = (Math.sin(probe.beaconPhase) + 1) * 0.5;
           ctx.beginPath();
           ctx.arc(0, 0, 1.8, 0, Math.PI * 2);
-          ctx.fillStyle = isDark ? `rgba(52, 211, 153, ${0.4 + beaconBlink * 0.6})` : `rgba(37, 99, 235, ${0.4 + beaconBlink * 0.6})`;
+          ctx.fillStyle = isDark ? `rgba(52, 211, 153, ${0.78 + beaconBlink * 0.22})` : `rgba(37, 99, 235, ${0.78 + beaconBlink * 0.22})`;
           ctx.shadowColor = isDark ? "#34D399" : "#2563EB";
           ctx.shadowBlur = 6;
           ctx.fill();
@@ -1595,8 +1595,8 @@ export default function CyberBackground() {
           ctx.fillStyle = isDark ? "#FFFFFF" : "#1E293B";
           ctx.fillRect(-2, -2, 4, 4);
 
-          // Telemetry Beacon LED
-          const beaconPulse = Math.sin(node.phase) > 0.4 ? 1 : 0.2;
+          // Telemetry Beacon LED (High Min Brightness)
+          const beaconPulse = Math.sin(node.phase) > 0.4 ? 1.0 : 0.70;
           ctx.beginPath();
           ctx.arc(0, 0, 2, 0, Math.PI * 2);
           ctx.fillStyle = isDark ? `rgba(52, 211, 153, ${beaconPulse})` : `rgba(16, 185, 129, ${beaconPulse})`;
