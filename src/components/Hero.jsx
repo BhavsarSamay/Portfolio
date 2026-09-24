@@ -1,7 +1,8 @@
 import React from "react";
-import { ArrowUpRight, Terminal, Sparkles, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, Terminal } from "lucide-react";
 import HeroVisual from "./HeroVisual";
 import HeroPlanets from "./HeroPlanets";
+import ExperienceTicker from "./ExperienceTicker";
 import { samayProfile } from "../data/samayProfile";
 import { playCyberChirp } from "../utils/soundEffects";
 
@@ -15,10 +16,13 @@ export default function Hero({ onOpenTerminal }) {
         <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
           {/* Left Column: Editorial Headline & Actions */}
           <div>
-            {/* Eyebrow badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--border-line)] bg-[var(--bg-surface)] backdrop-blur-md">
-              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-beacon" />
-              <span className="tag">Associate Product Manager & Systems Architect</span>
+            {/* Top Eyebrow Badge & Realtime Experience Ticker */}
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--border-line)] bg-[var(--bg-surface)] backdrop-blur-md">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-beacon" />
+                <span className="tag">Associate Product Manager & Systems Architect</span>
+              </div>
+              <ExperienceTicker />
             </div>
 
             {/* Main Title */}

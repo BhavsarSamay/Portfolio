@@ -8,28 +8,28 @@ export const veracityPlatforms = [
   {
     id: 'gig-platform',
     label: 'Gig Workforce Platform',
-    role: 'Systems Architect',
+    role: 'Workforce & Marketplace Architecture',
     overview:
-      'A two-sided marketplace connecting gig workers with businesses. I designed its architecture end to end and continue to work on it.',
-    tags: ['Systems Architecture', 'System Design', 'Marketplaces'],
+      'Architected two-sided marketplace operational flows, dynamic geographic pricing models, real-time worker allocation & dispatch engines, and multi-role mobile-web sync topologies.',
+    tags: ['Marketplace Workflows', 'Dynamic Pricing', 'Worker Allocation', 'Mobile-Web Sync'],
     color: 'emerald',
   },
   {
     id: 'recruitment-platform',
     label: 'Recruitment Platform',
-    role: 'Systems Architect',
+    role: 'Talent Pipelines & Matching Systems',
     overview:
-      'A system for managing recruitment and hiring. I designed its architecture end to end and continue to work on it.',
-    tags: ['Systems Architecture', 'System Design', 'Recruitment Systems'],
+      'Engineered multi-stage applicant tracking workflows, real-time candidate status synchronization, automated assessment scoring pipelines, and recruiter operational dashboard APIs.',
+    tags: ['Applicant Tracking', 'Candidate Pipelines', 'Scoring Workflows', 'Recruiter Dashboards'],
     color: 'sky',
   },
   {
     id: 'payroll-platform',
     label: 'Payroll & Compliance Platform',
-    role: 'Systems Architect',
+    role: 'Statutory Engines & Compliance Architecture',
     overview:
-      'An enterprise payroll and statutory compliance system for multi-state labour regulations. I work on its end-to-end architecture.',
-    tags: ['Systems Architecture', 'System Design', 'Payroll & Compliance'],
+      'Designed multi-state statutory labor compliance rules, automated tax & PF deduction formulas, enterprise payroll batching topologies, and audit trail calculation models.',
+    tags: ['Statutory Compliance', 'Payroll Engines', 'Labor Regulations', 'Audit Trails'],
     color: 'amber',
   },
 ];

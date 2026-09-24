@@ -20,9 +20,6 @@ export default function Projects() {
               Systems Architecture
             </h2>
           </div>
-          <p className="font-mono text-xs text-[var(--text-muted)] max-w-md">
-            Enterprise platforms designed end to end at Veracity Supply Chain Limited.
-          </p>
         </div>
 
         {/* NDA Notice */}
