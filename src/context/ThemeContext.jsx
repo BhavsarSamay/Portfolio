@@ -7,9 +7,9 @@ export function ThemeProvider({ children }) {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("samay_portfolio_theme");
       if (saved === "light" || saved === "dark") return saved;
-      return "dark"; // Default to dark executive mode
+      return "light"; // Default to light mode
     }
-    return "dark";
+    return "light";
   });
 
   useEffect(() => {
