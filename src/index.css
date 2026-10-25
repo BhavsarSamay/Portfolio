@@ -35,6 +35,10 @@
     --beacon-bright: #12A97F;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: var(--bg-base);
     color: var(--text-primary);
@@ -43,6 +47,9 @@
     margin: 0;
     transition: background-color 0.3s ease, color 0.3s ease;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
   }
 
   code,
@@ -261,8 +268,8 @@ html.light ::-webkit-scrollbar-thumb {
    ========================================= */
 
 :root {
-  --orbit-radius-blue: clamp(250px, 28vw, 360px);
-  --orbit-radius-green: clamp(430px, 46vw, 620px);
+  --orbit-radius-blue: clamp(140px, 20vw, 360px);
+  --orbit-radius-green: clamp(230px, 34vw, 620px);
 }
 
 .hero-orbit-system {
@@ -370,6 +377,50 @@ html.light ::-webkit-scrollbar-thumb {
   animation: orbitRotate 60s linear infinite;
   animation-delay: -22.5s;
   /* Initial placement at Top-Right */
+}
+
+/* On small screens, scale down the planet visuals */
+@media (max-width: 640px) {
+  .planet-blue-sphere {
+    width: 44px;
+    height: 44px;
+  }
+  .planet-blue-corona {
+    width: 80px;
+    height: 80px;
+  }
+  .planet-blue-ring-back,
+  .planet-blue-ring-front {
+    width: 80px;
+    height: 22px;
+    border-width: 4px;
+  }
+  .planet-blue-moon {
+    transform: translate(28px, -14px);
+  }
+  .planet-blue-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .planet-green-sphere {
+    width: 66px;
+    height: 66px;
+  }
+  .planet-green-corona {
+    width: 130px;
+    height: 130px;
+  }
+  .planet-green-ring-back,
+  .planet-green-ring-front {
+    width: 130px;
+    height: 36px;
+    border-width: 8px;
+  }
+  .planet-green-image {
+    width: 130px;
+    height: 130px;
+  }
 }
 
 html.light .orbit-blue {
@@ -591,4 +642,78 @@ html.light .orbit-green {
   .central-sun-core {
     animation: none !important;
   }
+}
+
+/* =========================================
+   SMOOTH TRANSITIONS & MICRO-INTERACTIONS
+   ========================================= */
+
+/* Smooth fade-in for page load */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Staggered children animation */
+.stagger-children > * {
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.10s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.20s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.30s; }
+
+/* =========================================
+   MOBILE-SPECIFIC ENHANCEMENTS
+   ========================================= */
+
+/* Ensure interactive elements have a minimum touch target on mobile */
+@media (max-width: 768px) {
+  button, a {
+    min-height: 40px;
+  }
+
+  /* On tiny screens, hide planets completely to avoid layout issues */
+  .hero-orbit-system {
+    opacity: 0.35;
+  }
+}
+
+/* Extra small screens (320px) */
+@media (max-width: 380px) {
+  .hero-orbit-system {
+    display: none;
+  }
+}
+
+/* Prevent hero section horizontal overflow from planets */
+.hero-orbit-system {
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Better focus states for accessibility */
+:focus-visible {
+  outline: 2px solid var(--beacon-color);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Smooth image rendering */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  max-width: 100%;
+  height: auto;
 }

@@ -5,14 +5,43 @@ export default function ProductEngineering() {
   return (
     <section id="thinking" className="py-16 sm:py-20 border-t border-[var(--border-line)]">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
-        <div className="grid lg:grid-cols-[auto_1fr] gap-8 lg:gap-14 items-start">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+          {/* Right Column: Narrative Copy — shown first on mobile */}
+          <div className="order-1">
+            <div className="inline-flex items-center gap-2">
+              <span className="tag">Product + Engineering</span>
+            </div>
+            <h2 className="mt-4 font-display font-bold tracking-tight text-[var(--text-primary)] leading-tight"
+              style={{ fontSize: "clamp(1.75rem, 5vw, 3rem)" }}>
+              I don&apos;t stop at the requirements document.
+            </h2>
+
+            <div className="mt-6 space-y-5 text-base sm:text-lg leading-relaxed text-[var(--text-muted)] max-w-2xl">
+              <p>
+                I have a Computer Science and Systems Architecture background, and I stay comfortable working directly with the technical system behind the product decisions I make.
+              </p>
+
+              <p>
+                Across the platforms I architect, that means working hand-in-hand with engineering on <strong className="text-[var(--text-primary)]">distributed system design</strong>, mobile app release lifecycles, relational schemas, module behaviour, API contracts, and App Store compliance, rather than just handing off a Figma link or spec and waiting for a sprint demo.
+              </p>
+
+              <div className="p-5 rounded-xl border border-emerald-500/30 bg-emerald-500/5 text-[var(--text-primary)] font-medium text-sm sm:text-base">
+                I can move fluidly between executive business requirements and low-level technical implementation, which radically shortens the distance between operational bottlenecks in the field and software that actually resolves them.
+              </div>
+
+              <p>
+                Whether it&apos;s debugging webhook payloads, orchestrating SLA penalty ladders, configuring privacy compliance rules, or tuning matching latency across large candidate pools, engineering depth makes systems architecture significantly more effective.
+              </p>
+            </div>
+          </div>
+
           {/* Left Column: Vertical Flow Sequence */}
-          <div className="order-2 lg:order-1 overflow-x-auto w-full max-w-sm">
-            <div className="flex flex-col items-start w-full">
+          <div className="order-2 lg:order-2">
+            <div className="flex flex-col items-stretch w-full max-w-sm mx-auto lg:mx-0">
               {engineeringFlow.map((step, i) => (
                 <div key={step} className="flex flex-col items-start w-full">
                   {/* Step Card */}
-                  <div className="group font-mono text-xs sm:text-sm px-4 py-3 rounded-xl border border-[var(--border-line)] bg-[var(--bg-card)] shadow-sm text-[var(--text-primary)] hover:border-emerald-500/50 transition-all flex items-center justify-between w-full">
+                  <div className="group font-mono text-xs sm:text-sm px-4 py-3.5 rounded-xl border border-[var(--border-line)] bg-[var(--bg-card)] shadow-sm text-[var(--text-primary)] hover:border-emerald-500/50 hover:bg-[var(--bg-surface)] transition-all flex items-center justify-between w-full">
                     <span className="font-semibold">{step}</span>
                     <span className="text-[10px] text-[var(--text-dim)] font-mono">0{i + 1}</span>
                   </div>
@@ -29,34 +58,6 @@ export default function ProductEngineering() {
                   )}
                 </div>
               ))}
-            </div>
-          </div>
-
-          {/* Right Column: Narrative Copy */}
-          <div className="order-1 lg:order-2">
-            <div className="inline-flex items-center gap-2">
-              <span className="tag">Product + Engineering</span>
-            </div>
-            <h2 className="mt-4 font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[var(--text-primary)] leading-tight">
-              I don't stop at the requirements document.
-            </h2>
-
-            <div className="mt-8 space-y-6 text-base sm:text-lg leading-relaxed text-[var(--text-muted)] max-w-2xl">
-              <p>
-                I have a Computer Science and Systems Architecture background, and I stay comfortable working directly with the technical system behind the product decisions I make.
-              </p>
-
-              <p>
-                Across the platforms I architect, that means working hand-in-hand with engineering on <strong className="text-[var(--text-primary)]">distributed system design</strong>, mobile app release lifecycles, relational schemas, module behaviour, API contracts, and App Store compliance, rather than just handing off a Figma link or spec and waiting for a sprint demo.
-              </p>
-
-              <div className="p-5 rounded-xl border border-emerald-500/30 bg-emerald-500/5 text-[var(--text-primary)] font-medium">
-                I can move fluidly between executive business requirements and low-level technical implementation, which radically shortens the distance between operational bottlenecks in the field and software that actually resolves them.
-              </div>
-
-              <p>
-                Whether it's debugging webhook payloads, orchestrating SLA penalty ladders, configuring privacy compliance rules, or tuning matching latency across large candidate pools, engineering depth makes systems architecture significantly more effective.
-              </p>
             </div>
           </div>
         </div>

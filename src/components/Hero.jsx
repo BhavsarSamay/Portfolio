@@ -8,14 +8,14 @@ import { playCyberChirp } from "../utils/soundEffects";
 
 export default function Hero({ onOpenTerminal }) {
   return (
-    <section id="home" className="relative pt-36 pb-20 sm:pt-44 sm:pb-28 overflow-hidden">
+    <section id="home" className="relative pt-32 pb-20 sm:pt-44 sm:pb-28 overflow-hidden">
       {/* Dynamic Planetary Orbit System */}
       <HeroPlanets />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8 relative z-10">
         <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
           {/* Left Column: Editorial Headline & Actions */}
-          <div>
+          <div className="animate-fade-in-up">
             {/* Top Eyebrow Badge & Realtime Experience Ticker */}
             <div className="flex flex-wrap items-center gap-3">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--border-line)] bg-[var(--bg-surface)] backdrop-blur-md">
@@ -25,14 +25,15 @@ export default function Hero({ onOpenTerminal }) {
               <ExperienceTicker />
             </div>
 
-            {/* Main Title */}
-            <h1 className="mt-6 font-display text-4xl sm:text-6xl md:text-[4rem] font-bold tracking-tight text-[var(--text-primary)] leading-[1.08]">
+            {/* Main Title — fluid size via clamp */}
+            <h1 className="mt-6 font-display font-bold tracking-tight text-[var(--text-primary)] leading-[1.08]"
+              style={{ fontSize: "clamp(1.9rem, 5.5vw, 4rem)" }}>
               I build products, and the systems that run them.
             </h1>
 
             {/* Subtitle / Description */}
-            <p className="mt-6 text-lg sm:text-xl leading-relaxed text-[var(--text-muted)] max-w-xl">
-              I'm <span className="font-semibold text-[var(--text-primary)]">{samayProfile.name}</span>, a <span className="font-medium text-[var(--text-primary)]">Product Manager &amp; Full-Stack Engineer</span> at{" "}
+            <p className="mt-5 text-base sm:text-lg leading-relaxed text-[var(--text-muted)] max-w-xl">
+              I&apos;m <span className="font-semibold text-[var(--text-primary)]">{samayProfile.name}</span>, a <span className="font-medium text-[var(--text-primary)]">Product Manager &amp; Full-Stack Engineer</span> at{" "}
               <span className="font-medium text-[var(--text-primary)]">{samayProfile.company}</span>. I design end-to-end systems architecture for{" "}
               <span className="text-emerald-500 font-semibold">workforce</span>,{" "}
               <span className="text-emerald-500 font-semibold">recruitment</span>, and{" "}
@@ -40,7 +41,7 @@ export default function Hero({ onOpenTerminal }) {
             </p>
 
             {/* Quick Metrics Badges */}
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-7 flex flex-wrap gap-2">
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[var(--border-line)] bg-[var(--bg-surface)] text-xs font-mono text-[var(--text-muted)]">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                 <span>Product &amp; Systems Architecture</span>
@@ -56,11 +57,11 @@ export default function Hero({ onOpenTerminal }) {
             </div>
 
             {/* Call to Actions */}
-            <div className="mt-10 flex flex-wrap items-center gap-4 sm:gap-5">
+            <div className="mt-8 flex flex-wrap items-center gap-3">
               <a
                 href="#work"
                 onClick={() => playCyberChirp()}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm transition-all shadow-md hover:shadow-emerald-600/30 hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm transition-all shadow-md hover:shadow-emerald-600/30 hover:-translate-y-0.5 active:translate-y-0"
               >
                 View Selected Work
                 <ArrowUpRight size={16} />
@@ -69,18 +70,18 @@ export default function Hero({ onOpenTerminal }) {
               <a
                 href="#contact"
                 onClick={() => playCyberChirp()}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-[var(--border-line)] bg-[var(--bg-card)] hover:border-emerald-500/50 text-[var(--text-primary)] font-medium text-sm transition-all hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-[var(--border-line)] bg-[var(--bg-card)] hover:border-emerald-500/50 text-[var(--text-primary)] font-medium text-sm transition-all hover:-translate-y-0.5 active:translate-y-0"
               >
-                Let's Connect
+                Let&apos;s Connect
               </a>
 
-              {/* SamayOS Terminal Trigger */}
+              {/* SamayOS Terminal Trigger — hidden on smallest screens to save space */}
               <button
                 onClick={() => {
                   playCyberChirp();
                   onOpenTerminal?.();
                 }}
-                className="inline-flex items-center gap-2 px-4 py-3 rounded-xl border border-[var(--border-line)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-raised)] text-[var(--text-muted)] hover:text-emerald-400 text-xs font-mono transition-all"
+                className="hidden sm:inline-flex items-center gap-2 px-4 py-3 rounded-xl border border-[var(--border-line)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-raised)] text-[var(--text-muted)] hover:text-emerald-400 text-xs font-mono transition-all"
                 title="Open SamayOS Interactive Terminal (~)"
               >
                 <Terminal size={14} className="text-emerald-500" />
@@ -90,8 +91,8 @@ export default function Hero({ onOpenTerminal }) {
             </div>
           </div>
 
-          {/* Right Column: Animated Radar & System Map */}
-          <div className="relative flex justify-center items-center">
+          {/* Right Column: Animated Radar & System Map — hidden on mobile, shown md+ */}
+          <div className="hidden md:flex relative justify-center items-center">
             <HeroVisual />
           </div>
         </div>

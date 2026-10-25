@@ -8,7 +8,8 @@ export default function Experience() {
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div>
           <span className="tag">Timeline</span>
-          <h2 className="mt-3 font-display text-3xl sm:text-5xl font-bold tracking-tight text-[var(--text-primary)]">
+          <h2 className="mt-3 font-display font-bold tracking-tight text-[var(--text-primary)]"
+            style={{ fontSize: "clamp(1.75rem, 5vw, 3rem)" }}>
             Experience
           </h2>
           <p className="mt-3 text-base text-[var(--text-muted)] max-w-xl">
@@ -21,9 +22,11 @@ export default function Experience() {
           {experience.map((role, i) => (
             <div
               key={role.id}
-              className={`grid md:grid-cols-[300px_1fr] gap-8 md:gap-14 pb-10 ${i < experience.length - 1 ? 'border-b border-[var(--border-line)]' : ''
-                }`}
+              className={`grid md:grid-cols-[280px_1fr] gap-6 md:gap-10 lg:gap-14 pb-10 ${
+                i < experience.length - 1 ? 'border-b border-[var(--border-line)]' : ''
+              }`}
             >
+              {/* Left: Role Meta */}
               <div>
                 {role.id === 'veracity' && (
                   <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-emerald-600 dark:text-emerald-400 font-semibold mb-3">
@@ -72,7 +75,7 @@ export default function Experience() {
         </div>
 
         {/* Education & Academic Card */}
-        <div className="mt-12 rounded-2xl border border-[var(--border-line)] bg-[var(--bg-card)] shadow-lg p-7 sm:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+        <div className="mt-12 rounded-2xl border border-[var(--border-line)] bg-[var(--bg-card)] shadow-lg p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
           <div className="flex items-start gap-4">
             <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 flex-shrink-0">
               <GraduationCap size={24} />

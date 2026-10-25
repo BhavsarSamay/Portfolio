@@ -1,6 +1,6 @@
 import React from 'react';
 import { samayProfile, navLinks } from '../data/samayProfile';
-import { Terminal, ArrowUpRight, ArrowUp, Mail, MapPin } from 'lucide-react';
+import { Terminal, ArrowUpRight, ArrowUp, Mail } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from './Icons';
 import { playCyberClick } from '../utils/soundEffects';
 
@@ -20,18 +20,19 @@ export default function Footer({ onOpenTerminal }) {
   ];
 
   return (
-    <footer className="bg-[var(--bg-surface)] border-t border-[var(--border-line)] text-[var(--text-muted)] pt-16 pb-12 transition-colors">
+    <footer className="bg-[var(--bg-surface)] border-t border-[var(--border-line)] text-[var(--text-muted)] pt-14 pb-10 transition-colors">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
-        {/* 4-Column Balanced Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-14 border-b border-[var(--border-line)]">
-          {/* Column 1: Brand & Identity (Span 4) */}
-          <div className="lg:col-span-4 space-y-4">
+        {/* Responsive Grid: stacks on mobile, 4-col on lg */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pb-12 border-b border-[var(--border-line)]">
+
+          {/* Column 1: Brand & Identity */}
+          <div className="sm:col-span-2 lg:col-span-1 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center font-mono text-sm font-bold text-emerald-600 dark:text-emerald-400 shadow-sm">
+              <div className="h-10 w-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center font-mono text-sm font-bold text-emerald-600 dark:text-emerald-400 shadow-sm flex-shrink-0">
                 SB
               </div>
               <div>
-                <span className="font-display font-bold text-2xl text-[var(--text-primary)] tracking-tight block">
+                <span className="font-display font-bold text-xl text-[var(--text-primary)] tracking-tight block">
                   {samayProfile.name}
                 </span>
                 <span className="font-mono text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold tracking-wide">
@@ -40,24 +41,24 @@ export default function Footer({ onOpenTerminal }) {
               </div>
             </div>
 
-            <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed max-w-sm">
+            <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed max-w-xs">
               Product Manager &amp; Full-Stack Engineer at Veracity Supply Chain Limited. Designing workforce, recruitment, and compliance platforms.
             </p>
 
             {/* Location & Status Beacon */}
             <div className="flex items-center gap-2 pt-1">
-              <span className="relative flex h-2 w-2">
+              <span className="relative flex h-2 w-2 flex-shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span className="font-mono text-[11px] text-[var(--text-dim)]">
+              <span className="font-mono text-[11px] text-[var(--text-dim)] leading-snug">
                 Bengaluru / Ahmedabad, India · Open for Product &amp; Architecture Roles
               </span>
             </div>
           </div>
 
-          {/* Column 2: Navigation (Span 3) */}
-          <div className="lg:col-span-3 space-y-3">
+          {/* Column 2: Navigation */}
+          <div className="space-y-3">
             <h4 className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--text-primary)] flex items-center gap-2">
               <span className="h-1 w-3 rounded-full bg-emerald-500"></span>
               <span>Navigation</span>
@@ -76,8 +77,8 @@ export default function Footer({ onOpenTerminal }) {
             </ul>
           </div>
 
-          {/* Column 3: Enterprise Systems (Span 2) */}
-          <div className="lg:col-span-2 space-y-3">
+          {/* Column 3: Platforms */}
+          <div className="space-y-3">
             <h4 className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--text-primary)] flex items-center gap-2">
               <span className="h-1 w-3 rounded-full bg-sky-500"></span>
               <span>Platforms</span>
@@ -97,8 +98,8 @@ export default function Footer({ onOpenTerminal }) {
             </ul>
           </div>
 
-          {/* Column 4: Connect & Systems CLI (Span 3) */}
-          <div className="lg:col-span-3 space-y-3">
+          {/* Column 4: Connect */}
+          <div className="space-y-3">
             <h4 className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--text-primary)] flex items-center gap-2">
               <span className="h-1 w-3 rounded-full bg-amber-500"></span>
               <span>Connect</span>
@@ -137,9 +138,9 @@ export default function Footer({ onOpenTerminal }) {
               >
                 <div className="flex items-center gap-2.5">
                   <Mail size={14} className="text-emerald-500" />
-                  <span>{samayProfile.email}</span>
+                  <span className="truncate">{samayProfile.email}</span>
                 </div>
-                <ArrowUpRight size={13} className="text-[var(--text-dim)] group-hover:text-emerald-500 transition-colors" />
+                <ArrowUpRight size={13} className="text-[var(--text-dim)] group-hover:text-emerald-500 transition-colors flex-shrink-0" />
               </a>
 
               {/* SamayOS CLI launcher card */}
@@ -163,13 +164,13 @@ export default function Footer({ onOpenTerminal }) {
           </div>
         </div>
 
-        {/* Bottom Bar: Copyright & Attribution */}
+        {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-[var(--text-dim)]">
           <div>
             © {currentYear} {samayProfile.name}. All rights reserved.
           </div>
 
-          <div className="text-[11px] text-center sm:text-left">
+          <div className="text-[11px] text-center">
             Crafted with React, Vite &amp; Tailwind CSS · 60fps Cosmic Canvas
           </div>
 

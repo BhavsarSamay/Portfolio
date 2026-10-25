@@ -16,14 +16,15 @@ export default function Projects() {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
             <span className="tag">Selected Work</span>
-            <h2 className="mt-3 font-display text-3xl sm:text-5xl font-bold tracking-tight text-[var(--text-primary)]">
+            <h2 className="mt-3 font-display font-bold tracking-tight text-[var(--text-primary)]"
+              style={{ fontSize: "clamp(1.75rem, 5vw, 3rem)" }}>
               Systems Architecture
             </h2>
           </div>
         </div>
 
         {/* Veracity Platform Overview Cards */}
-        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {veracityPlatforms.map((platform) => {
             const colorMap = {
               emerald: { dot: 'bg-emerald-500', text: 'text-emerald-600 dark:text-emerald-400', border: 'hover:border-emerald-500/50' },
@@ -35,7 +36,7 @@ export default function Projects() {
             return (
               <div
                 key={platform.id}
-                className={`group rounded-2xl border border-[var(--border-line)] bg-[var(--bg-card)] shadow-md p-6 transition-all duration-300 ${colors.border} hover:-translate-y-1 flex flex-col justify-between`}
+                className={`group rounded-2xl border border-[var(--border-line)] bg-[var(--bg-card)] shadow-md p-5 sm:p-6 transition-all duration-300 ${colors.border} hover:-translate-y-1 flex flex-col justify-between`}
               >
                 <div>
                   <div className="flex items-center gap-2">
@@ -45,7 +46,7 @@ export default function Projects() {
                     </span>
                   </div>
 
-                  <h3 className={`mt-3 font-display text-lg sm:text-xl font-bold text-[var(--text-primary)]`}>
+                  <h3 className="mt-3 font-display text-lg sm:text-xl font-bold text-[var(--text-primary)]">
                     {platform.label}
                   </h3>
 
@@ -87,20 +88,21 @@ export default function Projects() {
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
             <div>
               <span className="tag">Full-Stack &amp; AI Systems</span>
-              <h3 className="mt-2 font-display text-2xl sm:text-3xl font-bold text-[var(--text-primary)]">
+              <h3 className="mt-2 font-display font-bold text-[var(--text-primary)]"
+                style={{ fontSize: "clamp(1.4rem, 4vw, 2rem)" }}>
                 Production AI &amp; Software Projects
               </h3>
             </div>
-            <p className="font-mono text-xs text-[var(--text-muted)] max-w-sm">
+            <p className="font-mono text-xs text-[var(--text-muted)] max-w-xs">
               Click any project to inspect system architecture, data models &amp; code snippets.
             </p>
           </div>
 
           {/* Featured Full-Width Project: SiteAssist */}
-          <div className="rounded-2xl border border-[var(--border-line)] bg-[var(--bg-card)] shadow-lg p-6 sm:p-8 transition-all hover:border-emerald-500/50">
-            <div className="grid lg:grid-cols-[1.3fr_1fr] gap-8 items-center">
+          <div className="rounded-2xl border border-[var(--border-line)] bg-[var(--bg-card)] shadow-lg p-5 sm:p-8 transition-all hover:border-emerald-500/50">
+            <div className="grid lg:grid-cols-[1.3fr_1fr] gap-8 items-start">
               <div>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <span className="px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 font-mono text-xs font-semibold">
                     Featured Architecture
                   </span>
@@ -140,13 +142,13 @@ export default function Projects() {
                   ))}
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-[var(--border-line)] flex items-center gap-4">
+                <div className="mt-6 pt-4 border-t border-[var(--border-line)] flex flex-wrap items-center gap-4">
                   <button
                     onClick={() => {
                       playCyberChirp();
                       setSelectedProject(featuredProject);
                     }}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-mono text-xs font-semibold shadow-md transition-all"
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-mono text-xs font-semibold shadow-md transition-all hover:-translate-y-0.5"
                   >
                     <Layers size={14} />
                     <span>Inspect Architecture</span>
@@ -164,7 +166,7 @@ export default function Projects() {
               </div>
 
               {/* Code / Architecture Interactive Preview */}
-              <div className="rounded-xl border border-[var(--border-line)] bg-[var(--bg-surface)] p-5 font-mono text-xs overflow-hidden shadow-inner">
+              <div className="rounded-xl border border-[var(--border-line)] bg-[var(--bg-surface)] p-4 sm:p-5 font-mono text-xs overflow-hidden shadow-inner">
                 <div className="flex items-center justify-between pb-3 mb-3 border-b border-[var(--border-line)] text-[var(--text-dim)]">
                   <span className="flex items-center gap-1.5">
                     <Code2 size={13} className="text-emerald-500" />
@@ -172,7 +174,7 @@ export default function Projects() {
                   </span>
                   <span className="text-[10px] uppercase tracking-wider">Node / Socket.io</span>
                 </div>
-                <pre className="text-[11px] leading-relaxed text-emerald-600 dark:text-emerald-400 overflow-x-auto whitespace-pre">
+                <pre className="text-[10px] sm:text-[11px] leading-relaxed text-emerald-600 dark:text-emerald-400 overflow-x-auto whitespace-pre">
                   {featuredProject.codeSnippet}
                 </pre>
                 <div className="mt-4 pt-3 border-t border-[var(--border-line)] text-[11px] text-[var(--text-dim)]">
@@ -183,7 +185,7 @@ export default function Projects() {
           </div>
 
           {/* Rest of Projects in Balanced Responsive Grid */}
-          <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {restProjects.map((proj) => (
               <div
                 key={proj.title}

@@ -40,25 +40,26 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="relative scroll-mt-24 sm:scroll-mt-28 bg-[#12151B] dark:bg-[#07090D] grid-veil text-white border-t border-[rgba(255,255,255,0.08)] pt-24 sm:pt-28 pb-20 sm:pb-24">
+    <section id="contact" className="relative scroll-mt-24 sm:scroll-mt-28 bg-[#12151B] dark:bg-[#07090D] grid-veil text-white border-t border-[rgba(255,255,255,0.08)] pt-20 sm:pt-28 pb-16 sm:pb-24">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-          {/* Left Column: Editorial Headline & Direct Channels (7 cols) */}
-          <div className="lg:col-span-7">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+          {/* Left Column: Editorial Headline & Direct Channels */}
+          <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
               <span className="h-2 w-2 rounded-full bg-emerald-400 animate-beacon" />
               <span className="font-mono text-xs uppercase tracking-[0.14em] text-emerald-400 font-semibold">
-                Let's Connect
+                Let&apos;s Connect
               </span>
             </div>
 
-            <h2 className="mt-5 font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.12]">
-              Have a hard problem? Let's talk.
+            <h2 className="mt-5 font-display font-bold tracking-tight text-white leading-[1.12]"
+              style={{ fontSize: "clamp(1.75rem, 5vw, 3rem)" }}>
+              Have a hard problem? Let&apos;s talk.
             </h2>
 
             <p className="mt-4 text-sm sm:text-base leading-relaxed text-slate-300 max-w-xl">
-              I'm open to freelance and consulting work across product management, full-stack engineering,
-              systems architecture, and AI automation, and I'm always open to discussing complex technical problems.
+              I&apos;m open to freelance and consulting work across product management, full-stack engineering,
+              systems architecture, and AI automation, and I&apos;m always open to discussing complex technical problems.
             </p>
 
             <div className="mt-7 flex flex-wrap items-center gap-3">
@@ -80,15 +81,15 @@ export default function Contact() {
               </a>
             </div>
 
-            {/* 4 Quick Channel Cards with Protected Icon Dimensions */}
-            <div className="mt-9 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            {/* 4 Quick Channel Cards */}
+            <div className="mt-9 grid grid-cols-1 sm:grid-cols-2 gap-3">
               {channels.map((ch) => (
                 <a
                   key={ch.label}
                   href={ch.href}
                   target={ch.external ? '_blank' : undefined}
                   rel={ch.external ? 'noopener noreferrer' : undefined}
-                  className="group flex items-center gap-3.5 p-3.5 sm:p-4 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.07] hover:border-emerald-500/40 transition-all duration-200 hover:-translate-y-0.5 shadow-sm"
+                  className="group flex items-center gap-3.5 p-3.5 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.07] hover:border-emerald-500/40 transition-all duration-200 hover:-translate-y-0.5 shadow-sm"
                 >
                   <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40 group-hover:scale-105 transition-all">
                     <ch.icon size={18} className="w-[18px] h-[18px] text-emerald-400 shrink-0" />
@@ -110,8 +111,8 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Right Column: Clean Direct Message Box (5 cols) */}
-          <div className="lg:col-span-5 relative rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-6 sm:p-8 shadow-2xl overflow-hidden">
+          {/* Right Column: Contact Form */}
+          <div className="relative rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-6 sm:p-8 shadow-2xl overflow-hidden">
             {/* Top specular light highlight line */}
             <div className="absolute inset-x-8 top-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent pointer-events-none" />
 
@@ -130,7 +131,7 @@ export default function Contact() {
                 </div>
                 <h3 className="font-display text-xl font-bold text-white">Message Dispatched</h3>
                 <p className="text-sm text-slate-300 max-w-sm mx-auto">
-                  Thank you for reaching out! I've received your note and will get back to you within 24 hours.
+                  Thank you for reaching out! I&apos;ve received your note and will get back to you within 24 hours.
                 </p>
                 <button
                   onClick={() => {
@@ -154,7 +155,7 @@ export default function Contact() {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="e.g. Alex Mercer"
-                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-white/15 bg-black/40 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500 transition-colors"
+                    className="w-full px-4 py-3 rounded-xl border border-white/15 bg-black/40 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500 transition-colors"
                   />
                 </div>
 
@@ -168,7 +169,7 @@ export default function Contact() {
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder="alex@company.com"
-                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-white/15 bg-black/40 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500 transition-colors"
+                    className="w-full px-4 py-3 rounded-xl border border-white/15 bg-black/40 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500 transition-colors"
                   />
                 </div>
 
@@ -182,14 +183,14 @@ export default function Contact() {
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     placeholder="Tell me about the system, product problem, or opportunity you want to discuss..."
-                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-white/15 bg-black/40 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500 transition-colors resize-none"
+                    className="w-full px-4 py-3 rounded-xl border border-white/15 bg-black/40 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500 transition-colors resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 disabled:opacity-50 text-white font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/25 hover:shadow-emerald-600/40 active:translate-y-0"
+                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 disabled:opacity-50 text-white font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/25 hover:shadow-emerald-600/40 active:translate-y-0 hover:-translate-y-0.5"
                 >
                   {isSubmitting ? (
                     <span className="font-mono text-xs tracking-wider">Transmitting...</span>

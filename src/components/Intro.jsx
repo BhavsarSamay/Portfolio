@@ -35,17 +35,18 @@ export default function Intro() {
           <div className="inline-flex items-center gap-2">
             <span className="tag">Where I work</span>
           </div>
-          <h2 className="mt-3 font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[var(--text-primary)] leading-tight">
+          <h2 className="mt-3 font-display font-bold tracking-tight text-[var(--text-primary)] leading-tight"
+            style={{ fontSize: "clamp(1.75rem, 5vw, 3rem)" }}>
             I work where software meets operations.
           </h2>
         </div>
 
-        {/* 2-Column Grid with Perfectly Aligned Top Baseline */}
-        <div className="grid lg:grid-cols-[380px_1fr] gap-10 lg:gap-14 items-start">
+        {/* Responsive 2-Column Grid: single col on mobile, 2 col on lg */}
+        <div className="grid lg:grid-cols-[360px_1fr] gap-10 lg:gap-14 items-start">
           {/* Left Column: Editorial Portrait Card & Status Pills */}
           <div className="flex flex-col items-start gap-5 w-full">
             {/* Large Editorial Portrait Card */}
-            <div className="relative group w-full max-w-sm rounded-3xl border border-[var(--border-line)] bg-[var(--bg-card)] shadow-2xl overflow-hidden transition-all duration-500 hover:border-emerald-500/60 hover:shadow-emerald-950/20 hover:-translate-y-1">
+            <div className="relative group w-full max-w-sm mx-auto lg:mx-0 rounded-3xl border border-[var(--border-line)] bg-[var(--bg-card)] shadow-2xl overflow-hidden transition-all duration-500 hover:border-emerald-500/60 hover:shadow-emerald-950/20 hover:-translate-y-1">
               {/* Full-bleed Photo Container */}
               <div className="relative aspect-[3/4] w-full overflow-hidden bg-slate-900">
                 <img
@@ -87,7 +88,7 @@ export default function Intro() {
             </div>
 
             {/* Status Pills */}
-            <div className="space-y-2 w-full max-w-sm font-mono text-xs text-[var(--text-muted)] pt-1">
+            <div className="space-y-2 w-full max-w-sm mx-auto lg:mx-0 font-mono text-xs text-[var(--text-muted)] pt-1">
               <div className="flex items-center gap-2">
                 <MapPin size={14} className="text-emerald-500 flex-shrink-0" />
                 <span>{samayProfile.location}</span>
@@ -103,19 +104,19 @@ export default function Intro() {
             </div>
           </div>
 
-          {/* Right Column: Editorial Narrative (Starts aligned with top of Photo) */}
+          {/* Right Column: Editorial Narrative */}
           <div className="space-y-6 text-base sm:text-lg leading-relaxed text-[var(--text-muted)]">
-            <p className="text-xl text-[var(--text-primary)] font-medium leading-relaxed">
-              I'm a <strong className="text-emerald-500">Product Manager &amp; Full-Stack Engineer</strong> at Veracity Supply Chain Limited, designing end-to-end systems architecture for workforce, recruitment, and compliance platforms.
+            <p className="text-lg sm:text-xl text-[var(--text-primary)] font-medium leading-relaxed">
+              I&apos;m a <strong className="text-emerald-500">Product Manager &amp; Full-Stack Engineer</strong> at Veracity Supply Chain Limited, designing end-to-end systems architecture for workforce, recruitment, and compliance platforms.
             </p>
 
             <p>
               I design and build scalable distributed systems, real-time backend services, and multi-role operational platforms. My work spans the full lifecycle, from system design and API contracts to engineering collaboration and production rollout.
             </p>
 
-            <div className="p-6 rounded-xl border-l-2 border-emerald-500 bg-[var(--bg-surface)] border-y border-r border-[var(--border-line)] shadow-sm">
+            <div className="p-5 sm:p-6 rounded-xl border-l-2 border-emerald-500 bg-[var(--bg-surface)] border-y border-r border-[var(--border-line)] shadow-sm">
               <p className="font-medium text-[var(--text-primary)] italic">
-                "Workforce platforms in India cannot be one-size-fits-all. Geography, compliance, and field-level incentives must be engineered directly into the software."
+                &ldquo;Workforce platforms in India cannot be one-size-fits-all. Geography, compliance, and field-level incentives must be engineered directly into the software.&rdquo;
               </p>
             </div>
 
