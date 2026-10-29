@@ -1,271 +1,323 @@
-import React, { useState } from "react";
-import { ArrowUpRight, Code2, Layers, CheckCircle2 } from "lucide-react";
-import { veracityPlatforms } from "../data/products";
-import { earlierProjects } from "../data/projects";
-import ProjectModal from "./ProjectModal";
-import { playCyberChirp, playCyberClick } from "../utils/soundEffects";
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { earlierProjects } from '../data/projects';
+import gsap from 'gsap';
 
-export default function Projects() {
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [featuredProject, ...restProjects] = earlierProjects;
+/* ── Project visual: animated canvas cover ────────────────────── */
+function ProjectVisual({ project, hovered }) {
+  const canvasRef = useRef(null);
+  const rafRef    = useRef(null);
+  const tRef      = useRef(0);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    const resize = () => {
+      canvas.width  = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+    resize();
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas);
+
+    // Each project gets a distinct color theme
+    const palettes = {
+      'siteassist':     { a: '#C7FF3D', bg: '#0a1500' },
+      'agentic-ai':     { a: '#FF6B6B', bg: '#1a0500' },
+      'cosmicquest':    { a: '#7C9EFF', bg: '#00081a' },
+      'echoing-ideas':  { a: '#FFD166', bg: '#1a1200' },
+      'bizcart':        { a: '#06D6A0', bg: '#001510' },
+      'microservices':  { a: '#BF5FFF', bg: '#0a0015' },
+    };
+    const pal = palettes[project.id] || { a: '#C7FF3D', bg: '#0a1500' };
+    const bRgb = '10,10,10';
+
+    const hexToRgb = (hex) => {
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
+      return `${r},${g},${b}`;
+    };
+    const aRgb = hexToRgb(pal.a);
+
+    const draw = (ts) => {
+      tRef.current = ts * 0.001;
+      const t = tRef.current;
+      const W = canvas.width;
+      const H = canvas.height;
+
+      // Dark background with palette tint
+      ctx.fillStyle = pal.bg;
+      ctx.fillRect(0, 0, W, H);
+
+      // Animated grid lines
+      const gridStep = 40;
+      const offset   = (t * 20) % gridStep;
+      ctx.strokeStyle = `rgba(${aRgb},0.06)`;
+      ctx.lineWidth = 0.5;
+      for (let x = -gridStep + (offset % gridStep); x < W + gridStep; x += gridStep) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, H);
+        ctx.stroke();
+      }
+      for (let y = -gridStep + (offset % gridStep); y < H + gridStep; y += gridStep) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(W, y);
+        ctx.stroke();
+      }
+
+      // Floating orbs
+      const orbCount = 4;
+      for (let i = 0; i < orbCount; i++) {
+        const phase = (i / orbCount) * Math.PI * 2;
+        const ox = W * 0.5 + Math.cos(t * 0.4 + phase) * W * 0.3;
+        const oy = H * 0.5 + Math.sin(t * 0.3 + phase * 1.3) * H * 0.3;
+        const r  = W * 0.18 + Math.sin(t + phase) * W * 0.05;
+        const grd = ctx.createRadialGradient(ox, oy, 0, ox, oy, r);
+        grd.addColorStop(0, `rgba(${aRgb},${hovered ? 0.32 : 0.18})`);
+        grd.addColorStop(0.5, `rgba(${aRgb},${hovered ? 0.12 : 0.06})`);
+        grd.addColorStop(1, `rgba(${aRgb},0)`);
+        ctx.fillStyle = grd;
+        ctx.beginPath();
+        ctx.arc(ox, oy, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Project id text watermark
+      ctx.font = `bold clamp(40px,8vw,80px) "Bebas Neue", sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = `rgba(${aRgb},${hovered ? 0.12 : 0.05})`;
+      const idText = project.id.toUpperCase().replace(/-/g, ' ');
+      ctx.font = `700 ${Math.min(W * 0.14, 64)}px "Bebas Neue", sans-serif`;
+      ctx.fillText(idText, W / 2, H / 2);
+
+      rafRef.current = requestAnimationFrame(draw);
+    };
+
+    rafRef.current = requestAnimationFrame(draw);
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      ro.disconnect();
+    };
+  }, [project.id, hovered]);
 
   return (
-    <section id="work" className="py-16 sm:py-20 border-t border-[var(--border-line)]">
-      <div className="max-w-7xl mx-auto px-5 sm:px-8">
-        {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-          <div>
-            <span className="tag">Selected Work</span>
-            <h2 className="mt-3 font-display font-bold tracking-tight text-[var(--text-primary)]"
-              style={{ fontSize: "clamp(1.75rem, 5vw, 3rem)" }}>
-              Systems Architecture
-            </h2>
-          </div>
-        </div>
+    <canvas
+      ref={canvasRef}
+      className="project-visual-canvas"
+      aria-hidden="true"
+    />
+  );
+}
 
-        {/* Veracity Platform Overview Cards */}
-        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-          {veracityPlatforms.map((platform) => {
-            const colorMap = {
-              emerald: { dot: 'bg-emerald-500', text: 'text-emerald-600 dark:text-emerald-400', border: 'hover:border-emerald-500/50' },
-              sky: { dot: 'bg-sky-400', text: 'text-sky-600 dark:text-sky-400', border: 'hover:border-sky-500/50' },
-              amber: { dot: 'bg-amber-400', text: 'text-amber-600 dark:text-amber-400', border: 'hover:border-amber-500/50' },
-            };
-            const colors = colorMap[platform.color] || colorMap.emerald;
+/* ── Project Row ───────────────────────────────────────────────── */
+function ProjectRow({ project, index, isEven }) {
+  const [hovered, setHovered] = useState(false);
+  const rowRef = useRef(null);
 
-            return (
-              <div
-                key={platform.id}
-                className={`group rounded-2xl border border-[var(--border-line)] bg-[var(--bg-card)] shadow-md p-5 sm:p-6 transition-all duration-300 ${colors.border} hover:-translate-y-1 flex flex-col justify-between`}
-              >
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className={`h-2 w-2 rounded-full ${colors.dot} animate-beacon`} />
-                    <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--text-dim)] font-semibold">
-                      {platform.role}
-                    </span>
-                  </div>
+  // Reveal on scroll
+  useEffect(() => {
+    const el = rowRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) el.classList.add('project-row-visible'); },
+      { threshold: 0.1 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
-                  <h3 className="mt-3 font-display text-lg sm:text-xl font-bold text-[var(--text-primary)]">
-                    {platform.label}
-                  </h3>
+  const techLimit = 4;
+  const shownTech = project.tech?.slice(0, techLimit) || [];
+  const extra     = (project.tech?.length || 0) - techLimit;
 
-                  <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
-                    {platform.overview}
-                  </p>
-                </div>
+  // GitHub / live link
+  const link = project.githubUrl || project.href || '#';
 
-                {/* Tags */}
-                <div className="mt-5 pt-4 border-t border-[var(--border-line)]">
-                  <div className="flex flex-wrap gap-1.5">
-                    {platform.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="font-mono text-[10px] px-2 py-0.5 rounded border border-[var(--border-line)] bg-[var(--bg-surface)] text-[var(--text-muted)]"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="mt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-6 border-t border-[var(--border-line)]">
-          <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--text-dim)]">
-            Enterprise Platforms &amp; Workflows at Veracity Supply Chain Limited
-          </p>
-          <div className="flex items-center gap-2 font-mono text-xs text-emerald-600 dark:text-emerald-400">
-            <CheckCircle2 size={15} />
-            <span>Product Manager &amp; Full-Stack Engineer</span>
-          </div>
-        </div>
-
-        {/* Earlier Projects Section */}
-        <div className="mt-12 pt-10 border-t border-[var(--border-line)]">
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
-            <div>
-              <span className="tag">Full-Stack &amp; AI Systems</span>
-              <h3 className="mt-2 font-display font-bold text-[var(--text-primary)]"
-                style={{ fontSize: "clamp(1.4rem, 4vw, 2rem)" }}>
-                Production AI &amp; Software Projects
-              </h3>
-            </div>
-            <p className="font-mono text-xs text-[var(--text-muted)] max-w-xs">
-              Click any project to inspect system architecture, data models &amp; code snippets.
+  return (
+    <article
+      ref={rowRef}
+      className="project-row"
+      style={{
+        opacity: 0,
+        transform: 'translateY(30px)',
+        transition: 'opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo)',
+        transitionDelay: `${index * 0.08}s`,
+        gridTemplateColumns: isEven ? '1fr 1fr' : '1fr 1fr',
+        '--row-even': isEven ? 1 : 0,
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      {/* Text side */}
+      <div className="project-row-num" style={{ order: isEven ? 0 : 1 }}>
+        <div>
+          <div className="project-num">{String(index + 1).padStart(2, '0')}</div>
+          <div className="project-row-category" style={{ marginTop: 20 }}>{project.category}</div>
+          <h3 className="project-row-title">{project.title.split(':')[0]}</h3>
+          {project.title.includes(':') && (
+            <p style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.65rem',
+              letterSpacing: '0.12em',
+              color: 'var(--gray-dim)',
+              marginTop: 8,
+              textTransform: 'uppercase',
+            }}>
+              {project.title.split(':')[1]?.trim()}
             </p>
+          )}
+        </div>
+
+        <div>
+          <p className="project-row-desc">{project.tagline}</p>
+
+          <div className="project-row-tech">
+            {shownTech.map((t) => (
+              <span key={t} className="tech-tag">{t}</span>
+            ))}
+            {extra > 0 && (
+              <span className="tech-tag" style={{ color: 'var(--lime)', borderColor: 'var(--line-lime)' }}>
+                +{extra}
+              </span>
+            )}
           </div>
 
-          {/* Featured Full-Width Project: SiteAssist */}
-          <div className="rounded-2xl border border-[var(--border-line)] bg-[var(--bg-card)] shadow-lg p-5 sm:p-8 transition-all hover:border-emerald-500/50">
-            <div className="grid lg:grid-cols-[1.3fr_1fr] gap-8 items-start">
-              <div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 font-mono text-xs font-semibold">
-                    Featured Architecture
-                  </span>
-                  <span className="font-mono text-xs text-[var(--text-dim)]">
-                    {featuredProject.category}
-                  </span>
-                </div>
-
-                <h4 className="mt-3 font-display text-xl sm:text-2xl font-bold text-[var(--text-primary)]">
-                  {featuredProject.title}
-                </h4>
-
-                <p className="mt-2.5 text-sm sm:text-base leading-relaxed text-[var(--text-muted)]">
-                  {featuredProject.description}
-                </p>
-
-                {/* Key Architecture Highlights */}
-                {featuredProject.highlights && (
-                  <ul className="mt-4 space-y-1.5 font-mono text-xs text-[var(--text-muted)]">
-                    {featuredProject.highlights.map((hl, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className="text-emerald-500 font-bold mt-0.5">›</span>
-                        <span>{hl}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {featuredProject.tech.map((t) => (
-                    <span
-                      key={t}
-                      className="font-mono text-[11px] px-2.5 py-1 rounded-md border border-[var(--border-line)] bg-[var(--bg-surface)] text-[var(--text-muted)]"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="mt-6 pt-4 border-t border-[var(--border-line)] flex flex-wrap items-center gap-4">
-                  <button
-                    onClick={() => {
-                      playCyberChirp();
-                      setSelectedProject(featuredProject);
-                    }}
-                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-mono text-xs font-semibold shadow-md transition-all hover:-translate-y-0.5"
-                  >
-                    <Layers size={14} />
-                    <span>Inspect Architecture</span>
-                  </button>
-                  <a
-                    href={featuredProject.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 font-mono text-xs text-[var(--text-muted)] hover:text-emerald-500 transition-colors"
-                  >
-                    <span>GitHub Repo</span>
-                    <ArrowUpRight size={14} />
-                  </a>
-                </div>
-              </div>
-
-              {/* Code / Architecture Interactive Preview */}
-              <div className="rounded-xl border border-[var(--border-line)] bg-[var(--bg-surface)] p-4 sm:p-5 font-mono text-xs overflow-hidden shadow-inner">
-                <div className="flex items-center justify-between pb-3 mb-3 border-b border-[var(--border-line)] text-[var(--text-dim)]">
-                  <span className="flex items-center gap-1.5">
-                    <Code2 size={13} className="text-emerald-500" />
-                    <span>SiteAssist · Real-Time Pipeline</span>
-                  </span>
-                  <span className="text-[10px] uppercase tracking-wider">Node / Socket.io</span>
-                </div>
-                <pre className="text-[10px] sm:text-[11px] leading-relaxed text-emerald-600 dark:text-emerald-400 overflow-x-auto whitespace-pre">
-                  {featuredProject.codeSnippet}
-                </pre>
-                <div className="mt-4 pt-3 border-t border-[var(--border-line)] text-[11px] text-[var(--text-dim)]">
-                  Flow: {featuredProject.architecture}
-                </div>
-              </div>
-            </div>
+          <div style={{ display: 'flex', gap: 12, marginTop: 20, flexWrap: 'wrap' }}>
+            <a
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary"
+              style={{ padding: '8px 16px', fontSize: '0.65rem' }}
+              data-cursor-label="View"
+            >
+              GitHub ↗
+            </a>
           </div>
+        </div>
+      </div>
 
-          {/* Rest of Projects in Balanced Responsive Grid */}
-          <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-            {restProjects.map((proj) => (
-              <div
-                key={proj.title}
-                className="group rounded-2xl border border-[var(--border-line)] bg-[var(--bg-card)] shadow-md p-5 transition-all duration-300 hover:border-emerald-500/50 hover:-translate-y-1 flex flex-col justify-between"
+      {/* Visual side */}
+      <div className="project-row-visual" style={{ order: isEven ? 1 : 0, minHeight: 280 }}>
+        <ProjectVisual project={project} hovered={hovered} />
+
+        {/* Hover arrow */}
+        <div className="project-row-link" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M7 17L17 7M7 7h10v10" />
+          </svg>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+/* ── Projects Section ──────────────────────────────────────────── */
+const CATEGORIES = ['All', 'AI & LLM', 'Full-Stack', 'Product Systems'];
+
+export default function Projects() {
+  const [active, setActive] = useState('All');
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.querySelectorAll('.reveal').forEach((c) => c.classList.add('visible'));
+        }
+      },
+      { threshold: 0.2 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const filtered = active === 'All'
+    ? earlierProjects
+    : earlierProjects.filter((p) =>
+        p.category?.toLowerCase().includes(active.toLowerCase().split(' ')[0].toLowerCase())
+      );
+
+  return (
+    <section id="work" className="projects-section" aria-label="Selected work">
+      {/* Header */}
+      <div ref={headerRef} className="projects-header">
+        <div>
+          <p className="section-num reveal">02</p>
+          <h2 className="section-title reveal reveal-delay-1">
+            SELECTED<br />
+            <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(243,240,232,0.3)' }}>WORK</span>
+          </h2>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'flex-end' }}>
+          <p className="reveal reveal-delay-2" style={{
+            fontSize: '0.85rem',
+            color: 'var(--gray)',
+            maxWidth: 280,
+            lineHeight: 1.6,
+            textAlign: 'right',
+          }}>
+            Production systems and full-stack projects from real engineering work.
+          </p>
+
+          <div className="project-filters reveal reveal-delay-3">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                className={`filter-btn ${active === cat ? 'active' : ''}`}
+                onClick={() => setActive(cat)}
               >
-                <div>
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">
-                      {proj.category}
-                    </span>
-                    <button
-                      onClick={() => {
-                        playCyberChirp();
-                        setSelectedProject(proj);
-                      }}
-                      className="p-1.5 rounded-lg border border-[var(--border-line)] hover:bg-[var(--bg-surface)] text-[var(--text-muted)] hover:text-emerald-500 transition-colors"
-                      title="Inspect System Details"
-                    >
-                      <Code2 size={14} />
-                    </button>
-                  </div>
-
-                  <h4 className="mt-2 font-display text-base font-bold text-[var(--text-primary)] group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                    {proj.title}
-                  </h4>
-                  <p className="mt-2 text-xs sm:text-sm leading-relaxed text-[var(--text-muted)] line-clamp-3">
-                    {proj.description}
-                  </p>
-                </div>
-
-                <div className="mt-4 pt-3 border-t border-[var(--border-line)]">
-                  <div className="flex flex-wrap gap-1.5 mb-3">
-                    {proj.tech.slice(0, 4).map((t) => (
-                      <span
-                        key={t}
-                        className="font-mono text-[10px] px-2 py-0.5 rounded border border-[var(--border-line)] bg-[var(--bg-surface)] text-[var(--text-muted)]"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                    {proj.tech.length > 4 && (
-                      <span className="font-mono text-[10px] px-1.5 py-0.5 rounded text-[var(--text-dim)]">
-                        +{proj.tech.length - 4}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <button
-                      onClick={() => {
-                        playCyberChirp();
-                        setSelectedProject(proj);
-                      }}
-                      className="font-mono text-xs text-emerald-600 dark:text-emerald-400 font-medium hover:underline flex items-center gap-1"
-                    >
-                      <Layers size={13} /> Details
-                    </button>
-                    <a
-                      href={proj.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-mono text-xs text-[var(--text-muted)] hover:text-emerald-500 flex items-center gap-1 transition-colors"
-                    >
-                      Repo <ArrowUpRight size={13} />
-                    </a>
-                  </div>
-                </div>
-              </div>
+                {cat}
+              </button>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Interactive Project Deep Dive Modal */}
-      {selectedProject && (
-        <ProjectModal
-          project={selectedProject}
-          onClose={() => setSelectedProject(null)}
-        />
-      )}
+      {/* Project rows */}
+      <div role="list">
+        {filtered.map((project, i) => (
+          <ProjectRow
+            key={project.id}
+            project={project}
+            index={i}
+            isEven={i % 2 === 0}
+          />
+        ))}
+      </div>
+
+      {/* Footer link */}
+      <div style={{
+        padding: 'clamp(32px, 5vw, 60px) var(--section-pad-x)',
+        display: 'flex',
+        justifyContent: 'center',
+      }}>
+        <a
+          href="https://github.com/BhavsarSamay"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-secondary"
+          data-cursor-label="GitHub"
+        >
+          <span>All Projects on GitHub</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M7 17L17 7M7 7h10v10" />
+          </svg>
+        </a>
+      </div>
     </section>
   );
 }
+
+/* Add visible style via JS (IntersectionObserver sets it) */
+const style = document.createElement('style');
+style.textContent = `.project-row-visible { opacity: 1 !important; transform: none !important; }`;
+document.head.appendChild(style);

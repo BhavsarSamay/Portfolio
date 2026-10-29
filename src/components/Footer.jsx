@@ -1,188 +1,146 @@
-import React from 'react';
-import { samayProfile, navLinks } from '../data/samayProfile';
-import { Terminal, ArrowUpRight, ArrowUp, Mail } from 'lucide-react';
-import { GithubIcon, LinkedinIcon } from './Icons';
-import { playCyberClick } from '../utils/soundEffects';
+import { samayProfile } from '../data/samayProfile';
+
+const FOOTER_NAV = [
+  { label: 'Work',        href: '#work' },
+  { label: 'Playground',  href: '#playground' },
+  { label: 'About',       href: '#about' },
+  { label: 'Experience',  href: '#experience' },
+  { label: 'Contact',     href: '#contact' },
+];
 
 export default function Footer({ onOpenTerminal }) {
-  const currentYear = new Date().getFullYear();
-
-  const scrollToTop = () => {
-    playCyberClick();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const platforms = [
-    { label: 'Gig Workforce Platform', desc: 'Two-Sided Marketplace', href: '#work' },
-    { label: 'Recruitment Platform', desc: 'Hiring & Talent Systems', href: '#work' },
-    { label: 'Payroll & Compliance', desc: 'Statutory HRMS Engine', href: '#work' },
-    { label: 'SiteAssist', desc: 'Full-Stack RAG Chat', href: '#work' },
-  ];
+  const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
-    <footer className="bg-[var(--bg-surface)] border-t border-[var(--border-line)] text-[var(--text-muted)] pt-14 pb-10 transition-colors">
-      <div className="max-w-7xl mx-auto px-5 sm:px-8">
-        {/* Responsive Grid: stacks on mobile, 4-col on lg */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pb-12 border-b border-[var(--border-line)]">
+    <footer
+      className="footer"
+      style={{ flexDirection: 'column', gap: 0, padding: 0 }}
+      aria-label="Footer"
+    >
+      {/* Top bar: logo + back to top */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: 'clamp(32px, 5vw, 60px) var(--section-pad-x)',
+        borderBottom: '1px solid var(--line)',
+        width: '100%',
+        flexWrap: 'wrap',
+        gap: 16,
+      }}>
+        <button
+          onClick={scrollTop}
+          className="footer-logo"
+          style={{ background: 'none', border: 'none', cursor: 'none', outline: 'none' }}
+          aria-label="Back to top"
+        >
+          SAMAY <span style={{ color: 'var(--lime)' }}>BHAVSAR</span>
+        </button>
 
-          {/* Column 1: Brand & Identity */}
-          <div className="sm:col-span-2 lg:col-span-1 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center font-mono text-sm font-bold text-emerald-600 dark:text-emerald-400 shadow-sm flex-shrink-0">
-                SB
-              </div>
-              <div>
-                <span className="font-display font-bold text-xl text-[var(--text-primary)] tracking-tight block">
-                  {samayProfile.name}
-                </span>
-                <span className="font-mono text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold tracking-wide">
-                  Architecture × Engineering × Systems
-                </span>
-              </div>
-            </div>
+        <button
+          onClick={scrollTop}
+          aria-label="Back to top"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+            fontFamily: 'var(--font-mono)',
+            fontSize: '0.65rem',
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: 'var(--gray)',
+            background: 'none',
+            border: 'none',
+            cursor: 'none',
+            outline: 'none',
+            transition: 'color 0.2s',
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.color = 'var(--lime)'}
+          onMouseLeave={(e) => e.currentTarget.style.color = 'var(--gray)'}
+        >
+          <span>Back to top</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M12 19V5M5 12l7-7 7 7" />
+          </svg>
+        </button>
+      </div>
 
-            <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed max-w-xs">
-              Product Manager &amp; Full-Stack Engineer at Veracity Supply Chain Limited. Designing workforce, recruitment, and compliance platforms.
-            </p>
+      {/* Middle: links + social */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: 'clamp(24px, 3vw, 40px) var(--section-pad-x)',
+        borderBottom: '1px solid var(--line)',
+        width: '100%',
+        flexWrap: 'wrap',
+        gap: 24,
+      }}>
+        <nav aria-label="Footer navigation">
+          <ul style={{ display: 'flex', gap: 'clamp(16px, 2.5vw, 32px)', listStyle: 'none', margin: 0, padding: 0, flexWrap: 'wrap' }}>
+            {FOOTER_NAV.map(({ label, href }) => (
+              <li key={href}>
+                <a href={href} className="footer-link" onClick={(e) => {
+                  e.preventDefault();
+                  document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+                }}>
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
-            {/* Location & Status Beacon */}
-            <div className="flex items-center gap-2 pt-1">
-              <span className="relative flex h-2 w-2 flex-shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span className="font-mono text-[11px] text-[var(--text-dim)] leading-snug">
-                Bengaluru / Ahmedabad, India · Open for Product &amp; Architecture Roles
-              </span>
-            </div>
-          </div>
-
-          {/* Column 2: Navigation */}
-          <div className="space-y-3">
-            <h4 className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--text-primary)] flex items-center gap-2">
-              <span className="h-1 w-3 rounded-full bg-emerald-500"></span>
-              <span>Navigation</span>
-            </h4>
-            <ul className="space-y-2 font-mono text-xs">
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    className="text-[var(--text-muted)] hover:text-emerald-500 transition-colors inline-block py-0.5"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Column 3: Platforms */}
-          <div className="space-y-3">
-            <h4 className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--text-primary)] flex items-center gap-2">
-              <span className="h-1 w-3 rounded-full bg-sky-500"></span>
-              <span>Platforms</span>
-            </h4>
-            <ul className="space-y-2.5 font-mono text-xs">
-              {platforms.map((p) => (
-                <li key={p.label}>
-                  <a
-                    href={p.href}
-                    className="group block text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
-                  >
-                    <div className="font-semibold group-hover:text-emerald-500 transition-colors">{p.label}</div>
-                    <div className="text-[10px] text-[var(--text-dim)]">{p.desc}</div>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Column 4: Connect */}
-          <div className="space-y-3">
-            <h4 className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--text-primary)] flex items-center gap-2">
-              <span className="h-1 w-3 rounded-full bg-amber-500"></span>
-              <span>Connect</span>
-            </h4>
-
-            <div className="space-y-2">
-              <a
-                href={samayProfile.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between p-2.5 rounded-xl border border-[var(--border-line)] bg-[var(--bg-card)] hover:border-emerald-500/40 hover:bg-emerald-500/5 transition-all text-xs font-mono text-[var(--text-muted)] hover:text-[var(--text-primary)] group"
-              >
-                <div className="flex items-center gap-2.5">
-                  <LinkedinIcon className="w-4 h-4 text-sky-500" />
-                  <span>LinkedIn Profile</span>
-                </div>
-                <ArrowUpRight size={13} className="text-[var(--text-dim)] group-hover:text-emerald-500 transition-colors" />
-              </a>
-
-              <a
-                href={samayProfile.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between p-2.5 rounded-xl border border-[var(--border-line)] bg-[var(--bg-card)] hover:border-emerald-500/40 hover:bg-emerald-500/5 transition-all text-xs font-mono text-[var(--text-muted)] hover:text-[var(--text-primary)] group"
-              >
-                <div className="flex items-center gap-2.5">
-                  <GithubIcon className="w-4 h-4 text-[var(--text-primary)]" />
-                  <span>GitHub Repositories</span>
-                </div>
-                <ArrowUpRight size={13} className="text-[var(--text-dim)] group-hover:text-emerald-500 transition-colors" />
-              </a>
-
-              <a
-                href={`mailto:${samayProfile.email}`}
-                className="flex items-center justify-between p-2.5 rounded-xl border border-[var(--border-line)] bg-[var(--bg-card)] hover:border-emerald-500/40 hover:bg-emerald-500/5 transition-all text-xs font-mono text-[var(--text-muted)] hover:text-[var(--text-primary)] group"
-              >
-                <div className="flex items-center gap-2.5">
-                  <Mail size={14} className="text-emerald-500" />
-                  <span className="truncate">{samayProfile.email}</span>
-                </div>
-                <ArrowUpRight size={13} className="text-[var(--text-dim)] group-hover:text-emerald-500 transition-colors flex-shrink-0" />
-              </a>
-
-              {/* SamayOS CLI launcher card */}
-              <button
-                onClick={() => {
-                  playCyberClick();
-                  onOpenTerminal?.();
-                }}
-                className="w-full flex items-center justify-between p-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 hover:bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 transition-all text-xs font-mono font-semibold"
-                title="Launch SamayOS Terminal (~)"
-              >
-                <div className="flex items-center gap-2">
-                  <Terminal size={14} />
-                  <span>Launch SamayOS CLI</span>
-                </div>
-                <span className="px-1.5 py-0.5 rounded bg-[var(--bg-card)] border border-[var(--border-line)] text-[10px]">
-                  ~
-                </span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-[var(--text-dim)]">
-          <div>
-            © {currentYear} {samayProfile.name}. All rights reserved.
-          </div>
-
-          <div className="text-[11px] text-center">
-            Crafted with React, Vite &amp; Tailwind CSS · 60fps Cosmic Canvas
-          </div>
-
-          <button
-            onClick={scrollToTop}
-            className="flex items-center gap-1.5 hover:text-[var(--text-primary)] transition-colors group"
-            title="Scroll to Top"
+        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+          <a
+            href={samayProfile.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="social-link"
+            aria-label="GitHub"
           >
-            <span>Back to Top</span>
-            <ArrowUp size={13} className="group-hover:-translate-y-0.5 transition-transform" />
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+          </a>
+          <a
+            href={samayProfile.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="social-link"
+            aria-label="LinkedIn"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          <button
+            onClick={onOpenTerminal}
+            className="social-link"
+            aria-label="Open terminal"
+            style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', background: 'none', border: '1px solid var(--line-strong)', borderRadius: '50%', cursor: 'none' }}
+          >
+            `_
           </button>
         </div>
+      </div>
+
+      {/* Bottom: copyright */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: 'clamp(16px, 2vw, 24px) var(--section-pad-x)',
+        width: '100%',
+        flexWrap: 'wrap',
+        gap: 12,
+      }}>
+        <p className="footer-copy">
+          © 2026 Samay Bhavsar. Built with React + Vite + GSAP.
+        </p>
+        <p className="footer-copy">
+          Ahmedabad, Gujarat, India · <span style={{ color: 'var(--lime)' }}>samaybhavsar.in</span>
+        </p>
       </div>
     </footer>
   );
