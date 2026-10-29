@@ -1,168 +1,115 @@
-import { useState, useEffect } from "react";
-import Lenis from "lenis";
-import CyberBackground from "./components/CyberBackground";
-import Navbar from "./components/Navbar";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import { ScrollTrigger, prefersReducedMotion } from "./lib/motion";
+import { initScroll, destroyScroll, scrollToTarget } from "./lib/scroll";
+import { useCaseRoute } from "./lib/route";
+import Loader from "./components/Loader";
+import Cursor from "./components/Cursor";
+import Nav from "./components/Nav";
+import Backdrop from "./components/Backdrop";
 import Hero from "./components/Hero";
-import MetricsStrip from "./components/MetricsStrip";
-import Intro from "./components/Intro";
-import Projects from "./components/Projects";
-import ProductEngineering from "./components/ProductEngineering";
-import HowIThink from "./components/HowIThink";
-import Skills from "./components/Skills";
+import Marquee from "./components/Marquee";
+import Statement from "./components/Statement";
+import Work from "./components/Work";
+import Lab from "./components/Lab";
+import About from "./components/About";
+import Stack from "./components/Stack";
 import Experience from "./components/Experience";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
-import TerminalDrawer from "./components/TerminalDrawer";
-import AIChatModal from "./components/AIChatModal";
-import ResumeModal from "./components/ResumeModal";
-import { ThemeProvider, useTheme } from "./context/ThemeContext";
-import { Bot } from "lucide-react";
-import { playCyberChirp } from "./utils/soundEffects";
 
-function AppContent() {
-  const [isTerminalOpen, setIsTerminalOpen] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const [isResumeOpen, setIsResumeOpen] = useState(false);
-  const { isDark } = useTheme();
+const CaseStudy = lazy(() => import("./components/CaseStudy"));
+
+const sections = ["home", "work", "lab", "about", "contact"];
+const seen = () => {
+  if (prefersReducedMotion()) return true;
+  try {
+    return sessionStorage.getItem("sb-intro") === "1";
+  } catch {
+    return false;
+  }
+};
+
+export default function App() {
+  const [ready, setReady] = useState(seen);
+  const [section, setSection] = useState("home");
+  const caseId = useCaseRoute();
+
+  const [showLoader, setShowLoader] = useState(() => !seen());
+
+  const done = useCallback(() => setShowLoader(false), []);
+  const onReady = useCallback(() => {
+    setReady(true);
+    try {
+      sessionStorage.setItem("sb-intro", "1");
+    } catch {
+      /* private mode: the loader simply plays again next visit */
+    }
+  }, []);
 
   useEffect(() => {
-    // Global hotkey: ~ (backtick) toggles SamayOS CLI Terminal
-    const handleKeyDown = (e) => {
-      const active = document.activeElement;
-      const isTyping =
-        active?.tagName === "INPUT" ||
-        active?.tagName === "TEXTAREA" ||
-        active?.isContentEditable;
+    initScroll();
+    return destroyScroll;
+  }, []);
 
-      if (e.key === "`" && !isTyping) {
-        e.preventDefault();
-        playCyberChirp();
-        setIsTerminalOpen((prev) => !prev);
-      }
+  // Active section for the nav label.
+  useEffect(() => {
+    const els = [...sections, "stack", "experience"].map((id) => document.getElementById(id)).filter(Boolean);
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setSection(e.target.id);
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px" }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  // Section hashes (a bookmark, the skip link, closing a deep-linked case study) scroll once and are then
+  // removed from the URL, so a refresh never jumps back to that section.
+  useEffect(() => {
+    const clean = () => history.replaceState(null, "", location.pathname + location.search);
+    const onHash = () => {
+      const h = location.hash;
+      if (!h || h.startsWith("#/")) return;
+      scrollToTarget(h);
+      clean();
     };
+    window.addEventListener("hashchange", onHash);
+    if (location.hash && !location.hash.startsWith("#/")) clean();
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
 
-    window.addEventListener("keydown", handleKeyDown);
-
-    // Initialize Lenis smooth scroll
-    const prefersReducedMotion =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    let lenis = null;
-    if (!prefersReducedMotion) {
-      lenis = new Lenis({
-        lerp: 0.08,
-        smoothWheel: true,
-        wheelMultiplier: 1.0,
-        prevent: (node) => !!node.closest?.("[data-lenis-prevent]"),
-      });
-
-      window.__lenis = lenis;
-
-      function raf(time) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
-      }
-      requestAnimationFrame(raf);
-    }
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.__lenis = null;
-      if (lenis) lenis.destroy();
-    };
+  // Layout settles after fonts load, so recompute scroll positions once.
+  useEffect(() => {
+    document.fonts?.ready.then(() => ScrollTrigger.refresh());
   }, []);
 
   return (
-    <div
-      className={`relative min-h-screen ${isDark ? "bg-[#0B0E14] text-slate-100" : "bg-[#FAFAF7] text-[#12151B]"
-        } overflow-x-hidden transition-colors duration-300`}
-    >
-      {/* Interactive Multi-layer Background Canvas & Particles */}
-      <CyberBackground />
-
-      {/* Main Foreground Content */}
-      <div className="relative z-10">
-        <Navbar
-          onOpenTerminal={() => setIsTerminalOpen(true)}
-          onOpenResume={() => setIsResumeOpen(true)}
-        />
-
-        {/* 1. Hero Section with Headline & Animated System Map */}
-        <Hero onOpenTerminal={() => setIsTerminalOpen(true)} />
-
-        {/* 2. High-Impact Metrics Strip */}
-        <MetricsStrip />
-
-        {/* 3. Intro: Where Software Meets Operations */}
-        <Intro />
-
-        {/* 4. Selected Work: Enterprise Platform Architecture */}
-        <Projects />
-
-        {/* 5. Product + Engineering: 7-Stage Flow Sequence */}
-        <ProductEngineering />
-
-        {/* 6. Product Philosophy: How I Think (5 Tenets) */}
-        <HowIThink />
-
-        {/* 7. Technical Background: Grouped Tech Ecosystem */}
-        <Skills />
-
-        {/* 8. Career Timeline & Education */}
+    <>
+      <a className="skip" href="#work">Skip to work</a>
+      {showLoader && <Loader onReady={onReady} onDone={done} />}
+      <Backdrop />
+      <Cursor />
+      <Nav section={section} />
+      <main>
+        <Hero ready={ready} />
+        <Marquee />
+        <Statement />
+        <Work />
+        <Lab />
+        <About />
+        <Stack />
         <Experience />
-
-        {/* 9. Contact: Have a hard problem? Let's talk */}
         <Contact />
-
-        {/* 10. Editorial Footer */}
-        <Footer onOpenTerminal={() => setIsTerminalOpen(true)} />
-      </div>
-
-      {/* Floating Action Trigger: Ask Samay AI Assistant */}
-      <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3">
-        <button
-          onClick={() => {
-            playCyberChirp();
-            setIsChatOpen(true);
-          }}
-          className={`group flex items-center gap-2.5 px-4 py-3 rounded-2xl ${isDark
-              ? "bg-[#12151B]/90 border border-emerald-500/40 text-white hover:bg-[#1A1F2B] shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
-              : "bg-white/95 border border-emerald-600/30 text-[#12151B] hover:bg-slate-50 shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
-            } hover:border-emerald-500 transition-all text-xs font-medium backdrop-blur-2xl hover:-translate-y-1`}
-          title="Ask Samay AI Assistant"
-        >
-          <div className="relative">
-            <Bot className="w-5 h-5 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform" />
-            <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-          </div>
-          <span className="font-semibold font-display tracking-tight">Ask Samay AI</span>
-        </button>
-      </div>
-
-      {/* Interactive Modals & CLI Drawer */}
-      <TerminalDrawer
-        isOpen={isTerminalOpen}
-        onClose={() => setIsTerminalOpen(false)}
-      />
-
-      <AIChatModal
-        isOpen={isChatOpen}
-        onClose={() => setIsChatOpen(false)}
-      />
-
-      <ResumeModal
-        isOpen={isResumeOpen}
-        onClose={() => setIsResumeOpen(false)}
-      />
-    </div>
-  );
-}
-
-export default function App() {
-  return (
-    <ThemeProvider>
-      <AppContent />
-    </ThemeProvider>
+      </main>
+      <Footer />
+      {caseId && (
+        <Suspense fallback={null}>
+          <CaseStudy id={caseId} />
+        </Suspense>
+      )}
+    </>
   );
 }

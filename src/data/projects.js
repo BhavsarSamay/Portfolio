@@ -15,8 +15,6 @@ export const earlierProjects = [
     tech: ['Node.js', 'React.js', 'MongoDB', 'Socket.io', 'LangChain', 'Firebase', 'Swagger', 'JWT', 'Tailwind CSS'],
     href: 'https://github.com/BhavsarSamay/SiteAssist',
     githubUrl: 'https://github.com/BhavsarSamay/SiteAssist',
-    metrics: 'Client & Admin React Panels · Real-time WebSockets · Sub-120ms Latency',
-    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80',
     problemStatement: 'Modern businesses struggle to deliver context-aware, 24/7 customer support without ballooning headcounts or relying on disjointed third-party SaaS chat tools that cannot query custom internal knowledge bases in real time.',
     architecture: 'Embed Widget / Dual React Panels -> Express & Socket.io Gateway -> MongoDB Storage -> Vector Embeddings & LangChain RAG -> Firebase FCM Dispatch',
     pipelineStages: [
@@ -38,12 +36,6 @@ export const earlierProjects = [
         title: 'Dual-Portal Role Segregation',
         desc: 'Enforced granular RBAC dividing tenant administrator privileges from global super-admin oversight.'
       }
-    ],
-    stats: [
-      { value: '2 Frontends', label: 'Client & Super-Admin' },
-      { value: '<120ms', label: 'WebSocket RTT' },
-      { value: '100%', label: 'Grounded RAG Answers' },
-      { value: 'REST + WS', label: 'Hybrid Protocol' }
     ],
     techStack: {
       frontend: ['React 18', 'Tailwind CSS', 'Vite', 'Socket.io-client', 'Lucide Icons'],
@@ -91,8 +83,6 @@ io.on("connection", (socket) => {
     tech: ['LangChain.js', 'Node.js', 'OpenAI API', 'Tool Calling', 'JavaScript', 'Vector Memory'],
     href: 'https://github.com/BhavsarSamay/Agentic_AI_Todo',
     githubUrl: 'https://github.com/BhavsarSamay/Agentic_AI_Todo',
-    metrics: 'Autonomous goal decomposition · Intelligent re-planning on subtask failure',
-    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&auto=format&fit=crop&q=80',
     problemStatement: 'Traditional task management requires tedious manual breaking down of projects into subtasks, calendar scheduling, and tool coordination, leading to execution inertia and planning bottlenecks.',
     architecture: 'Goal Input -> LLM Decomposition Planner -> Tool Calling Executor -> State & Memory Store -> Self-Healing Evaluator',
     pipelineStages: [
@@ -114,12 +104,6 @@ io.on("connection", (socket) => {
         title: 'Context Window Optimization',
         desc: 'Employed rolling summary memory to retain execution history across long reasoning chains without overflowing token limits.'
       }
-    ],
-    stats: [
-      { value: '5 Max Loops', label: 'Controlled Reasoning' },
-      { value: 'Zero-Shot', label: 'Tool Schema Binding' },
-      { value: 'Self-Healing', label: 'Error Recovery' },
-      { value: 'DAG', label: 'Task Execution' }
     ],
     techStack: {
       frontend: ['CLI Terminal Interface', 'Web Dashboard'],
@@ -163,8 +147,6 @@ export async function runAgenticWorkflow(userGoal, availableTools) {
     tech: ['MERN Stack', 'NASA APIs', 'React.js', 'Node.js', 'Express.js', 'MongoDB', 'Tailwind CSS'],
     href: 'https://github.com/BhavsarSamay/CosmicQuest',
     githubUrl: 'https://github.com/BhavsarSamay/CosmicQuest',
-    metrics: 'Live NASA telemetry integration · E-commerce cart & checkout engine',
-    image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=80',
     problemStatement: 'Scientific space data is often siloed in academic portals with dated interfaces, lacking engaging interactivity and tangible community merchandise touchpoints.',
     architecture: 'NASA Open APIs -> Server Caching Layer -> Interactive React Visualizer -> E-Commerce Cart Engine -> Checkout Flow',
     pipelineStages: [
@@ -186,12 +168,6 @@ export async function runAgenticWorkflow(userGoal, availableTools) {
         title: 'Media Optimization',
         desc: 'Handled high-resolution astronomical images with responsive srcset attributes and progressive blur-up placeholders.'
       }
-    ],
-    stats: [
-      { value: '100% Live', label: 'NASA API Telemetry' },
-      { value: '<80ms', label: 'Cached Query Latency' },
-      { value: 'Full-Flow', label: 'Cart to Checkout' },
-      { value: 'Responsive', label: 'Mobile & Desktop' }
     ],
     techStack: {
       frontend: ['React.js', 'Tailwind CSS', 'Framer Motion', 'Context API'],
@@ -230,8 +206,6 @@ export const fetchCelestialTelemetry = async (req, res) => {
     tech: ['React.js', 'Django', 'FastAPI', 'SQLite', 'PostgreSQL', 'Tailwind CSS', 'JWT'],
     href: 'https://github.com/BhavsarSamay/Echoing-Ideas',
     githubUrl: 'https://github.com/BhavsarSamay/Echoing-Ideas',
-    metrics: 'Dual Django / FastAPI backend · Clean publishing workflow & markdown support',
-    image: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&auto=format&fit=crop&q=80',
     problemStatement: 'Writers and technical teams need a clean, distraction-free markdown publishing workflow that pairs comprehensive CMS administrative controls with sub-50ms article delivery.',
     architecture: 'React Frontend -> FastAPI High-Speed Endpoints / Django Admin CMS -> PostgreSQL -> JWT Security Layer',
     pipelineStages: [
@@ -253,12 +227,6 @@ export const fetchCelestialTelemetry = async (req, res) => {
         title: 'Markdown Parsing Security',
         desc: 'Sanitized user-generated markdown to prevent XSS attacks while preserving syntax code formatting.'
       }
-    ],
-    stats: [
-      { value: 'Dual-Engine', label: 'Django + FastAPI' },
-      { value: '<45ms', label: 'Article Read Latency' },
-      { value: 'Markdown', label: 'Authoring Studio' },
-      { value: 'JWT', label: 'Role-Based Security' }
     ],
     techStack: {
       frontend: ['React.js', 'Tailwind CSS', 'React Router', 'Markdown Parser'],
@@ -298,8 +266,6 @@ async def get_published_article(slug: str, db: Session = Depends(get_db)):
     tech: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'JavaScript', 'Tailwind CSS'],
     href: 'https://github.com/BhavsarSamay/BizCart',
     githubUrl: 'https://github.com/BhavsarSamay/BizCart',
-    metrics: 'Dynamic category filtering · Real-time stock alerts · Cart state management',
-    image: 'https://images.unsplash.com/photo-1556742049-0a67c5574f73?w=800&auto=format&fit=crop&q=80',
     problemStatement: 'Retail businesses require responsive e-commerce interfaces that maintain instantaneous inventory sync, preventing overselling during traffic spikes.',
     architecture: 'React Client -> Express REST API -> MongoDB Atlas -> Stock Verification Engine -> Order Placement',
     pipelineStages: [
@@ -316,11 +282,6 @@ async def get_published_article(slug: str, db: Session = Depends(get_db)):
         title: 'Optimistic UI Updates',
         desc: 'Delivered instant cart increment/decrement interactions with background rollback on network failures.'
       }
-    ],
-    stats: [
-      { value: 'Atomic', label: 'Inventory Updates' },
-      { value: 'Faceted', label: 'Product Filtering' },
-      { value: 'End-to-End', label: 'Checkout Journey' }
     ],
     techStack: {
       frontend: ['React.js', 'HTML5/CSS3', 'Tailwind CSS', 'Lucide Icons'],
@@ -366,8 +327,6 @@ export const processOrderCheckout = async (req, res) => {
     tech: ['Node.js', 'Docker', 'REST APIs', 'Message Queue', 'Express.js', 'JavaScript'],
     href: 'https://github.com/BhavsarSamay/Microservices',
     githubUrl: 'https://github.com/BhavsarSamay/Microservices',
-    metrics: 'Decoupled service mesh · API Gateway routing · Asynchronous event messaging',
-    image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&auto=format&fit=crop&q=80',
     problemStatement: 'Monolithic enterprise backends become fragile bottlenecks as feature velocity increases, demanding service boundary isolation and fault tolerance.',
     architecture: 'Client Requests -> API Gateway (Reverse Proxy & Auth) -> Event Bus / Message Queue -> Microservice Clusters -> Dedicated DBs',
     pipelineStages: [
@@ -384,11 +343,6 @@ export const processOrderCheckout = async (req, res) => {
         title: 'Circuit Breaker Integration',
         desc: 'Added circuit breakers on service-to-service calls to isolate localized downtime and prevent cascading system outages.'
       }
-    ],
-    stats: [
-      { value: 'Zero-Downtime', label: 'Independent Deployments' },
-      { value: 'Event-Driven', label: 'Asynchronous Pub/Sub' },
-      { value: 'Containerized', label: 'Docker Microservices' }
     ],
     techStack: {
       frontend: ['Gateway Health Dashboard'],

@@ -1,99 +1,91 @@
-import React from "react";
-import { ArrowUpRight, Terminal } from "lucide-react";
-import HeroVisual from "./HeroVisual";
-import HeroPlanets from "./HeroPlanets";
-import ExperienceTicker from "./ExperienceTicker";
+import { useEffect, useLayoutEffect, useRef } from "react";
+import { gsap, ease, ScrollTrigger, prefersReducedMotion } from "../lib/motion";
 import { samayProfile } from "../data/samayProfile";
-import { playCyberChirp } from "../utils/soundEffects";
+import { useTheme, palettes } from "../lib/theme";
+import Split from "./Split";
+import ParticleMonogram from "./ParticleMonogram";
+import Magnetic from "./Magnetic";
+import { goTo } from "./Nav";
 
-export default function Hero({ onOpenTerminal }) {
+export default function Hero({ ready }) {
+  const root = useRef(null);
+  const progress = useRef(0);
+  const [theme] = useTheme();
+
+  // Scroll-linked: monogram disperses, name fills in, content drifts up.
+  useEffect(() => {
+    if (prefersReducedMotion()) return;
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: root.current,
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+        onUpdate: (s) => (progress.current = s.progress),
+      });
+      gsap.to(".hero__name .line--2 .c", {
+        "--fill": palettes[theme].fill,
+        stagger: 0.04,
+        scrollTrigger: { trigger: root.current, start: "top top", end: "60% top", scrub: true },
+      });
+      gsap.to(".hero__content", {
+        yPercent: -14,
+        ease: "none",
+        scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true },
+      });
+    }, root);
+    return () => ctx.revert();
+  }, [theme]);
+
+  // Intro sequence, triggered once the loader hands over.
+  useLayoutEffect(() => {
+    if (!ready || prefersReducedMotion()) return;
+    const ctx = gsap.context(() => {
+      gsap
+        .timeline({ defaults: { ease: ease.out } })
+        .fromTo(".hero__name .c", { yPercent: 115, "--wg": 200, "--wd": 75 }, { yPercent: 0, "--wg": 800, "--wd": 100, duration: 1.5, stagger: 0.045 }, 0)
+        .fromTo(".hero__fade", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.08 }, 0.5)
+        .fromTo(".hero__rule", { scaleX: 0 }, { scaleX: 1, duration: 1.3, ease: ease.inOut }, 0.3);
+    }, root);
+    return () => ctx.revert();
+  }, [ready]);
+
   return (
-    <section id="home" className="relative pt-32 pb-20 sm:pt-44 sm:pb-28 overflow-hidden">
-      {/* Dynamic Planetary Orbit System */}
-      <HeroPlanets />
+    <section id="home" ref={root} className={`hero${ready ? "" : " hero--wait"}`} aria-label="Introduction">
+      <ParticleMonogram progress={progress} ready={ready} />
 
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 relative z-10">
-        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
-          {/* Left Column: Editorial Headline & Actions */}
-          <div className="animate-fade-in-up">
-            {/* Top Eyebrow Badge & Realtime Experience Ticker */}
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--border-line)] bg-[var(--bg-surface)] backdrop-blur-md">
-                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-beacon" />
-                <span className="tag">Product Manager &amp; Full-Stack Engineer</span>
-              </div>
-              <ExperienceTicker />
-            </div>
+      <div className="hero__content">
+        <div className="hero__top mono-label">
+          <span className="hero__fade">{samayProfile.location}</span>
+          <span className="hero__fade hero__disc">Product / Systems / Full-Stack / AI</span>
+          <span className="hero__fade hero__avail">
+            <i aria-hidden="true" /> Open to conversations
+          </span>
+        </div>
 
-            {/* Main Title — fluid size via clamp */}
-            <h1 className="mt-6 font-display font-bold tracking-tight text-[var(--text-primary)] leading-[1.08]"
-              style={{ fontSize: "clamp(1.9rem, 5.5vw, 4rem)" }}>
-              I build products, and the systems that run them.
-            </h1>
+        <h1 className="hero__name">
+          <Split text="SAMAY" className="line line--1" />
+          <Split text="BHAVSAR" className="line line--2 outline" />
+        </h1>
 
-            {/* Subtitle / Description */}
-            <p className="mt-5 text-base sm:text-lg leading-relaxed text-[var(--text-muted)] max-w-xl">
-              I&apos;m <span className="font-semibold text-[var(--text-primary)]">{samayProfile.name}</span>, a <span className="font-medium text-[var(--text-primary)]">Product Manager &amp; Full-Stack Engineer</span> at{" "}
-              <span className="font-medium text-[var(--text-primary)]">{samayProfile.company}</span>. I design end-to-end systems architecture for{" "}
-              <span className="text-emerald-500 font-semibold">workforce</span>,{" "}
-              <span className="text-emerald-500 font-semibold">recruitment</span>, and{" "}
-              <span className="text-emerald-500 font-semibold">compliance</span> platforms, turning complex ground operations into reliable digital systems.
-            </p>
+        <div className="hero__rule" aria-hidden="true" />
 
-            {/* Quick Metrics Badges */}
-            <div className="mt-7 flex flex-wrap gap-2">
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[var(--border-line)] bg-[var(--bg-surface)] text-xs font-mono text-[var(--text-muted)]">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                <span>Product &amp; Systems Architecture</span>
-              </div>
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[var(--border-line)] bg-[var(--bg-surface)] text-xs font-mono text-[var(--text-muted)]">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                <span>Full-Stack &amp; AI Engineering</span>
-              </div>
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[var(--border-line)] bg-[var(--bg-surface)] text-xs font-mono text-[var(--text-muted)]">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                <span>Multi-Role Field Operations</span>
-              </div>
-            </div>
-
-            {/* Call to Actions */}
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a
-                href="#work"
-                onClick={() => playCyberChirp()}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm transition-all shadow-md hover:shadow-emerald-600/30 hover:-translate-y-0.5 active:translate-y-0"
-              >
-                View Selected Work
-                <ArrowUpRight size={16} />
-              </a>
-
-              <a
-                href="#contact"
-                onClick={() => playCyberChirp()}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-[var(--border-line)] bg-[var(--bg-card)] hover:border-emerald-500/50 text-[var(--text-primary)] font-medium text-sm transition-all hover:-translate-y-0.5 active:translate-y-0"
-              >
-                Let&apos;s Connect
-              </a>
-
-              {/* SamayOS Terminal Trigger — hidden on smallest screens to save space */}
-              <button
-                onClick={() => {
-                  playCyberChirp();
-                  onOpenTerminal?.();
-                }}
-                className="hidden sm:inline-flex items-center gap-2 px-4 py-3 rounded-xl border border-[var(--border-line)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-raised)] text-[var(--text-muted)] hover:text-emerald-400 text-xs font-mono transition-all"
-                title="Open SamayOS Interactive Terminal (~)"
-              >
-                <Terminal size={14} className="text-emerald-500" />
-                <span>SamayOS CLI</span>
-                <span className="px-1.5 py-0.5 rounded bg-[var(--border-line)] text-[10px] text-[var(--text-dim)]">~</span>
-              </button>
-            </div>
+        <div className="hero__bottom">
+          <div className="hero__copy">
+            <p className="hero__role hero__fade">Product Manager &amp; Full-Stack Engineer</p>
+            <p className="hero__line hero__fade">I build products, and the systems that run them.</p>
           </div>
-
-          {/* Right Column: Animated Radar & System Map — hidden on mobile, shown md+ */}
-          <div className="hidden md:flex relative justify-center items-center">
-            <HeroVisual />
+          <div className="hero__cta hero__fade">
+            <Magnetic as="a" href={`mailto:${samayProfile.email}`} className="btn btn--solid" data-cursor="Write">
+              Say hello <span aria-hidden="true">↗</span>
+            </Magnetic>
+            <a
+              href="#work"
+              className="btn btn--ghost"
+              onClick={(e) => { e.preventDefault(); goTo("work"); }}
+            >
+              See the work <span aria-hidden="true" className="btn__arrow">↓</span>
+            </a>
           </div>
         </div>
       </div>
