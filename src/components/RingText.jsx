@@ -4,7 +4,7 @@ import { useId } from "react";
 export default function RingText({ text = "Product · Systems · Full-Stack · AI · ", className = "" }) {
   const id = useId().replace(/:/g, "");
   return (
-    <svg className={`ring ${className}`} viewBox="0 0 200 200" aria-hidden="true">
+    <svg className={`rtext ${className}`} viewBox="0 0 200 200" aria-hidden="true">
       <defs>
         <path id={id} d="M100 100m-82 0a82 82 0 1 1 164 0a82 82 0 1 1-164 0" />
       </defs>

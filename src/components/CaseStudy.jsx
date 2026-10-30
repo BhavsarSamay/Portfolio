@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { gsap, ease, prefersReducedMotion } from "../lib/motion";
+import { gsap, ease, ScrollTrigger, prefersReducedMotion } from "../lib/motion";
 import { stopScroll, startScroll } from "../lib/scroll";
 import { work } from "../data/work";
 import { origin, closeCase } from "../lib/route";
@@ -45,6 +45,8 @@ export default function CaseStudy({ id }) {
         gsap.fromTo(s, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, ease: ease.out, scrollTrigger: { trigger: s, scroller: el, start: "top 88%" } })
       );
     }, root);
+    // Trigger positions depend on final layout (fonts, wrapped text), so measure once it settles.
+    document.fonts?.ready.then(() => ScrollTrigger.refresh());
     const onKey = (e) => { if (e.key === "Escape") closeCase(); };
     window.addEventListener("keydown", onKey);
     return () => {

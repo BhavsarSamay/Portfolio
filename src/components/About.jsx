@@ -9,7 +9,7 @@ import RingText from "./RingText";
 const facts = [
   { v: "3", l: "Platforms architected at Veracity Supply Chain" },
   { v: "Feb 2026", l: "Star Performer of the Month, Saturncube" },
-  { v: "8.45", l: "CPI, Bachelor of Information Technology" },
+  { v: "8.65", l: "CGPI, Bachelor of Information Technology" },
 ];
 
 export default function About() {
@@ -46,7 +46,7 @@ export default function About() {
 
       <h2 id="about-h" className="about__head">
         <Split text="Start with the operation." />
-        <Split text="Then build the system." className="outline" />
+        <Split text="Then build the system." className="hollow" />
       </h2>
 
       <div className="about__body">

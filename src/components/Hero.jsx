@@ -65,7 +65,7 @@ export default function Hero({ ready }) {
 
         <h1 className="hero__name">
           <Split text="SAMAY" className="line line--1" />
-          <Split text="BHAVSAR" className="line line--2 outline" />
+          <Split text="BHAVSAR" className="line line--2 hollow" />
         </h1>
 
         <div className="hero__rule" aria-hidden="true" />

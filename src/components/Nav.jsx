@@ -7,10 +7,10 @@ const links = [
   { id: "work", label: "Work" },
   { id: "lab", label: "Lab" },
   { id: "about", label: "About" },
+  { id: "stack", label: "Skills" },
+  { id: "experience", label: "Experience", short: "Exp" },
   { id: "contact", label: "Contact" },
 ];
-// Stack and Experience belong to the About link.
-const owner = { stack: "about", experience: "about" };
 
 // Scrolls without writing section hashes into the URL, so a refresh stays where you are.
 export function goTo(id) {
@@ -49,7 +49,7 @@ export default function Nav({ section }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const current = owner[section] ?? section;
+  const current = section;
   const go = (e, id) => {
     e.preventDefault();
     goTo(id);
@@ -64,7 +64,14 @@ export default function Nav({ section }) {
         <nav className="nav__links" aria-label="Primary">
           {links.map((l) => (
             <a key={l.id} href={"#" + l.id} className="nav__link" aria-current={current === l.id ? "page" : undefined} onClick={(e) => go(e, l.id)}>
-              {l.label}
+              {l.short ? (
+                <>
+                  <span className="nav__full">{l.label}</span>
+                  <span className="nav__short" aria-hidden="true">{l.short}</span>
+                </>
+              ) : (
+                l.label
+              )}
             </a>
           ))}
         </nav>

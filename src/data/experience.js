@@ -58,5 +58,5 @@ export const education = {
   degree: 'Bachelor of Information Technology',
   school: 'LJ Institute of Engineering and Technology',
   period: 'November 2022 to Present',
-  details: 'CPI: 8.45 / 10.0 | Focused on software engineering, distributed systems, backend architectures, and agentic AI pipelines.'
+  details: 'CGPI: 8.65 / 10.0 | Focused on software engineering, distributed systems, backend architectures, and agentic AI pipelines.'
 };

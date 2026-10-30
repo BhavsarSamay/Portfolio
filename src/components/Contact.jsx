@@ -84,7 +84,7 @@ export default function Contact() {
       <h2 id="contact-h" className="contact__title">
         <Split text="Have something" />
         <Split text="interesting" />
-        <Split text="in mind?" className="outline" />
+        <Split text="in mind?" className="hollow" />
       </h2>
 
       <div className="contact__cta contact__fade">
