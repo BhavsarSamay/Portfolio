@@ -8,8 +8,8 @@ import RingText from "./RingText";
 
 const facts = [
   { v: "3", l: "Platforms architected at Veracity Supply Chain" },
-  { v: "Feb 2026", l: "Star Performer of the Month, Saturncube" },
-  { v: "8.65", l: "CGPI, Bachelor of Information Technology" },
+  { v: "Feb 2026", l: "Star Performer of the Month, SaturnCube" },
+  { v: "8.65", l: "CGPI, Bachelor of Computer Engineering" },
 ];
 
 export default function About() {
@@ -62,7 +62,7 @@ export default function About() {
             for a gig workforce platform, a recruitment platform and a payroll &amp; compliance platform.
           </p>
           <p className="about__fade">
-            Before that I was a Node.js backend developer at Saturncube Technology, building agentic AI workflows, a RAG chatbot,
+            Before that I was a Node.js backend developer at SaturnCube Technology, building agentic AI workflows, a RAG chatbot,
             a real-time trading system, Stripe payment flows and microservices. I stay close to engineering so that product decisions
             and the code describe the same system.
           </p>

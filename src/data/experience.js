@@ -24,7 +24,7 @@ export const experience = [
   },
   {
     id: 'saturncube',
-    company: 'Saturncube Technology',
+    company: 'SaturnCube Technology',
     role: 'Node.js Backend Developer',
     subrole: 'Star Performer of the Month (Feb 2026)',
     period: 'December 2024 to June 2026',
@@ -55,7 +55,7 @@ export const experience = [
 export const experiences = experience;
 
 export const education = {
-  degree: 'Bachelor of Information Technology',
+  degree: 'Bachelor of Computer Engineering',
   school: 'LJ Institute of Engineering and Technology',
   period: 'November 2022 to Present',
   details: 'CGPI: 8.65 / 10.0 | Focused on software engineering, distributed systems, backend architectures, and agentic AI pipelines.'

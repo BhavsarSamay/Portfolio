@@ -18,9 +18,10 @@ const emailOk = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 export default function Contact() {
   const root = useRef(null);
   const [theme] = useTheme();
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", message: "", website: "" });
   const [errors, setErrors] = useState({});
-  const [status, setStatus] = useState("idle"); // idle | opened
+  const [status, setStatus] = useState("idle"); // idle | sending | sent | error
+  const [serverError, setServerError] = useState("");
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -46,22 +47,40 @@ export default function Contact() {
   const set = (k) => (e) => {
     setForm((f) => ({ ...f, [k]: e.target.value }));
     setErrors((er) => ({ ...er, [k]: undefined }));
-    setStatus("idle");
+    if (status !== "sending") setStatus("idle");
   };
 
-  // There is no backend, so the form opens the visitor's email app with the message prefilled.
-  const submit = (e) => {
+  // Posts to the /api/contact serverless function, which emails the message to the site owner.
+  const submit = async (e) => {
     e.preventDefault();
+    if (status === "sending") return;
     const er = {};
     if (!form.name.trim()) er.name = "Please add your name.";
     if (!emailOk(form.email)) er.email = "Please enter a valid email address.";
     if (form.message.trim().length < 5) er.message = "Please write a short message.";
     setErrors(er);
     if (Object.keys(er).length) return;
-    const subject = encodeURIComponent(`Portfolio enquiry from ${form.name.trim()}`);
-    const body = encodeURIComponent(`${form.message.trim()}\n\n${form.name.trim()}\n${form.email.trim()}`);
-    window.location.href = `mailto:${samayProfile.email}?subject=${subject}&body=${body}`;
-    setStatus("opened");
+
+    setStatus("sending");
+    setServerError("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.ok) {
+        setStatus("sent");
+        setForm({ name: "", email: "", message: "", website: "" });
+      } else {
+        setServerError(data.error || "Something went wrong.");
+        setStatus("error");
+      }
+    } catch {
+      setServerError("Could not reach the server. Check your connection and try again.");
+      setStatus("error");
+    }
   };
 
   const copy = async () => {
@@ -130,11 +149,25 @@ export default function Contact() {
             <textarea rows="4" value={form.message} onChange={set("message")} aria-invalid={!!errors.message} aria-describedby={errors.message ? "e-msg" : undefined} />
             {errors.message && <em id="e-msg" role="alert">{errors.message}</em>}
           </label>
-          <button type="submit" className="btn btn--dark">Open in my email app <span aria-hidden="true">↗</span></button>
-          <p className="form__note" role="status">
-            {status === "opened"
-              ? "Your email app should have opened with the message ready to send. If it didn’t, use the address above."
-              : "This opens your email app with the message prefilled. Nothing is sent until you press send there."}
+          {/* Honeypot: hidden from people, tempting to bots. */}
+          <div className="form__hp" aria-hidden="true">
+            <label>
+              Leave this field empty
+              <input tabIndex={-1} autoComplete="off" value={form.website} onChange={set("website")} />
+            </label>
+          </div>
+          <button type="submit" className="btn btn--dark" disabled={status === "sending"}>
+            {status === "sending" ? "Sending…" : "Send message"} <span aria-hidden="true">↗</span>
+          </button>
+          <p className={`form__note form__note--${status}`} role="status" aria-live="polite">
+            {status === "sent" && "Thanks, your message is on its way. I'll reply to the email you gave."}
+            {status === "error" && (
+              <>
+                {serverError} You can also write to me directly at{" "}
+                <a href={`mailto:${samayProfile.email}`}>{samayProfile.email}</a>.
+              </>
+            )}
+            {(status === "idle" || status === "sending") && "Your message is sent straight to my inbox and I'll reply by email."}
           </p>
         </form>
       </div>

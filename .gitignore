@@ -1,2 +1,7 @@
 package-lock.json
 node_modules
+# Secrets and local tooling
+.env
+.env.*
+!.env.example
+.vercel
