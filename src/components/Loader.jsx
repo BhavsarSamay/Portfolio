@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "../lib/motion";
-import { useSound } from "../lib/sound";
+import { useSound, useSoundStatus } from "../lib/sound";
 
 // Opening sequence: a short dive through space.
 //   ignition (stars drift) -> warp (stars stretch into streaks) -> a planet grows ahead of us
@@ -21,7 +21,8 @@ export default function Loader({ onReady, onDone }) {
   const label = useRef(null);
   const tl = useRef(null);
   const [skipped, setSkipped] = useState(false);
-  const [soundOn, toggleSound] = useSound();
+  const [, toggleSound] = useSound();
+  const sound = useSoundStatus();
 
   useEffect(() => {
     const cv = canvas.current;
@@ -190,8 +191,8 @@ export default function Loader({ onReady, onDone }) {
         <p className="ld__stage" ref={label} aria-hidden="true">Ignition</p>
         <div className="ld__meta">
           <span ref={count} aria-hidden="true">000</span>
-          <button type="button" className="ld__skip ld__sound" aria-pressed={soundOn} onClick={(e) => { e.stopPropagation(); toggleSound(); }}>
-            Sound {soundOn ? "on" : "off"}
+          <button type="button" className="ld__skip ld__sound" aria-pressed={sound !== "off"} onClick={(e) => { e.stopPropagation(); toggleSound(); }}>
+            {sound === "on" ? "Sound on" : sound === "armed" ? "Sound: tap" : "Sound off"}
           </button>
           <button type="button" className="ld__skip" onClick={skip}>Skip</button>
         </div>

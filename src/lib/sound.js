@@ -27,6 +27,7 @@ let ctx = null;
 let g = null; // audio graph
 let on = false;
 let track = 0;
+let wanted = true; // sound is on by default; a visitor who switches it off is remembered
 let energy = 0; // 0..1, how far down the page you are
 let timers = [];
 let step = 0;
@@ -37,6 +38,11 @@ const subscribe = (cb) => {
   listeners.add(cb);
   return () => listeners.delete(cb);
 };
+try {
+  wanted = localStorage.getItem("sb-sound") !== "off";
+} catch {
+  /* storage unavailable */
+}
 try {
   const saved = Number(localStorage.getItem("sb-track"));
   if (saved >= 0 && saved < TRACK_NAMES.length) track = saved;
@@ -357,8 +363,18 @@ function startTransport() {
 }
 
 // ---------- public API ----------
+const savePref = (v) => {
+  try {
+    localStorage.setItem("sb-sound", v);
+  } catch {
+    /* storage unavailable */
+  }
+};
+
 export async function startSound() {
-  if (on) return;
+  if (on) return true;
+  wanted = true;
+  savePref("on");
   try {
     if (!ctx) {
       g = build();
@@ -371,18 +387,31 @@ export async function startSound() {
     }
     await ctx.resume();
   } catch {
-    return; // audio unavailable; stay silent
+    emit();
+    return false; // audio unavailable; stay silent
   }
+  if (ctx.state !== "running") {
+    emit();
+    return false; // the browser still needs a real gesture; stay armed
+  }
+  disarm();
   on = true;
   const t = ctx.currentTime;
   g.master.gain.cancelScheduledValues(t);
   g.master.gain.setTargetAtTime(0.5, t, 1.1); // fade in
   startTransport();
   emit();
+  return true;
 }
 
 export function stopSound() {
-  if (!on) return;
+  wanted = false;
+  savePref("off");
+  disarm();
+  if (!on) {
+    emit();
+    return;
+  }
   on = false;
   timers.forEach((id) => clearInterval(id));
   timers = [];
@@ -394,6 +423,26 @@ export function stopSound() {
   }, 1500);
   emit();
 }
+
+// Browsers refuse to play audio until the visitor interacts, so "on by default" means: armed, and starting
+// at the first click, tap or key press anywhere (except on the sound controls themselves).
+const GESTURES = ["pointerdown", "pointerup", "keydown", "touchend"];
+let armed = false;
+function onGesture(e) {
+  if (e.target?.closest?.(".soundbar, .ld__sound")) return;
+  startSound();
+}
+function arm() {
+  if (armed || typeof window === "undefined") return;
+  armed = true;
+  GESTURES.forEach((ev) => window.addEventListener(ev, onGesture, { capture: true, passive: true }));
+}
+function disarm() {
+  if (!armed) return;
+  armed = false;
+  GESTURES.forEach((ev) => window.removeEventListener(ev, onGesture, { capture: true }));
+}
+if (wanted) arm();
 
 export const toggleSound = () => (on ? stopSound() : startSound());
 
@@ -421,4 +470,6 @@ export function nextTrack() {
 if (import.meta.env.DEV) window.__sound = () => ({ ctx, g, track: () => track });
 
 export const useSound = () => [useSyncExternalStore(subscribe, () => on, () => false), toggleSound];
+// "on" (playing), "armed" (will start at the first interaction) or "off" (switched off by the visitor)
+export const useSoundStatus = () => useSyncExternalStore(subscribe, () => (on ? "on" : wanted ? "armed" : "off"), () => "off");
 export const useTrack = () => [useSyncExternalStore(subscribe, () => track, () => 0), nextTrack];
