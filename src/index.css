@@ -711,7 +711,8 @@ main, footer { position: relative; z-index: 1; }
 .foot__row p, .foot__row button, .foot__row a { text-shadow: 0 0 10px var(--bg), 0 0 4px var(--bg); }
 
 /* Ambient sound switch */
-.sound { position: fixed; left: 16px; bottom: 16px; z-index: 58; display: inline-flex; align-items: center; gap: 10px; height: 40px; padding: 0 16px 0 14px; border-radius: 999px; background: var(--scrim); border: 1px solid var(--line); -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4); font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); transition: color 0.3s, border-color 0.3s, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+.soundbar { position: fixed; left: 16px; bottom: 16px; z-index: 58; display: flex; gap: 8px; }
+.sound { display: inline-flex; align-items: center; gap: 10px; height: 40px; padding: 0 16px 0 14px; border-radius: 999px; background: var(--scrim); border: 1px solid var(--line); -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4); font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); transition: color 0.3s, border-color 0.3s, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
 .sound:hover { color: var(--fg); transform: translateY(-2px); }
 .sound.is-on { color: var(--fg); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
 .sound__bars { display: inline-flex; align-items: center; gap: 3px; height: 16px; }
@@ -721,6 +722,11 @@ main, footer { position: relative; z-index: 1; }
 .sound.is-on .sound__bars i:nth-child(3) { animation-delay: -0.7s; }
 .sound.is-on .sound__bars i:nth-child(4) { animation-delay: -0.2s; }
 @keyframes eq { 0%, 100% { height: 4px; } 50% { height: 16px; } }
-@media (max-width: 560px) { .sound { width: 40px; padding: 0; justify-content: center; left: 12px; bottom: 12px; } .sound__label { display: none; } }
+@media (max-width: 560px) { .soundbar { left: 12px; bottom: 12px; } .sound { width: 40px; padding: 0; justify-content: center; } .sound__label { display: none; } }
 @media (prefers-reduced-motion: reduce) { .sound.is-on .sound__bars i { animation: none; height: 10px; } }
 .ld__sound[aria-pressed="true"] { color: var(--lime); border-color: var(--lime); }
+
+.sound--next { gap: 8px; padding: 0 14px 0 16px; color: var(--fg); }
+.sound--next span:last-child { font-size: 16px; line-height: 1; transition: transform 0.3s; }
+.sound--next:hover span:last-child { transform: translateX(3px); }
+@media (max-width: 560px) { .sound--next { padding: 0; } }
