@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { scene3d } from "./store";
-import { earthTextures, saturnTexture, marsTexture, moonTexture, ringTexture, glowTexture, nebulaTexture } from "./textures";
+import { earthTextures, saturnTexture, marsTexture, moonTexture, ringTexture, nebulaTexture } from "./textures";
 
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
@@ -31,7 +31,7 @@ export function Fade({ z, far = 150, near = 6, hero = true, amount = 1, children
   useFrame((state) => {
     const d = state.camera.position.z - z;
     const f = clamp((far - d) / (far * 0.3), 0, 1) * clamp((d - near) / near, 0, 1) * (hero ? scene3d.objFade : 1) * amount;
-    g.current.visible = f > 0.003;
+    g.current.visible = f > 0.003 || scene3d.warmup;
     if (!g.current.visible) return;
     for (const [m, kind] of mats.current) {
       if (kind === "u") m.uniforms.uOpacity.value = f;
@@ -127,29 +127,21 @@ export function Stars({ count, light }) {
   );
 }
 
-// ---------- planets ----------
-export function Atmosphere({ r, color, strength = 1, light }) {
-  const mat = useMemo(
-    () =>
-      new THREE.ShaderMaterial({
-        transparent: true,
-        depthWrite: false,
-        side: THREE.BackSide,
-        blending: light ? THREE.NormalBlending : THREE.AdditiveBlending,
-        uniforms: { uColor: { value: new THREE.Color(color) }, uOpacity: { value: 1 }, uK: { value: strength * (light ? 0.7 : 1) } },
-        vertexShader: `varying vec3 vN; void main(){ vN = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
-        fragmentShader: `uniform vec3 uColor; uniform float uOpacity; uniform float uK; varying vec3 vN;
-          void main(){ float i = pow(max(0.0, 0.62 - dot(vN, vec3(0.0,0.0,1.0))), 4.0) * 0.5 * uK; gl_FragColor = vec4(uColor, clamp(i,0.0,1.0) * uOpacity); }`,
-      }),
-    [color, strength, light]
-  );
-  return (
-    <mesh scale={1.2} material={mat}>
-      <sphereGeometry args={[r, 48, 32]} />
-    </mesh>
-  );
+// Textures are generated off the main thread, so they arrive a moment after the body mounts.
+function useAsync(factory, deps) {
+  const [value, setValue] = useState(null);
+  useEffect(() => {
+    let live = true;
+    factory().then((r) => live && setValue(r));
+    return () => {
+      live = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
+  return value;
 }
 
+// ---------- planets ----------
 function Planet({ r, map, spin = 0.03, children, rough = 1 }) {
   const ref = useRef();
   useFrame((_, dt) => {
@@ -158,14 +150,15 @@ function Planet({ r, map, spin = 0.03, children, rough = 1 }) {
   return (
     <mesh ref={ref}>
       <sphereGeometry args={[r, 64, 48]} />
-      <meshStandardMaterial map={map} roughness={rough} metalness={0} />
+      {/* keyed so the material is rebuilt when its texture arrives (three.js will not recompile on a map change) */}
+      <meshStandardMaterial key={map ? "map" : "plain"} map={map} color={map ? "#ffffff" : "#5d5750"} roughness={rough} metalness={0} />
       {children}
     </mesh>
   );
 }
 
 export function Saturn({ position, r, light }) {
-  const map = useMemo(saturnTexture, []);
+  const map = useAsync(saturnTexture, []);
   const ring = useMemo(ringTexture, []);
   const ringGeo = useMemo(() => {
     const inner = r * 1.35, outer = r * 2.45;
@@ -178,7 +171,6 @@ export function Saturn({ position, r, light }) {
     <Fade z={position[2]} amount={0.85}>
       <group position={position} rotation={[0.28, 0, -0.42]}>
         <Planet r={r} map={map} spin={0.02} />
-        <Atmosphere r={r} color="#ffd9a0" strength={0.5} light={light} />
         <mesh geometry={ringGeo} rotation={[-Math.PI / 2, 0, 0]}>
           <meshBasicMaterial map={ring} side={THREE.DoubleSide} transparent depthWrite={false} color={light ? "#8a6a3a" : "#ffffff"} />
         </mesh>
@@ -188,24 +180,22 @@ export function Saturn({ position, r, light }) {
 }
 
 export function Mars({ position, r, light }) {
-  const map = useMemo(marsTexture, []);
+  const map = useAsync(marsTexture, []);
   return (
     <Fade z={position[2]}>
       <group position={position}>
         <Planet r={r} map={map} spin={0.04} />
-        <Atmosphere r={r} color="#ff9a6a" strength={0.5} light={light} />
       </group>
     </Fade>
   );
 }
 
 export function Moon({ position, r, light }) {
-  const map = useMemo(moonTexture, []);
+  const map = useAsync(moonTexture, []);
   return (
     <Fade z={position[2]}>
       <group position={position}>
         <Planet r={r} map={map} spin={0.01} />
-        <Atmosphere r={r} color="#c9d4ff" strength={0.28} light={light} />
       </group>
     </Fade>
   );
@@ -228,11 +218,11 @@ function Station({ s }) {
 }
 
 export function Earth({ position, r, light, big }) {
-  const tex = useMemo(() => earthTextures(big), [big]);
+  const tex = useAsync(() => earthTextures(big), [big]);
   const clouds = useRef();
   const orbit = useRef();
   useFrame((state, dt) => {
-    clouds.current.rotation.y += dt * 0.012;
+    if (clouds.current) clouds.current.rotation.y += dt * 0.012;
     const a = state.clock.elapsedTime * 0.35;
     orbit.current.position.set(Math.cos(a) * r * 1.7, 0, Math.sin(a) * r * 1.7);
     orbit.current.rotation.y = -a + Math.PI / 2;
@@ -240,12 +230,13 @@ export function Earth({ position, r, light, big }) {
   return (
     <Fade z={position[2]}>
       <group position={position}>
-        <Planet r={r} map={tex.map} spin={0.02} rough={0.85} />
-        <mesh ref={clouds}>
-          <sphereGeometry args={[r * 1.012, 64, 48]} />
-          <meshStandardMaterial map={tex.clouds} transparent depthWrite={false} roughness={1} />
-        </mesh>
-        <Atmosphere r={r} color="#6fb4ff" strength={1.1} light={light} />
+        <Planet r={r} map={tex?.map ?? null} spin={0.02} rough={0.85} />
+        {tex && (
+          <mesh ref={clouds}>
+            <sphereGeometry args={[r * 1.012, 64, 48]} />
+            <meshStandardMaterial map={tex.clouds} transparent depthWrite={false} roughness={1} />
+          </mesh>
+        )}
         <group rotation={[0.42, 0, 0.18]}>
           <group ref={orbit}>
             <Station s={r * 0.07} />
@@ -257,7 +248,6 @@ export function Earth({ position, r, light, big }) {
 }
 
 export function Sun({ position, r, light }) {
-  const glow = useMemo(glowTexture, []);
   return (
     <Fade z={position[2]}>
       <group position={position}>
@@ -265,12 +255,6 @@ export function Sun({ position, r, light }) {
           <sphereGeometry args={[r, 48, 32]} />
           <meshBasicMaterial color={light ? "#ff9d3c" : "#ffe3b0"} />
         </mesh>
-        <sprite scale={[r * 8, r * 8, 1]}>
-          <spriteMaterial map={glow} color={light ? "#ffb35a" : "#ff9a4a"} transparent depthWrite={false} blending={light ? THREE.NormalBlending : THREE.AdditiveBlending} opacity={light ? 0.5 : 0.55} />
-        </sprite>
-        <sprite scale={[r * 3.2, r * 3.2, 1]}>
-          <spriteMaterial map={glow} color="#fff1d0" transparent depthWrite={false} blending={light ? THREE.NormalBlending : THREE.AdditiveBlending} opacity={0.85} />
-        </sprite>
       </group>
     </Fade>
   );
@@ -278,7 +262,7 @@ export function Sun({ position, r, light }) {
 
 // ---------- deep space ----------
 export function Nebula({ position, size, colors, light }) {
-  const maps = useMemo(() => colors[light ? "light" : "dark"].map(([a, b], i) => nebulaTexture(a, b, 3 + i * 11)), [colors, light]);
+  const maps = useAsync(() => Promise.all(colors[light ? "light" : "dark"].map(([a, b], i) => nebulaTexture(a, b, 3 + i * 11))), [colors, light]);
   const refs = useRef([]);
   useFrame((state) => {
     refs.current.forEach((m, i) => m && (m.rotation.z = state.clock.elapsedTime * 0.01 * (i ? -1 : 1)));
@@ -286,7 +270,7 @@ export function Nebula({ position, size, colors, light }) {
   return (
     <Fade z={position[2]} far={200}>
       <group position={position}>
-        {maps.map((map, i) => (
+        {(maps ?? []).map((map, i) => (
           <mesh key={i} ref={(el) => (refs.current[i] = el)} position={[i * 9 - 5, i * -6 + 3, -i * 6]} scale={size * (1 - i * 0.2)}>
             <planeGeometry args={[1, 1]} />
             <meshBasicMaterial map={map} transparent depthWrite={false} blending={light ? THREE.NormalBlending : THREE.AdditiveBlending} opacity={light ? 0.5 : 0.42} />
@@ -410,7 +394,6 @@ export function Wormhole({ position, radius, color, light }) {
       m.material.userData.base = (1 - p) * (light ? 0.5 : 0.4);
     });
   });
-  const glow = useMemo(glowTexture, []);
   return (
     <Fade z={position[2]} far={170} near={3}>
       <group position={position}>
@@ -420,9 +403,6 @@ export function Wormhole({ position, radius, color, light }) {
             <meshBasicMaterial color={color} transparent depthWrite={false} side={THREE.DoubleSide} blending={light ? THREE.NormalBlending : THREE.AdditiveBlending} />
           </mesh>
         ))}
-        <sprite scale={[radius * 2.2, radius * 2.2, 1]}>
-          <spriteMaterial map={glow} color={color} transparent depthWrite={false} blending={light ? THREE.NormalBlending : THREE.AdditiveBlending} opacity={light ? 0.18 : 0.3} />
-        </sprite>
       </group>
     </Fade>
   );

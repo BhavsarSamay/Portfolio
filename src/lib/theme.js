@@ -8,8 +8,8 @@ export const getTheme = () => document.documentElement.dataset.theme || "dark";
 // Colours that canvas code needs. CSS reads the same choice through [data-theme].
 export const palettes = {
   dark: {
-    ink: "243,240,232", mono: "#F3F0E8", hot: "#7FD3FF", metaBg: "#080808",
-    glowA: ["110,170,255", 0.05], glowB: ["243,240,232", 0.03], spot: ["127,211,255", 0.06], link: "127,211,255", fill: "#7FD3FF",
+    ink: "243,240,232", mono: "#F3F0E8", hot: "#E6C98A", metaBg: "#080808",
+    glowA: ["232,201,138", 0.04], glowB: ["243,240,232", 0.03], spot: ["232,201,138", 0.05], link: "230,201,138", fill: "#E6C98A",
   },
   light: {
     ink: "8,8,8", mono: "#0B0B0B", hot: "#2F4BD8", metaBg: "#F3F0E8",

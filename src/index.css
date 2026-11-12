@@ -5,10 +5,10 @@
   --bg: #080808;
   --bg2: #111111;
   --fg: #f3f0e8;
-  --lime: #7fd3ff; /* brand fill: buttons, active chips */
-  --accent: #7fd3ff; /* brand as text / lines */
-  --accent2: #ffb35a; /* warm highlight, used sparingly */
-  --on-brand: #06131c; /* text on the brand fill */
+  --lime: #e6c98a; /* brand fill: buttons, active chips (champagne gold) */
+  --accent: #e6c98a; /* brand as text / lines */
+  --accent2: #b9a6ff; /* soft violet, used sparingly */
+  --on-brand: #15110a; /* text on the brand fill */
   --mute: #8a8a8a;
   --line: rgba(243, 240, 232, 0.14);
   --line2: #2a2a2a;
@@ -159,10 +159,10 @@ section { position: relative; padding: clamp(48px, 6.5vw, 96px) var(--gut); }
 .sec__head { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-bottom: 20px; border-bottom: 1px solid var(--line); margin-bottom: clamp(20px, 3vw, 40px); }
 
 /* ───────────── Loader ───────────── */
-.ld { --lime: #7fd3ff; --mute: #8a8a8a; color: #f3f0e8; position: fixed; inset: 0; z-index: 100; background: #030409; cursor: pointer; overflow: hidden; }
+.ld { --lime: #e6c98a; --mute: #8a8a8a; color: #f3f0e8; position: fixed; inset: 0; z-index: 100; background: #030409; cursor: pointer; overflow: hidden; }
 .ld__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .ld__mark { position: absolute; left: 50%; top: clamp(56px, 12vh, 120px); transform: translateX(-50%); }
-.ld__svg { width: clamp(72px, 12vw, 120px); fill: none; stroke: var(--lime); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 10px rgba(127, 211, 255, 0.45)); }
+.ld__svg { width: clamp(72px, 12vw, 120px); fill: none; stroke: var(--lime); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
 .ld__path { stroke-dasharray: 1; stroke-dashoffset: 1; }
 .ld__hud { position: absolute; left: 0; right: 0; bottom: clamp(36px, 8vh, 80px); display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 0 var(--gut); }
 .ld__stage { font-family: var(--mono); font-size: 12px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--lime); margin: 0; }
@@ -675,7 +675,8 @@ main, footer { position: relative; z-index: 1; }
 .form__note a { text-decoration: underline; text-underline-offset: 3px; }
 
 /* WebGL space scene (replaces the 2D backdrop when the device can handle it) */
-.backdrop3d { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.backdrop3d { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity 0.9s ease; }
+.backdrop3d.is-on { opacity: 1; }
 .backdrop3d > div:first-child { position: absolute !important; inset: 0; }
 .backdrop3d canvas { display: block; width: 100% !important; height: 100% !important; }
 

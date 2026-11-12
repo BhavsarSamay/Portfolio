@@ -12,6 +12,7 @@ export const scene3d = {
   pointer: { x: 0, y: 0 }, // -0.5..0.5
   camZ: 0,
   camSpeed: 0,
+  warmup: false, // true while the scene is still invisible: bodies render at zero opacity so their shaders compile early
   warp: 0, // impulse that stretches stars and widens the lens (case-study dive)
   zoomDir: 1,
 };

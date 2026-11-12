@@ -1,14 +1,20 @@
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { useTheme } from "../lib/theme";
 import { earthTextures } from "./textures";
-import { Atmosphere } from "./bodies";
 
-// The end of the journey: a planet rising from the bottom of the page, with a glowing location
-// marker for Ahmedabad. It is stylised (procedural continents), not an accurate map.
+// The end of the journey: a planet rising from the bottom of the page, with a location marker
+// for Ahmedabad. It is stylised (procedural continents), not an accurate map.
 function Planet({ light }) {
-  const tex = useMemo(() => earthTextures(false), []);
+  const [tex, setTex] = useState(null);
+  useEffect(() => {
+    let live = true;
+    earthTextures(false).then((t) => live && setTex(t));
+    return () => {
+      live = false;
+    };
+  }, []);
   const earth = useRef();
   const clouds = useRef();
   const ring = useRef();
@@ -17,7 +23,7 @@ function Planet({ light }) {
   useFrame((state, dt) => {
     const t = state.clock.elapsedTime;
     earth.current.rotation.y += dt * 0.012;
-    clouds.current.rotation.y += dt * 0.02;
+    if (clouds.current) clouds.current.rotation.y += dt * 0.02;
     group.current.rotation.x = THREE.MathUtils.damp(group.current.rotation.x, 0.12 - state.pointer.y * 0.08, 3, dt);
     group.current.rotation.z = THREE.MathUtils.damp(group.current.rotation.z, -state.pointer.x * 0.08, 3, dt);
     const k = (t * 0.55) % 1;
@@ -30,23 +36,24 @@ function Planet({ light }) {
     <group ref={group} position={[0, -7.55, 0]}>
       <mesh ref={earth}>
         <sphereGeometry args={[R, 96, 64]} />
-        <meshStandardMaterial map={tex.map} roughness={0.85} />
+        <meshStandardMaterial key={tex ? "map" : "plain"} map={tex?.map ?? null} color={tex ? "#ffffff" : "#1c3a6e"} roughness={0.85} />
       </mesh>
-      <mesh ref={clouds}>
-        <sphereGeometry args={[R * 1.012, 96, 64]} />
-        <meshStandardMaterial map={tex.clouds} transparent depthWrite={false} roughness={1} />
-      </mesh>
-      <Atmosphere r={R} color="#6fb4ff" strength={1.2} light={light} />
+      {tex && (
+        <mesh ref={clouds}>
+          <sphereGeometry args={[R * 1.012, 96, 64]} />
+          <meshStandardMaterial map={tex.clouds} transparent depthWrite={false} roughness={1} />
+        </mesh>
+      )}
       {/* Marker, standing on the surface facing the viewer */}
       <group position={[0, R * 0.985, R * 0.17]} rotation={[0.17, 0, 0]}>
         <mesh ref={ring} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, 0]}>
           <ringGeometry args={[0.8, 1, 48]} />
-          <meshBasicMaterial color="#ffb35a" transparent depthWrite={false} blending={THREE.AdditiveBlending} />
+          <meshBasicMaterial color="#e6c98a" transparent depthWrite={false} />
         </mesh>
         <group ref={pin}>
           <mesh>
             <sphereGeometry args={[0.13, 16, 12]} />
-            <meshBasicMaterial color="#ffb35a" />
+            <meshBasicMaterial color="#e6c98a" />
           </mesh>
         </group>
       </group>

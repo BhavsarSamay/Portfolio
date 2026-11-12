@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { useTheme } from "../lib/theme";
@@ -44,7 +44,24 @@ function Rig() {
   return null;
 }
 
-function Scene({ tier, light }) {
+// Keeps the scene invisible for a moment while shaders compile and textures arrive, then reveals it.
+function Reveal({ onReady }) {
+  const t = useRef(0);
+  const done = useRef(false);
+  useFrame((_, dt) => {
+    if (done.current) return;
+    scene3d.warmup = true;
+    t.current += Math.min(dt, 0.05);
+    if (t.current > 1.2) {
+      done.current = true;
+      scene3d.warmup = false;
+      onReady();
+    }
+  });
+  return null;
+}
+
+function Scene({ tier, light, onReady }) {
   const high = tier > 1;
   const nebA = { dark: [[[120, 100, 255], [60, 190, 215]], [[255, 90, 170], [110, 90, 255]]], light: [[[255, 150, 190], [120, 175, 255]], [[255, 190, 140], [190, 160, 255]]] };
   const nebB = { dark: [[[255, 150, 90], [150, 110, 255]], [[90, 160, 255], [255, 110, 150]]], light: [[[255, 180, 120], [150, 130, 255]], [[130, 190, 255], [255, 160, 190]]] };
@@ -52,6 +69,7 @@ function Scene({ tier, light }) {
   return (
     <>
       <Rig />
+      <Reveal onReady={onReady} />
       <ambientLight intensity={light ? 0.85 : 0.24} />
       <directionalLight position={[-30, 18, 22]} intensity={light ? 1.7 : 2.6} color="#fff4e6" />
       <Stars count={high ? 2400 : 1000} light={light} />
@@ -62,7 +80,7 @@ function Scene({ tier, light }) {
       <Moon position={[-14, -5, -148]} r={2.6} light={light} />
       <Galaxy position={[12, 3, -198]} radius={30} count={high ? 5200 : 2400} light={light} />
       <Asteroids position={[11, -3, -242]} spread={9} count={high ? 46 : 24} light={light} />
-      <Wormhole position={[0, 0, -292]} radius={7} color={light ? "#2f4bd8" : "#7fd3ff"} light={light} />
+      <Wormhole position={[0, 0, -292]} radius={7} color={light ? "#2f4bd8" : "#e6c98a"} light={light} />
       <Sun position={[-16, 7, -338]} r={3.2} light={light} />
       <Earth position={[13.5, -4.5, -380]} r={5.2} light={light} big={high} />
       <Nebula position={[0, 0, -425]} size={100} colors={nebB} light={light} />
@@ -72,11 +90,17 @@ function Scene({ tier, light }) {
 }
 
 // Fixed full-screen WebGL layer behind the whole page.
-export default function Cosmos3D({ tier }) {
+export default function Cosmos3D({ tier, onShown }) {
   const [theme] = useTheme();
   const light = theme === "light";
+  const [on, setOn] = useState(false);
+  const reveal = () => {
+    setOn(true);
+    // once the fade has finished the lightweight 2D scene underneath can be dropped
+    setTimeout(() => onShown?.(), 1000);
+  };
   return (
-    <div className="backdrop3d" aria-hidden="true">
+    <div className={`backdrop3d${on ? " is-on" : ""}`} aria-hidden="true">
       <Canvas
         flat
         dpr={[1, tier > 1 ? 1.5 : 1]}
@@ -84,7 +108,7 @@ export default function Cosmos3D({ tier }) {
         gl={{ alpha: true, antialias: tier > 1, powerPreference: "high-performance" }}
         onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
       >
-        <Scene tier={tier} light={light} />
+        <Scene tier={tier} light={light} onReady={reveal} />
       </Canvas>
       <div className="guides"><i /><i /><i /></div>
     </div>

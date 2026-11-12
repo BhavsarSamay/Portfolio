@@ -42,14 +42,6 @@ export default function Loader({ onReady, onDone }) {
     const clouds = Array.from({ length: 9 }, () => ({ a: Math.random() * 6.283, d: Math.random() * 0.8, w: 0.25 + Math.random() * 0.5, h: 0.05 + Math.random() * 0.09 }));
 
     const planet = (cx, cy, r, time) => {
-      // atmosphere glow
-      const glow = ctx.createRadialGradient(cx, cy, r * 0.9, cx, cy, r * 1.4);
-      glow.addColorStop(0, "rgba(127,211,255,0.55)");
-      glow.addColorStop(1, "rgba(127,211,255,0)");
-      ctx.fillStyle = glow;
-      ctx.beginPath();
-      ctx.arc(cx, cy, r * 1.4, 0, 6.283);
-      ctx.fill();
       // ocean body, lit from the upper left
       const body = ctx.createRadialGradient(cx - r * 0.38, cy - r * 0.42, r * 0.08, cx, cy, r);
       body.addColorStop(0, "#b8e8ff");

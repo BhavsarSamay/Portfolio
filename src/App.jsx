@@ -51,6 +51,8 @@ export default function App() {
   const [section, setSection] = useState("home");
   const caseId = useCaseRoute();
   const tier = useMemo(webglTier, []);
+  const [show3d, setShow3d] = useState(false);
+  const [cosmosOn, setCosmosOn] = useState(false);
 
   const [showLoader, setShowLoader] = useState(() => !seen());
 
@@ -68,6 +70,20 @@ export default function App() {
     initScroll();
     return destroyScroll;
   }, []);
+
+  // Heavy 3D work starts only once the intro has played, so the loader and hero animate smoothly.
+  useEffect(() => {
+    if (tier === 0 || !ready) return;
+    let idle;
+    const t = setTimeout(() => {
+      if ("requestIdleCallback" in window) idle = requestIdleCallback(() => setShow3d(true), { timeout: 2000 });
+      else setShow3d(true);
+    }, 1600);
+    return () => {
+      clearTimeout(t);
+      if (idle && window.cancelIdleCallback) cancelIdleCallback(idle);
+    };
+  }, [tier, ready]);
 
   // Feed scroll position and pointer to the WebGL scene (plain state, no React renders).
   useEffect(() => {
@@ -128,14 +144,14 @@ export default function App() {
     <>
       <a className="skip" href="#work">Skip to work</a>
       {showLoader && <Loader onReady={onReady} onDone={done} />}
-      {tier > 0 ? (
-        <Guard3D fallback={<Backdrop />}>
-          <Suspense fallback={<Backdrop />}>
-            <Cosmos3D tier={tier} />
+      {/* The light 2D scene is always there first; the 3D scene fades in over it after the intro. */}
+      {(tier === 0 || !cosmosOn) && <Backdrop />}
+      {tier > 0 && show3d && (
+        <Guard3D fallback={null}>
+          <Suspense fallback={null}>
+            <Cosmos3D tier={tier} onShown={() => setCosmosOn(true)} />
           </Suspense>
         </Guard3D>
-      ) : (
-        <Backdrop />
       )}
       <Cursor />
       <Nav section={section} />

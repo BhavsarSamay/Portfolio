@@ -96,14 +96,6 @@ export default function Backdrop() {
       ctx.fillStyle = g;
       ctx.fillRect(x - r, y - r, r * 2, r * 2);
     };
-    const halo = (x, y, r, c, a) => {
-      // Soft atmosphere just outside the limb. Drawn before the body so the body covers its centre.
-      const g = ctx.createRadialGradient(x, y, r * 0.94, x, y, r * 1.28);
-      g.addColorStop(0, rgba(c, 0.5 * a));
-      g.addColorStop(1, rgba(c, 0));
-      ctx.fillStyle = g;
-      ctx.fillRect(x - r * 1.3, y - r * 1.3, r * 2.6, r * 2.6);
-    };
     // Lit sphere: light from the upper left, dark terminator toward the lower right.
     const ball = (x, y, r, pal, a, L) => {
       const g = ctx.createRadialGradient(x - r * 0.38, y - r * 0.38, r * 0.05, x, y, r * 1.02);
@@ -183,7 +175,6 @@ export default function Backdrop() {
           const pal = { l: [250, 232, 190], b: [216, 176, 108], d: [92, 62, 38] };
           const ringC = L ? [160, 120, 62] : [236, 208, 156];
           ringsOf(cx, cy, r, ringC, a, true, -0.38);
-          halo(cx, cy, r, [255, 220, 160], a * 0.5);
           ball(cx, cy, r, pal, a, L);
           bands(cx, cy, r, [120, 80, 40], 9, a);
           ringsOf(cx, cy, r, ringC, a, false, -0.38);
@@ -191,7 +182,6 @@ export default function Backdrop() {
         }
         case "mars": {
           const pal = { l: [244, 176, 134], b: [198, 98, 58], d: [66, 28, 22] };
-          halo(cx, cy, r, [255, 150, 100], a * 0.45);
           ball(cx, cy, r, pal, a, L);
           ctx.save();
           ctx.beginPath();
@@ -212,7 +202,6 @@ export default function Backdrop() {
         }
         case "moon": {
           const pal = { l: [238, 238, 234], b: [178, 178, 176], d: [62, 62, 68] };
-          halo(cx, cy, r, [220, 225, 240], a * 0.4);
           ball(cx, cy, r, pal, a, L);
           ctx.save();
           ctx.beginPath();
@@ -236,7 +225,6 @@ export default function Backdrop() {
         }
         case "earth": {
           const pal = { l: [120, 185, 250], b: [32, 96, 200], d: [6, 22, 70] };
-          halo(cx, cy, r, [120, 190, 255], a);
           ball(cx, cy, r, pal, a, L);
           ctx.save();
           ctx.beginPath();
@@ -277,21 +265,14 @@ export default function Backdrop() {
           break;
         }
         case "sun": {
-          if (L) {
-            glow(cx, cy, r * 2.6, [255, 190, 90], 0.4 * a);
-            const g = ctx.createRadialGradient(cx - r * 0.2, cy - r * 0.2, 0, cx, cy, r * 0.8);
-            g.addColorStop(0, rgba([255, 240, 190], a));
-            g.addColorStop(1, rgba([255, 150, 40], a));
-            ctx.fillStyle = g;
-            ctx.beginPath();
-            ctx.arc(cx, cy, r * 0.8, 0, 6.283);
-            ctx.fill();
-          } else {
-            ctx.globalCompositeOperation = "lighter";
-            glow(cx, cy, r * 3, [255, 170, 80], 0.22 * a);
-            glow(cx, cy, r * 1.1, [255, 225, 170], 0.7 * a);
-            ctx.globalCompositeOperation = "source-over";
-          }
+          // A clean disc: no glow.
+          const g = ctx.createRadialGradient(cx - r * 0.2, cy - r * 0.2, 0, cx, cy, r * 0.8);
+          g.addColorStop(0, rgba(L ? [255, 240, 190] : [255, 246, 220], a));
+          g.addColorStop(1, rgba(L ? [255, 150, 40] : [255, 205, 130], a));
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r * 0.8, 0, 6.283);
+          ctx.fill();
           break;
         }
         case "asteroids":
@@ -334,12 +315,6 @@ export default function Backdrop() {
           ctx.save();
           ctx.translate(cx, cy);
           ctx.rotate(-0.4 + t * 0.025);
-          if (!L) {
-            ctx.globalCompositeOperation = "lighter";
-            glow(0, 0, r * 0.35, [255, 232, 200], 0.3 * a);
-          } else {
-            glow(0, 0, r * 0.3, [255, 190, 110], 0.3 * a);
-          }
           const px = Math.max(1, r * 0.006);
           for (const p of galaxy) {
             const col = p.core ? (L ? [220, 140, 40] : [255, 230, 190]) : L ? [92, 96, 210] : [170, 190, 255];
@@ -351,7 +326,7 @@ export default function Backdrop() {
         }
         case "wormhole": {
           // Thin rings expand outward and fade, so passing through feels like the scene opening up.
-          const c = L ? (o.z < 8000 ? [47, 75, 216] : [109, 63, 214]) : o.z < 8000 ? [127, 211, 255] : [169, 155, 255];
+          const c = L ? (o.z < 8000 ? [47, 75, 216] : [109, 63, 214]) : o.z < 8000 ? [230, 201, 138] : [169, 155, 255];
           ctx.save();
           ctx.translate(cx, cy);
           for (let i = 0; i < 12; i++) {
@@ -362,11 +337,6 @@ export default function Backdrop() {
             ctx.beginPath();
             ctx.ellipse(0, 0, rr, rr * 0.93, 0.3, 0, 6.283);
             ctx.stroke();
-          }
-          if (!L) {
-            ctx.globalCompositeOperation = "lighter";
-            glow(0, 0, r * 0.5, c, 0.1 * a);
-            ctx.globalCompositeOperation = "source-over";
           }
           ctx.restore();
           break;
