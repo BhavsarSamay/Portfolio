@@ -7,9 +7,9 @@ import { useVisible } from "../lib/useVisible";
 // Conceptual 3D dioramas for the three Veracity platforms. The real products are under NDA, so these
 // show the idea of each system (dispatch, pipeline, statutory calculation), not the product itself.
 const palettes = {
-  "gig-platform": { bg: "#C7FF3D", ink: "#1b1f14", a: "#F3F0E8", mid: "#7fb800", route: "#ff5a2e" },
-  "recruitment-platform": { bg: "#8EC5FF", ink: "#07121f", a: "#F3F0E8", mid: "#5aa0e8" },
-  "payroll-platform": { bg: "#FFC857", ink: "#1a1200", a: "#F3F0E8", mid: "#e8a81f" },
+  "gig-platform": { bg: "#E6C98A", ink: "#1b160c", a: "#F3F0E8", mid: "#b8923a", route: "#5b3fd6" },
+  "recruitment-platform": { bg: "#B9A6FF", ink: "#150f2e", a: "#F3F0E8", mid: "#8f7be8" },
+  "payroll-platform": { bg: "#F0A878", ink: "#2a1408", a: "#F3F0E8", mid: "#d9824f" },
 };
 
 const rng = (seed) => () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
@@ -76,7 +76,7 @@ function Gig({ p }) {
       {city.map((b, i) => (
         <mesh key={i} position={[b.x, b.h / 2, b.z]}>
           <boxGeometry args={[0.8, b.h, 0.8]} />
-          <meshStandardMaterial color={i % 4 === 0 ? p.mid : i % 3 === 0 ? "#5b6150" : p.ink} roughness={0.8} />
+          <meshStandardMaterial color={i % 4 === 0 ? p.mid : i % 3 === 0 ? "#6b5f45" : p.ink} roughness={0.8} />
         </mesh>
       ))}
       {routes.map((r, i) => (

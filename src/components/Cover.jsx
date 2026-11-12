@@ -2,11 +2,11 @@
 // project's idea (chat, agent graph, telemetry, publishing, inventory, service mesh),
 // not screenshots of the real products.
 const palettes = {
-  siteassist: { bg: "#C7FF3D", ink: "#080808", a: "#F3F0E8" },
+  siteassist: { bg: "#E6C98A", ink: "#15110a", a: "#F3F0E8" },
   "agentic-ai": { bg: "#F3F0E8", ink: "#080808", a: "#FF5B2E" },
   cosmicquest: { bg: "#15183F", ink: "#F3F0E8", a: "#8C9BFF" },
   "echoing-ideas": { bg: "#FF5B2E", ink: "#080808", a: "#F3F0E8" },
-  bizcart: { bg: "#1A1A1A", ink: "#F3F0E8", a: "#C7FF3D" },
+  bizcart: { bg: "#1A1A1A", ink: "#F3F0E8", a: "#E6C98A" },
   microservices: { bg: "#0F2A22", ink: "#F3F0E8", a: "#7AFFC1" },
 };
 

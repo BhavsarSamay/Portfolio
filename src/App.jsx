@@ -16,6 +16,7 @@ import Stack from "./components/Stack";
 import Experience from "./components/Experience";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import SoundToggle from "./components/SoundToggle";
 import { webglTier } from "./three/gpu";
 import { scene3d, syncScroll } from "./three/store";
 
@@ -155,6 +156,7 @@ export default function App() {
       )}
       <Cursor />
       <Nav section={section} />
+      <SoundToggle />
       <main>
         <Hero ready={ready} />
         <Marquee />

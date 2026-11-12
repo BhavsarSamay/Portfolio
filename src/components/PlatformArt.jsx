@@ -7,9 +7,9 @@ const tier3d = webglTier();
 // Conceptual illustrations for the three Veracity platforms. The real products are under NDA,
 // so these show the idea of each system (dispatch, pipeline, statutory calculation), not the product.
 const themes = {
-  "gig-platform": { bg: "#C7FF3D", ink: "#080808", a: "#F3F0E8" },
-  "recruitment-platform": { bg: "#8EC5FF", ink: "#07121f", a: "#F3F0E8" },
-  "payroll-platform": { bg: "#FFC857", ink: "#1a1200", a: "#F3F0E8" },
+  "gig-platform": { bg: "#E6C98A", ink: "#15110a", a: "#F3F0E8" },
+  "recruitment-platform": { bg: "#B9A6FF", ink: "#150f2e", a: "#F3F0E8" },
+  "payroll-platform": { bg: "#F0A878", ink: "#2a1408", a: "#F3F0E8" },
 };
 
 const art = {
