@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import { gsap, ease, prefersReducedMotion } from "../lib/motion";
-import { emerge } from "../lib/emerge";
 import { samayProfile } from "../data/samayProfile";
 import { education } from "../data/experience";
 import { howIThink } from "../data/thinking";
@@ -31,10 +30,8 @@ export default function About() {
         scale: 1, ease: "none",
         scrollTrigger: { trigger: ".about__photo", start: "top bottom", end: "bottom top", scrub: true },
       });
-      gsap.utils.toArray(".about__fade").forEach((el, i) =>
-        el.closest(".facts")
-          ? emerge(el, { minScale: 0.3, delay: (i % 3) * 0.07, start: "top 92%" }) // stats launch out of the scene
-          : gsap.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.9, ease: ease.out, scrollTrigger: { trigger: el, start: "top 90%" } })
+      gsap.utils.toArray(".about__fade").forEach((el) =>
+        gsap.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.9, ease: ease.out, scrollTrigger: { trigger: el, start: "top 90%" } })
       );
     }, root);
     return () => ctx.revert();

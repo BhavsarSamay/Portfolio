@@ -17,7 +17,7 @@ import Experience from "./components/Experience";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import { webglTier } from "./three/gpu";
-import { scene3d, syncScroll, useSceneReady } from "./three/store";
+import { scene3d, syncScroll } from "./three/store";
 
 const CaseStudy = lazy(() => import("./components/CaseStudy"));
 const Cosmos3D = lazy(() => import("./three/Cosmos3D"));
@@ -51,7 +51,6 @@ export default function App() {
   const [section, setSection] = useState("home");
   const caseId = useCaseRoute();
   const tier = useMemo(webglTier, []);
-  const sceneReady = useSceneReady();
 
   const [showLoader, setShowLoader] = useState(() => !seen());
 
@@ -141,7 +140,7 @@ export default function App() {
       <Cursor />
       <Nav section={section} />
       <main>
-        <Hero ready={ready} use3d={tier > 0 && sceneReady} />
+        <Hero ready={ready} />
         <Marquee />
         <Statement />
         <Work />

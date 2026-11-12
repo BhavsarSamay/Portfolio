@@ -1,5 +1,3 @@
-import { useSyncExternalStore } from "react";
-
 // Plain mutable state shared between the DOM (scroll, pointer) and the WebGL scene.
 // The scene reads it every frame, so it must not trigger React renders.
 export const TOTAL = 470; // length of the camera path in world units
@@ -14,25 +12,9 @@ export const scene3d = {
   pointer: { x: 0, y: 0 }, // -0.5..0.5
   camZ: 0,
   camSpeed: 0,
-  anchors: {}, // screen position of each visible celestial body, refreshed every frame
-  pulse: {}, // 0..1 glow/scale bump on a body when content launches from it
   warp: 0, // impulse that stretches stars and widens the lens (case-study dive)
   zoomDir: 1,
 };
-
-// "Ready" is the one piece of state that React does need to know about.
-let ready = false;
-const listeners = new Set();
-export const markReady = () => {
-  if (ready) return;
-  ready = true;
-  listeners.forEach((l) => l());
-};
-const subscribe = (cb) => {
-  listeners.add(cb);
-  return () => listeners.delete(cb);
-};
-export const useSceneReady = () => useSyncExternalStore(subscribe, () => ready, () => false);
 
 export const kickWarp = (dir = 1) => {
   scene3d.warp = 1;

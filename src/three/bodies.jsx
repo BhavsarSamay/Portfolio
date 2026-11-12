@@ -11,7 +11,6 @@ const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 export function Fade({ z, far = 150, near = 6, hero = true, amount = 1, children }) {
   const g = useRef();
   const mats = useRef([]);
-  const v = useMemo(() => new THREE.Vector3(), []);
   useEffect(() => {
     const list = [];
     g.current.traverse((o) => {
@@ -29,29 +28,14 @@ export function Fade({ z, far = 150, near = 6, hero = true, amount = 1, children
     });
     mats.current = list;
   });
-  useFrame((state, dt) => {
-    const key = String(z);
+  useFrame((state) => {
     const d = state.camera.position.z - z;
     const f = clamp((far - d) / (far * 0.3), 0, 1) * clamp((d - near) / near, 0, 1) * (hero ? scene3d.objFade : 1) * amount;
     g.current.visible = f > 0.003;
-    if (!g.current.visible) {
-      delete scene3d.anchors[key];
-      return;
-    }
+    if (!g.current.visible) return;
     for (const [m, kind] of mats.current) {
       if (kind === "u") m.uniforms.uOpacity.value = f;
       else m.opacity = (m.userData.base ?? 1) * f;
-    }
-
-    // Publish where this body is on screen, so page content can launch out of it.
-    const body = g.current.children[0];
-    if (body) {
-      body.getWorldPosition(v).project(state.camera);
-      scene3d.anchors[key] = { key, f, sx: (v.x * 0.5 + 0.5) * state.size.width, sy: (-v.y * 0.5 + 0.5) * state.size.height, ahead: v.z < 1 };
-      // A body briefly swells when content is launched from it.
-      const p = scene3d.pulse[key] || 0;
-      if (p > 0) scene3d.pulse[key] = Math.max(0, p - dt * 1.1);
-      body.scale.setScalar(1 + (p > 0 ? Math.sin(Math.min(1, p) * Math.PI) * 0.09 : 0));
     }
   });
   return <group ref={g}>{children}</group>;

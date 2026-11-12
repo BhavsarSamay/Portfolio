@@ -1,10 +1,9 @@
-import { Suspense, useRef } from "react";
+import { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { useTheme } from "../lib/theme";
 import { scene3d, TOTAL } from "./store";
 import { Stars, Saturn, Mars, Moon, Earth, Sun, Nebula, Galaxy, Asteroids, Wormhole } from "./bodies";
-import Monogram3D from "./Monogram3D";
 
 const damp = THREE.MathUtils.damp;
 
@@ -68,10 +67,6 @@ function Scene({ tier, light }) {
       <Earth position={[13.5, -4.5, -380]} r={5.2} light={light} big={high} />
       <Nebula position={[0, 0, -425]} size={100} colors={nebB} light={light} />
       <Wormhole position={[0, 0, -462]} radius={7.5} color={light ? "#2a64c8" : "#8cd2ff"} light={light} />
-
-      <Suspense fallback={null}>
-        <Monogram3D light={light} />
-      </Suspense>
     </>
   );
 }

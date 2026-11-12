@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { gsap, ease, prefersReducedMotion } from "../lib/motion";
-import { emerge } from "../lib/emerge";
 import { work, workFilters, enterprise } from "../data/work";
 import { openCase } from "../lib/route";
 import Split from "./Split";
@@ -45,8 +44,9 @@ export default function Work() {
         yPercent: 0, duration: 1.2, stagger: 0.04, ease: ease.out,
         scrollTrigger: { trigger: ".work__title", start: "top 85%" },
       });
-      // Veracity rows fly out of the nearest celestial body.
-      gsap.utils.toArray(".ent__row").forEach((row) => emerge(row, { minScale: 0.2, start: "top 94%" }));
+      gsap.utils.toArray(".ent__row").forEach((row) =>
+        gsap.fromTo(row, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.9, ease: ease.out, scrollTrigger: { trigger: row, start: "top 90%" } })
+      );
     }, root);
     return () => ctx.revert();
   }, []);
@@ -57,8 +57,12 @@ export default function Work() {
     const cards = grid.current.querySelectorAll(".card");
     const ctx = gsap.context(() => {
       if (!changed.current) {
-        // Project cards fly out of whichever planet is nearest as they scroll into view.
-        grid.current.querySelectorAll(".grid__item").forEach((li, i) => emerge(li, { delay: (i % 2) * 0.08 }));
+        cards.forEach((c) =>
+          gsap.fromTo(c, { opacity: 0, y: 70, clipPath: "inset(12% 0 0 0)" }, {
+            opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)", duration: 1.1, ease: ease.out, clearProps: "transform,clipPath",
+            scrollTrigger: { trigger: c, start: "top 92%" },
+          })
+        );
       } else {
         gsap.fromTo(cards, { opacity: 0, y: 40, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, stagger: 0.07, ease: ease.out, clearProps: "transform" });
       }
