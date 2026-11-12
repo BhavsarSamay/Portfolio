@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { gsap, ease, prefersReducedMotion } from "../lib/motion";
+import { emerge } from "../lib/emerge";
 import { useVisible } from "../lib/useVisible";
 import Split from "./Split";
 
@@ -52,9 +53,7 @@ export default function Lab() {
         yPercent: 0, duration: 1.2, stagger: 0.04, ease: ease.out,
         scrollTrigger: { trigger: ".lab__title", start: "top 85%" },
       });
-      gsap.utils.toArray(".study").forEach((el, i) =>
-        gsap.fromTo(el, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1, ease: ease.out, scrollTrigger: { trigger: el, start: "top 92%" } })
-      );
+      gsap.utils.toArray(".study").forEach((el, i) => emerge(el, { minScale: 0.16, delay: (i % 2) * 0.1 }));
     }, root);
     return () => ctx.revert();
   }, []);

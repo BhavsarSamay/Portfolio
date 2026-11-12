@@ -14,6 +14,8 @@ export const scene3d = {
   pointer: { x: 0, y: 0 }, // -0.5..0.5
   camZ: 0,
   camSpeed: 0,
+  anchors: {}, // screen position of each visible celestial body, refreshed every frame
+  pulse: {}, // 0..1 glow/scale bump on a body when content launches from it
   warp: 0, // impulse that stretches stars and widens the lens (case-study dive)
   zoomDir: 1,
 };

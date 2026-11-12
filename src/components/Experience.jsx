@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { gsap, ease, prefersReducedMotion } from "../lib/motion";
+import { emerge } from "../lib/emerge";
 import { experience } from "../data/experience";
 
 // Vertical timeline; a connector line draws itself as the section scrolls through.
@@ -13,9 +14,7 @@ export default function Experience() {
         scaleY: 1, ease: "none", transformOrigin: "top",
         scrollTrigger: { trigger: ".xp__list", start: "top 70%", end: "bottom 60%", scrub: true },
       });
-      gsap.utils.toArray(".xp__item").forEach((el) =>
-        gsap.fromTo(el, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1, ease: ease.out, scrollTrigger: { trigger: el, start: "top 85%" } })
-      );
+      gsap.utils.toArray(".xp__item").forEach((el) => emerge(el, { minScale: 0.35, start: "top 90%" }));
     }, root);
     return () => ctx.revert();
   }, []);

@@ -2,7 +2,7 @@ import { useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Center, Text3D } from "@react-three/drei";
 import * as THREE from "three";
-import { scene3d, TOTAL, markReady } from "./store";
+import { scene3d, markReady } from "./store";
 
 // A small studio made of glowing panels, baked once into a reflection map.
 // It is applied only to the monogram so the planets keep their own lighting.
@@ -37,7 +37,8 @@ function useStudioEnv(light) {
     gx.fillRect(0, 0, 128, 128);
     const gt = new THREE.CanvasTexture(gc);
     gt.colorSpace = THREE.SRGBColorSpace;
-    const gm = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: gt, color: new THREE.Color(light ? 2.6 : 2.2, light ? 2.6 : 2.2, light ? 2.6 : 2.2), side: THREE.DoubleSide }));
+    const k = light ? 2.6 : 2.2;
+    const gm = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: gt, color: new THREE.Color(k, k, k), side: THREE.DoubleSide }));
     gm.position.set(0, 0, 10);
     gm.scale.set(22, 14, 1);
     gm.lookAt(0, 0, 0);
@@ -50,74 +51,130 @@ function useStudioEnv(light) {
 }
 
 const damp = THREE.MathUtils.damp;
+const D = 10; // distance in front of the camera while the hero is on screen
 
-// The hero's signature: an extruded metal "SB". It rests beside the headline, leans toward the
-// cursor, and is left behind as the camera moves on through the page.
+// The hero's signature: an extruded metal "SB".
+// Its position and size are read from the page layout every frame, so it always sits in the free space
+// beside the headline (or above it on narrow screens) and scrolls away together with the hero content.
 export default function Monogram3D({ light }) {
   const root = useRef();
+  const inner = useRef();
+  const base = useRef(null);
+  const els = useRef(null);
+  const announced = useRef(false);
   const spin = useRef({ x: 0, y: 0 });
   const env = useStudioEnv(light);
+  const tmp = useMemo(() => new THREE.Vector3(), []);
+  const box = useMemo(() => new THREE.Box3(), []);
 
-  const announced = useRef(false);
   useFrame((state, dt) => {
     const g = root.current;
+
     // The first frame that draws the monogram is when the 2D hero fallback can step aside.
     if (!announced.current) {
       announced.current = true;
       markReady();
     }
-    const aspect = state.size.width / state.size.height;
-    const D = 10;
-    const halfH = Math.tan((state.camera.fov * Math.PI) / 360) * D;
-    const halfW = halfH * aspect;
-    const portrait = aspect < 0.95;
 
-    const s = portrait ? Math.min(halfW * 1.5, halfH * 0.8) / 7.2 : Math.min(halfW * 0.8, halfH * 1.5) / 7.2;
-    g.scale.setScalar(s);
+    // Natural size of the lettering, measured once at scale 1 with no rotation.
+    if (!base.current) {
+      g.scale.setScalar(1);
+      g.quaternion.identity();
+      g.position.set(0, 0, 0);
+      g.updateMatrixWorld(true);
+      const size = box.setFromObject(inner.current).getSize(tmp);
+      if (size.x < 0.01) return;
+      base.current = { w: size.x, h: size.y };
+    }
 
-    // Held in front of the camera during the hero, then left where it is so the camera flies past.
-    const camZ = scene3d.camZ;
-    const z1 = -(scene3d.vh / scene3d.maxScroll) * TOTAL - 4;
+    if (!els.current) {
+      const chars = document.querySelectorAll(".hero__name .line--2 .c");
+      els.current = {
+        name: document.querySelector(".hero__name"),
+        last: chars[chars.length - 1],
+        top: document.querySelector(".hero__top"),
+        bottom: document.querySelector(".hero__bottom"),
+      };
+    }
+    const { name, last, top, bottom } = els.current;
     const t = scene3d.heroT;
-    const camX = t < 1 ? state.camera.position.x : 0;
-    g.position.set(camX + (portrait ? 0 : halfW * 0.56), portrait ? halfH * 0.36 : halfH * 0.04, t < 1 ? camZ - D + 6 * t * t : z1);
-    g.visible = camZ - g.position.z > 0.6;
+    if (!name || !last || !top || !bottom || t >= 1) {
+      g.visible = false;
+      return;
+    }
 
+    // Free space for the monogram, in screen pixels.
+    const W = state.size.width, H = state.size.height;
+    const nr = name.getBoundingClientRect(), br = bottom.getBoundingClientRect(), tr = top.getBoundingClientRect();
+    let left, right, topY, botY;
+    if (W > 900) {
+      // Beside the headline, vertically centred on it.
+      left = last.getBoundingClientRect().right + Math.max(24, W * 0.03);
+      right = br.right;
+      topY = nr.top - nr.height * 0.06;
+      botY = nr.bottom + nr.height * 0.04;
+    } else {
+      // Between the meta line and the headline.
+      left = br.left;
+      right = br.right;
+      topY = tr.bottom + 10;
+      botY = nr.top - 10;
+    }
+    const sw = right - left, sh = botY - topY;
+    if (sw < 80 || sh < 60 || botY < -40) {
+      g.visible = false;
+      return;
+    }
+    g.visible = true;
+
+    // Place it where that rectangle is, at a depth that recedes a little as the hero scrolls away.
+    const cam = state.camera;
+    cam.updateMatrixWorld();
+    const d = D + t * 6;
+    const worldPerPx = (2 * Math.tan((cam.fov * Math.PI) / 360) * d) / H;
+    const cx = (left + right) / 2, cy = (topY + botY) / 2;
+    g.position.set((cx - W / 2) * worldPerPx, -(cy - H / 2) * worldPerPx, -d).applyMatrix4(cam.matrixWorld);
+    const fit = W > 900 ? 0.94 : 0.68; // narrow screens: keep it clearly smaller than the headline
+    g.scale.setScalar(Math.min((sw * fit) / base.current.w, (sh * (fit - 0.04)) / base.current.h) * worldPerPx * (1 - t * 0.25));
+
+    // Faces the viewer, leans gently toward the pointer, and turns away as the hero scrolls off.
     const { x: px, y: py } = scene3d.pointer;
-    spin.current.y = damp(spin.current.y, px * 0.9 + t * 1.6, 3, dt);
-    spin.current.x = damp(spin.current.x, -py * 0.5, 3, dt);
-    g.rotation.y = spin.current.y + Math.sin(state.clock.elapsedTime * 0.35) * 0.12;
-    g.rotation.x = spin.current.x;
-    g.position.y += Math.sin(state.clock.elapsedTime * 0.8) * 0.06;
+    spin.current.y = damp(spin.current.y, px * 0.4 + t * 1.1, 3, dt);
+    spin.current.x = damp(spin.current.x, -py * 0.25, 3, dt);
+    g.quaternion.copy(cam.quaternion);
+    g.rotateY(spin.current.y + Math.sin(state.clock.elapsedTime * 0.35) * 0.08);
+    g.rotateX(spin.current.x);
   });
 
   return (
-    <group ref={root}>
+    <group ref={root} visible={false}>
       {!light && <pointLight position={[-2, 2, 4]} color="#c7ff3d" intensity={14} distance={16} />}
-      <Center>
-        <Text3D
-          font="/fonts/helvetiker_bold.typeface.json"
-          size={2.6}
-          height={0.75}
-          curveSegments={12}
-          bevelEnabled
-          bevelThickness={0.08}
-          bevelSize={0.06}
-          bevelSegments={6}
-          letterSpacing={0.04}
-        >
-          SB
-          <meshPhysicalMaterial
-            color={light ? "#3b4049" : "#a9b2c6"}
-            metalness={1}
-            roughness={0.2}
-            clearcoat={1}
-            clearcoatRoughness={0.12}
-            envMap={env}
-            envMapIntensity={light ? 1.4 : 1.15}
-          />
-        </Text3D>
-      </Center>
+      <group ref={inner}>
+        <Center>
+          <Text3D
+            font="/fonts/helvetiker_bold.typeface.json"
+            size={2.6}
+            height={0.75}
+            curveSegments={12}
+            bevelEnabled
+            bevelThickness={0.08}
+            bevelSize={0.06}
+            bevelSegments={6}
+            letterSpacing={0.04}
+          >
+            SB
+            <meshPhysicalMaterial
+              color={light ? "#3b4049" : "#a9b2c6"}
+              metalness={1}
+              roughness={0.2}
+              clearcoat={1}
+              clearcoatRoughness={0.12}
+              envMap={env}
+              envMapIntensity={light ? 1.4 : 1.15}
+            />
+          </Text3D>
+        </Center>
+      </group>
     </group>
   );
 }

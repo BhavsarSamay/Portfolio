@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap, ease, ScrollTrigger, prefersReducedMotion } from "../lib/motion";
+import { emerge } from "../lib/emerge";
 import { samayProfile } from "../data/samayProfile";
 import { useTheme } from "../lib/theme";
 import Split from "./Split";
@@ -36,10 +37,7 @@ export default function Contact() {
         yPercent: 0, duration: 1.2, stagger: 0.02, ease: ease.out,
         scrollTrigger: { trigger: ".contact__title", start: "top 80%" },
       });
-      gsap.fromTo(".contact__fade", { opacity: 0, y: 30 }, {
-        opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: ease.out,
-        scrollTrigger: { trigger: ".contact__row", start: "top 85%" },
-      });
+      gsap.utils.toArray(".contact__fade").forEach((el, i) => emerge(el, { minScale: 0.3, delay: i * 0.07, start: "top 92%" }));
     }, root);
     return () => ctx.revert();
   }, [theme]);
