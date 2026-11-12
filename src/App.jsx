@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import { Component, lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { ScrollTrigger, prefersReducedMotion } from "./lib/motion";
 import { initScroll, destroyScroll, scrollToTarget } from "./lib/scroll";
 import { useCaseRoute } from "./lib/route";
@@ -16,8 +16,25 @@ import Stack from "./components/Stack";
 import Experience from "./components/Experience";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import { webglTier } from "./three/gpu";
+import { scene3d, syncScroll, useSceneReady } from "./three/store";
 
 const CaseStudy = lazy(() => import("./components/CaseStudy"));
+const Cosmos3D = lazy(() => import("./three/Cosmos3D"));
+
+// If WebGL fails at runtime (lost context, driver bug), fall back to the lightweight 2D scene.
+class Guard3D extends Component {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  componentDidCatch(err) {
+    console.error("3D scene failed, using the 2D fallback:", err);
+  }
+  render() {
+    return this.state.failed ? this.props.fallback : this.props.children;
+  }
+}
 
 const sections = ["home", "work", "lab", "about", "contact"];
 const seen = () => {
@@ -33,6 +50,8 @@ export default function App() {
   const [ready, setReady] = useState(seen);
   const [section, setSection] = useState("home");
   const caseId = useCaseRoute();
+  const tier = useMemo(webglTier, []);
+  const sceneReady = useSceneReady();
 
   const [showLoader, setShowLoader] = useState(() => !seen());
 
@@ -49,6 +68,26 @@ export default function App() {
   useEffect(() => {
     initScroll();
     return destroyScroll;
+  }, []);
+
+  // Feed scroll position and pointer to the WebGL scene (plain state, no React renders).
+  useEffect(() => {
+    syncScroll();
+    const onPointer = (e) => {
+      scene3d.pointer.x = e.clientX / window.innerWidth - 0.5;
+      scene3d.pointer.y = e.clientY / window.innerHeight - 0.5;
+    };
+    window.addEventListener("scroll", syncScroll, { passive: true });
+    window.addEventListener("resize", syncScroll);
+    window.addEventListener("pointermove", onPointer, { passive: true });
+    const ro = new ResizeObserver(syncScroll);
+    ro.observe(document.body);
+    return () => {
+      window.removeEventListener("scroll", syncScroll);
+      window.removeEventListener("resize", syncScroll);
+      window.removeEventListener("pointermove", onPointer);
+      ro.disconnect();
+    };
   }, []);
 
   // Active section for the nav label.
@@ -90,11 +129,19 @@ export default function App() {
     <>
       <a className="skip" href="#work">Skip to work</a>
       {showLoader && <Loader onReady={onReady} onDone={done} />}
-      <Backdrop />
+      {tier > 0 ? (
+        <Guard3D fallback={<Backdrop />}>
+          <Suspense fallback={<Backdrop />}>
+            <Cosmos3D tier={tier} />
+          </Suspense>
+        </Guard3D>
+      ) : (
+        <Backdrop />
+      )}
       <Cursor />
       <Nav section={section} />
       <main>
-        <Hero ready={ready} />
+        <Hero ready={ready} use3d={tier > 0 && sceneReady} />
         <Marquee />
         <Statement />
         <Work />

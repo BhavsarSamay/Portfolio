@@ -667,3 +667,8 @@ main, footer { position: relative; z-index: 1; }
 .form__note--sent { color: var(--sec-fg); font-variation-settings: "wght" 600; }
 .form__note--error { color: var(--sec-fg); }
 .form__note a { text-decoration: underline; text-underline-offset: 3px; }
+
+/* WebGL space scene (replaces the 2D backdrop when the device can handle it) */
+.backdrop3d { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.backdrop3d > div:first-child { position: absolute !important; inset: 0; }
+.backdrop3d canvas { display: block; width: 100% !important; height: 100% !important; }

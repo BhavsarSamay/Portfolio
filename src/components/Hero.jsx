@@ -7,7 +7,7 @@ import ParticleMonogram from "./ParticleMonogram";
 import Magnetic from "./Magnetic";
 import { goTo } from "./Nav";
 
-export default function Hero({ ready }) {
+export default function Hero({ ready, use3d = false }) {
   const root = useRef(null);
   const progress = useRef(0);
   const [theme] = useTheme();
@@ -52,7 +52,7 @@ export default function Hero({ ready }) {
 
   return (
     <section id="home" ref={root} className={`hero${ready ? "" : " hero--wait"}`} aria-label="Introduction">
-      <ParticleMonogram progress={progress} ready={ready} />
+      {!use3d && <ParticleMonogram progress={progress} ready={ready} />}
 
       <div className="hero__content">
         <div className="hero__top mono-label">
