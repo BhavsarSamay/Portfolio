@@ -1,10 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { webglTier } from "../three/gpu";
 import { gsap, ease, prefersReducedMotion } from "../lib/motion";
 import { samayProfile } from "../data/samayProfile";
 import { goTo } from "./Nav";
 
 const time = () =>
   new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Kolkata" }).format(new Date());
+
+const Globe = lazy(() => import("../three/Globe"));
+const has3d = webglTier() > 0;
 
 // The end of the journey: a planet horizon rises at the bottom of the page. The big "SB" has a slow
 // shimmer of its own and lights up under the pointer.
@@ -46,7 +50,14 @@ export default function Footer() {
 
   return (
     <footer ref={root} className="foot" onPointerMove={move} onPointerLeave={leave}>
-      <div className="foot__planet" aria-hidden="true" />
+      {has3d ? (
+        <Suspense fallback={<div className="foot__planet" aria-hidden="true" />}>
+          <Globe />
+          <p className="foot__pin mono-label" aria-hidden="true">Ahmedabad &middot; 23.02&deg;N 72.57&deg;E</p>
+        </Suspense>
+      ) : (
+        <div className="foot__planet" aria-hidden="true" />
+      )}
       <p className="foot__sign mono-label">Thanks for flying this far. See you on the next orbit.</p>
       <p ref={big} className="foot__big" data-t="SB" aria-hidden="true">SB</p>
       <div className="foot__row">

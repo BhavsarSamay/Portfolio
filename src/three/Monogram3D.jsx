@@ -2,7 +2,7 @@ import { useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Center, Text3D } from "@react-three/drei";
 import * as THREE from "three";
-import { scene3d, TOTAL } from "./store";
+import { scene3d, TOTAL, markReady } from "./store";
 
 // A small studio made of glowing panels, baked once into a reflection map.
 // It is applied only to the monogram so the planets keep their own lighting.
@@ -58,8 +58,14 @@ export default function Monogram3D({ light }) {
   const spin = useRef({ x: 0, y: 0 });
   const env = useStudioEnv(light);
 
+  const announced = useRef(false);
   useFrame((state, dt) => {
     const g = root.current;
+    // The first frame that draws the monogram is when the 2D hero fallback can step aside.
+    if (!announced.current) {
+      announced.current = true;
+      markReady();
+    }
     const aspect = state.size.width / state.size.height;
     const D = 10;
     const halfH = Math.tan((state.camera.fov * Math.PI) / 360) * D;
@@ -73,7 +79,8 @@ export default function Monogram3D({ light }) {
     const camZ = scene3d.camZ;
     const z1 = -(scene3d.vh / scene3d.maxScroll) * TOTAL - 4;
     const t = scene3d.heroT;
-    g.position.set(portrait ? 0 : halfW * 0.56, portrait ? halfH * 0.36 : halfH * 0.04, t < 1 ? camZ - D + 6 * t * t : z1);
+    const camX = t < 1 ? state.camera.position.x : 0;
+    g.position.set(camX + (portrait ? 0 : halfW * 0.56), portrait ? halfH * 0.36 : halfH * 0.04, t < 1 ? camZ - D + 6 * t * t : z1);
     g.visible = camZ - g.position.z > 0.6;
 
     const { x: px, y: py } = scene3d.pointer;

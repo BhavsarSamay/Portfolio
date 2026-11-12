@@ -1,6 +1,10 @@
-import { useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef } from "react";
+import { webglTier } from "../three/gpu";
 import { gsap, ease, prefersReducedMotion } from "../lib/motion";
 import { techEcosystem } from "../data/skills";
+
+const Constellation = lazy(() => import("../three/Constellation"));
+const has3d = webglTier() > 0;
 
 // Skills as a typographic composition: each group is a row of large words that fill on hover.
 // No percentages; breadth is shown by grouping.
@@ -32,6 +36,11 @@ export default function Stack() {
         <p className="mono-label">Tools I use</p>
       </div>
       <h2 id="stack-h" className="sr-only">Technology stack</h2>
+      {has3d && (
+        <Suspense fallback={<div className="constellation" />}>
+          <Constellation />
+        </Suspense>
+      )}
       <div>
         {techEcosystem.map((g, i) => (
           <div key={g.group} className="stack__row" data-n={String(i + 1).padStart(2, "0")}>

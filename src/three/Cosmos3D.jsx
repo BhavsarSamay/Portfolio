@@ -1,8 +1,8 @@
-import { Suspense, useEffect, useRef } from "react";
+import { Suspense, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { useTheme } from "../lib/theme";
-import { scene3d, markReady, TOTAL } from "./store";
+import { scene3d, TOTAL } from "./store";
 import { Stars, Saturn, Mars, Moon, Earth, Sun, Nebula, Galaxy, Asteroids, Wormhole } from "./bodies";
 import Monogram3D from "./Monogram3D";
 
@@ -46,11 +46,6 @@ function Rig() {
 }
 
 function Scene({ tier, light }) {
-  useEffect(() => {
-    const id = requestAnimationFrame(() => requestAnimationFrame(markReady));
-    return () => cancelAnimationFrame(id);
-  }, []);
-
   const high = tier > 1;
   const nebA = { dark: [[[120, 100, 255], [60, 190, 215]], [[255, 90, 170], [110, 90, 255]]], light: [[[255, 150, 190], [120, 175, 255]], [[255, 190, 140], [190, 160, 255]]] };
   const nebB = { dark: [[[255, 150, 90], [150, 110, 255]], [[90, 160, 255], [255, 110, 150]]], light: [[[255, 180, 120], [150, 130, 255]], [[130, 190, 255], [255, 160, 190]]] };

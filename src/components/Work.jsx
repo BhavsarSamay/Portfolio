@@ -12,6 +12,29 @@ export default function Work() {
   const [filter, setFilter] = useState("All");
   const changed = useRef(false);
 
+  // 3D tilt: each card leans toward the pointer in real perspective, with its layers at different depths.
+  const tiltCard = useRef(null);
+  const resetTilt = (c) => {
+    if (!c) return;
+    c.classList.remove("is-tilt");
+    c.style.setProperty("--rx", "0deg");
+    c.style.setProperty("--ry", "0deg");
+  };
+  const onTilt = (e) => {
+    if (e.pointerType === "touch") return;
+    const c = e.target.closest?.(".card");
+    if (tiltCard.current && tiltCard.current !== c) resetTilt(tiltCard.current);
+    tiltCard.current = c || null;
+    if (!c) return;
+    const r = c.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+    c.style.setProperty("--rx", `${((0.5 - py) * 9).toFixed(2)}deg`);
+    c.style.setProperty("--ry", `${((px - 0.5) * 11).toFixed(2)}deg`);
+    c.style.setProperty("--gx", `${(px * 100).toFixed(1)}%`);
+    c.style.setProperty("--gy", `${(py * 100).toFixed(1)}%`);
+    c.classList.add("is-tilt");
+  };
+
   const shown = useMemo(() => work.filter((w) => filter === "All" || w.group === filter), [filter]);
 
   useEffect(() => {
@@ -36,7 +59,7 @@ export default function Work() {
       if (!changed.current) {
         cards.forEach((c) =>
           gsap.fromTo(c, { opacity: 0, y: 70, clipPath: "inset(12% 0 0 0)" }, {
-            opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)", duration: 1.1, ease: ease.out,
+            opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)", duration: 1.1, ease: ease.out, clearProps: "transform,clipPath",
             scrollTrigger: { trigger: c, start: "top 92%" },
           })
         );
@@ -64,7 +87,7 @@ export default function Work() {
         <p className="filters__count mono-label" aria-live="polite">{shown.length} shown</p>
       </div>
 
-      <ul className="grid" ref={grid}>
+      <ul className="grid" ref={grid} onPointerMove={onTilt} onPointerLeave={() => resetTilt(tiltCard.current)}>
         {shown.map((p, i) => {
           const pal = palette(p.id);
           return (

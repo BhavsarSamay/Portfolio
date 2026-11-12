@@ -1,4 +1,8 @@
-import { useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef } from "react";
+import { webglTier } from "../three/gpu";
+
+const Diorama = lazy(() => import("../three/Diorama"));
+const tier3d = webglTier();
 
 // Conceptual illustrations for the three Veracity platforms. The real products are under NDA,
 // so these show the idea of each system (dispatch, pipeline, statutory calculation), not the product.
@@ -83,6 +87,18 @@ const art = {
 };
 
 export default function PlatformArt({ id }) {
+  // Capable devices get an interactive 3D diorama; others keep the lightweight SVG illustration.
+  if (tier3d > 0) {
+    return (
+      <Suspense fallback={<div className="dio" style={{ background: themes[id].bg }} />}>
+        <Diorama id={id} />
+      </Suspense>
+    );
+  }
+  return <FlatArt id={id} />;
+}
+
+function FlatArt({ id }) {
   const ref = useRef(null);
   // Entrance animation plays once when the artwork scrolls into view.
   useEffect(() => {

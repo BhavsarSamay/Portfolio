@@ -3,6 +3,7 @@ import { gsap, ease, ScrollTrigger, prefersReducedMotion } from "../lib/motion";
 import { stopScroll, startScroll } from "../lib/scroll";
 import { work } from "../data/work";
 import { origin, closeCase } from "../lib/route";
+import { kickWarp } from "../three/store";
 import Split from "./Split";
 import Cover, { palette } from "./Cover";
 
@@ -22,6 +23,7 @@ export default function CaseStudy({ id }) {
     const prevTitle = document.title;
     document.title = `${p.name} · Samay Bhavsar`;
     stopScroll();
+    kickWarp(1); // the 3D scene dives forward as the project opens
     // Keep keyboard and screen-reader focus inside the open case study.
     const behind = [...document.querySelectorAll("main, footer, .nav")];
     behind.forEach((n) => n.setAttribute("inert", ""));
@@ -53,6 +55,7 @@ export default function CaseStudy({ id }) {
       ctx.revert();
       window.removeEventListener("keydown", onKey);
       document.title = prevTitle;
+      kickWarp(-1); // and pulls back on the way out
       behind.forEach((n) => n.removeAttribute("inert"));
       startScroll();
       origin.el?.focus?.({ preventScroll: true });

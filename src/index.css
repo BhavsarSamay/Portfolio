@@ -672,3 +672,33 @@ main, footer { position: relative; z-index: 1; }
 .backdrop3d { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 .backdrop3d > div:first-child { position: absolute !important; inset: 0; }
 .backdrop3d canvas { display: block; width: 100% !important; height: 100% !important; }
+
+/* 3D project cards */
+@media (hover: hover) and (pointer: fine) {
+  .grid__item { perspective: 1100px; }
+  .card { transform-style: preserve-3d; transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform; }
+  .card.is-tilt { transition: transform 0.12s linear; }
+  .card__media { position: relative; transform: translateZ(28px); box-shadow: 0 34px 60px -34px rgba(0, 0, 0, 0.7); }
+  .card__media::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.35s; background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, 0.3), transparent 55%); }
+  .card.is-tilt .card__media::after { opacity: 1; }
+  .card__meta, .card__tech { transform: translateZ(16px); }
+  .card__name { transform: translateZ(42px); }
+  .card__tag { transform: translateZ(22px); }
+}
+
+/* 3D diorama panels (Veracity platforms) */
+.dio { width: 100%; height: 100%; position: relative; cursor: grab; }
+.dio canvas { display: block; width: 100% !important; height: 100% !important; }
+.ent__row:hover .dio { transform: none; }
+
+/* 3D skills constellation */
+.constellation { position: relative; height: clamp(300px, 38vw, 480px); margin-bottom: clamp(16px, 2.5vw, 32px); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); overflow: hidden; touch-action: pan-y; }
+.constellation canvas { display: block; width: 100% !important; height: 100% !important; touch-action: pan-y !important; }
+.cn-hub { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; font-weight: 500; text-shadow: 0 0 10px var(--bg); }
+.cn-tip { font-family: var(--mono); font-size: 12px; white-space: nowrap; padding: 3px 9px; border-radius: 999px; background: var(--fg); color: var(--bg); }
+
+/* 3D footer globe */
+.foot__globe { position: absolute; left: 0; right: 0; bottom: 0; height: clamp(240px, 34vw, 480px); z-index: -1; pointer-events: none; }
+.foot__globe canvas { display: block; width: 100% !important; height: 100% !important; }
+.foot__pin { position: absolute; left: 50%; bottom: calc(clamp(240px, 34vw, 480px) * 0.3); transform: translateX(-50%); z-index: 1; text-align: center; color: var(--fg); text-shadow: 0 0 12px var(--bg); }
+.foot__row p, .foot__row button, .foot__row a { text-shadow: 0 0 10px var(--bg), 0 0 4px var(--bg); }

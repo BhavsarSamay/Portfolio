@@ -128,7 +128,7 @@ export function Stars({ count, light }) {
 }
 
 // ---------- planets ----------
-function Atmosphere({ r, color, strength = 1, light }) {
+export function Atmosphere({ r, color, strength = 1, light }) {
   const mat = useMemo(
     () =>
       new THREE.ShaderMaterial({
