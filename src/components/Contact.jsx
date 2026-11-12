@@ -29,7 +29,9 @@ export default function Contact() {
     const ctx = gsap.context(() => {
       // The whole closing scene turns lime as it arrives.
       gsap.fromTo(root.current, { "--sec-bg": getComputedStyle(document.documentElement).getPropertyValue("--bg").trim(), "--sec-fg": getComputedStyle(document.documentElement).getPropertyValue("--fg").trim() }, {
-        "--sec-bg": "#C7FF3D", "--sec-fg": "#080808", ease: "none",
+        "--sec-bg": getComputedStyle(document.documentElement).getPropertyValue("--lime").trim(),
+        "--sec-fg": getComputedStyle(document.documentElement).getPropertyValue("--on-brand").trim(),
+        ease: "none",
         scrollTrigger: { trigger: root.current, start: "top 85%", end: "top 25%", scrub: true },
       });
       gsap.fromTo(".contact__title .c", { yPercent: 115 }, {

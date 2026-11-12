@@ -8,8 +8,8 @@ import { techEcosystem } from "../data/skills";
 
 // Skills as a 3D constellation: each group is a bright hub with its technologies orbiting around it,
 // joined by fine lines. Hover a node to read it. No percentages: breadth is shown by grouping.
-const dark = ["#c7ff3d", "#6fd3ff", "#ffb066", "#b79cff", "#ff8ac0"];
-const light = ["#4b7a00", "#0b78b8", "#c05a00", "#6a3fd1", "#c2306f"];
+const dark = ["#7fd3ff", "#ffb35a", "#b79cff", "#ff8ac0", "#8fe8c8"];
+const light = ["#2f4bd8", "#a85600", "#6a3fd1", "#c2306f", "#0f8a6a"];
 const short = ["AI & Agents", "Backend", "Frontend", "Data", "Languages & Tools"];
 
 function Cluster({ group, index, center, color, onHover, hovered }) {

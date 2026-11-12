@@ -22,7 +22,7 @@ export default function FlowStudy({ paused }) {
       ctx.fillStyle = "rgba(17,17,17,0.08)";
       ctx.fillRect(0, 0, s.w, s.h);
       ctx.lineWidth = 1.2;
-      ctx.strokeStyle = "#C7FF3D";
+      ctx.strokeStyle = "#7FD3FF";
       ctx.beginPath();
       for (const q of p) {
         let ang = Math.sin(q.x * sc + t) * 2 + Math.cos(q.y * sc * 1.3 - t) * 2;

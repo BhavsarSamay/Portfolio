@@ -351,7 +351,7 @@ export default function Backdrop() {
         }
         case "wormhole": {
           // Thin rings expand outward and fade, so passing through feels like the scene opening up.
-          const c = L ? (o.z < 8000 ? [90, 140, 0] : [40, 100, 200]) : o.z < 8000 ? [199, 255, 61] : [140, 210, 255];
+          const c = L ? (o.z < 8000 ? [47, 75, 216] : [109, 63, 214]) : o.z < 8000 ? [127, 211, 255] : [169, 155, 255];
           ctx.save();
           ctx.translate(cx, cy);
           for (let i = 0; i < 12; i++) {

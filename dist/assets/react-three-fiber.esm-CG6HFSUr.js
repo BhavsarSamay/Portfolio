@@ -1,4 +1,4 @@
-import{l as Fx,m as Ox,R as en,n as UE,r as xt,j as $n}from"./index-BqFuKdJV.js";/**
+import{l as Fx,m as Ox,R as en,n as UE,r as xt,j as $n}from"./index-C2Bz0xFa.js";/**
  * @license
  * Copyright 2010-2025 Three.js Authors
  * SPDX-License-Identifier: MIT

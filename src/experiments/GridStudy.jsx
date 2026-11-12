@@ -46,7 +46,7 @@ export default function GridStudy({ paused }) {
         d.vy = (d.vy + fy) * 0.78;
         d.x += d.vx;
         d.y += d.vy;
-        ctx.fillStyle = grow > 0.15 ? "#C7FF3D" : "#F3F0E8";
+        ctx.fillStyle = grow > 0.15 ? "#7FD3FF" : "#F3F0E8";
         ctx.globalAlpha = 0.35 + grow * 0.65;
         ctx.beginPath();
         ctx.arc(d.x, d.y, 1.6 + grow * 4.2, 0, 6.283);

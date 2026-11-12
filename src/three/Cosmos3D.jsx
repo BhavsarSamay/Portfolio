@@ -62,11 +62,11 @@ function Scene({ tier, light }) {
       <Moon position={[-14, -5, -148]} r={2.6} light={light} />
       <Galaxy position={[12, 3, -198]} radius={30} count={high ? 5200 : 2400} light={light} />
       <Asteroids position={[11, -3, -242]} spread={9} count={high ? 46 : 24} light={light} />
-      <Wormhole position={[0, 0, -292]} radius={7} color={light ? "#5a8f00" : "#c7ff3d"} light={light} />
+      <Wormhole position={[0, 0, -292]} radius={7} color={light ? "#2f4bd8" : "#7fd3ff"} light={light} />
       <Sun position={[-16, 7, -338]} r={3.2} light={light} />
       <Earth position={[13.5, -4.5, -380]} r={5.2} light={light} big={high} />
       <Nebula position={[0, 0, -425]} size={100} colors={nebB} light={light} />
-      <Wormhole position={[0, 0, -462]} radius={7.5} color={light ? "#2a64c8" : "#8cd2ff"} light={light} />
+      <Wormhole position={[0, 0, -462]} radius={7.5} color={light ? "#6d3fd6" : "#a99bff"} light={light} />
     </>
   );
 }

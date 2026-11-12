@@ -41,12 +41,12 @@ function Planet({ light }) {
       <group position={[0, R * 0.985, R * 0.17]} rotation={[0.17, 0, 0]}>
         <mesh ref={ring} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, 0]}>
           <ringGeometry args={[0.8, 1, 48]} />
-          <meshBasicMaterial color="#c7ff3d" transparent depthWrite={false} blending={THREE.AdditiveBlending} />
+          <meshBasicMaterial color="#ffb35a" transparent depthWrite={false} blending={THREE.AdditiveBlending} />
         </mesh>
         <group ref={pin}>
           <mesh>
             <sphereGeometry args={[0.13, 16, 12]} />
-            <meshBasicMaterial color="#c7ff3d" />
+            <meshBasicMaterial color="#ffb35a" />
           </mesh>
         </group>
       </group>

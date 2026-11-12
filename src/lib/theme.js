@@ -8,12 +8,12 @@ export const getTheme = () => document.documentElement.dataset.theme || "dark";
 // Colours that canvas code needs. CSS reads the same choice through [data-theme].
 export const palettes = {
   dark: {
-    ink: "243,240,232", mono: "#F3F0E8", hot: "#C7FF3D", metaBg: "#080808",
-    glowA: ["199,255,61", 0.045], glowB: ["243,240,232", 0.03], spot: ["199,255,61", 0.06], link: "199,255,61", fill: "#C7FF3D",
+    ink: "243,240,232", mono: "#F3F0E8", hot: "#7FD3FF", metaBg: "#080808",
+    glowA: ["110,170,255", 0.05], glowB: ["243,240,232", 0.03], spot: ["127,211,255", 0.06], link: "127,211,255", fill: "#7FD3FF",
   },
   light: {
-    ink: "8,8,8", mono: "#0B0B0B", hot: "#4F8F00", metaBg: "#F3F0E8",
-    glowA: ["160,220,20", 0.2], glowB: ["8,8,8", 0.035], spot: ["160,220,20", 0.22], link: "58,90,0", fill: "#3A5A00",
+    ink: "8,8,8", mono: "#0B0B0B", hot: "#2F4BD8", metaBg: "#F3F0E8",
+    glowA: ["120,140,255", 0.18], glowB: ["8,8,8", 0.035], spot: ["120,140,255", 0.2], link: "47,75,216", fill: "#2F4BD8",
   },
 };
 export const palette = () => palettes[getTheme()];
