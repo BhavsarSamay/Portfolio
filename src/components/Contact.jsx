@@ -5,7 +5,6 @@ import { useTheme } from "../lib/theme";
 import Split from "./Split";
 import Magnetic from "./Magnetic";
 import RingText from "./RingText";
-import { projectTypes } from "../data/services";
 
 const channels = [
   { label: "Email", value: samayProfile.email, href: `mailto:${samayProfile.email}` },
@@ -59,7 +58,7 @@ export default function Contact() {
     const er = {};
     if (!form.name.trim()) er.name = "Please add your name.";
     if (!emailOk(form.email)) er.email = "Please enter a valid email address.";
-    if (form.message.trim().length < 5) er.message = "Please tell me a little about the project.";
+    if (form.message.trim().length < 5) er.message = "Please write a short message.";
     setErrors(er);
     if (Object.keys(er).length) return;
 
@@ -98,19 +97,20 @@ export default function Contact() {
   return (
     <section id="contact" ref={root} className="contact" aria-labelledby="contact-h">
       <div className="sec__head">
-        <p className="mono-label">[ 09 ] Start a project</p>
+        <p className="mono-label">[ 07 ] Contact</p>
         <p className="mono-label">Remote · Ahmedabad, IN</p>
       </div>
 
       <h2 id="contact-h" className="contact__title">
-        <Split text="Got an idea?" />
-        <Split text="Let’s build it." className="it" />
+        <Split text="Have something" />
+        <Split text="interesting" className="it" />
+        <Split text="in mind?" />
       </h2>
 
       <div className="contact__cta contact__fade">
-        <Magnetic as="a" href={`mailto:${samayProfile.email}?subject=${encodeURIComponent("New project")}`} className="orb" data-cursor="Write" strength={0.4}>
-          <RingText text="Start a project · Email me · " className="orb__ring" />
-          <span>Email me</span>
+        <Magnetic as="a" href={`mailto:${samayProfile.email}`} className="orb" data-cursor="Write" strength={0.4}>
+          <RingText text="Let's talk · Say hello · Get in touch · " className="orb__ring" />
+          <span>Say hello</span>
           <i aria-hidden="true">↗</i>
         </Magnetic>
       </div>
@@ -134,23 +134,7 @@ export default function Contact() {
         </ul>
 
         <form className="form contact__fade" onSubmit={submit} noValidate>
-          <p className="form__lead">Tell me what you&rsquo;re building. <em>I reply to every message.</em></p>
-          <fieldset className="form__types">
-            <legend>What do you need?</legend>
-            <div role="group">
-              {projectTypes.map((t) => (
-                <button
-                  key={t}
-                  type="button"
-                  className="chip"
-                  aria-pressed={form.project === t}
-                  onClick={() => setForm((f) => ({ ...f, project: f.project === t ? "" : t }))}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
-          </fieldset>
+          <p className="form__lead">Or write from here.</p>
           <label>
             <span>Name</span>
             <input value={form.name} onChange={set("name")} autoComplete="name" aria-invalid={!!errors.name} aria-describedby={errors.name ? "e-name" : undefined} />
@@ -162,8 +146,8 @@ export default function Contact() {
             {errors.email && <em id="e-email" role="alert">{errors.email}</em>}
           </label>
           <label>
-            <span>About the project</span>
-            <textarea rows="4" value={form.message} onChange={set("message")} placeholder="The idea, who it's for, and when you'd like it live." aria-invalid={!!errors.message} aria-describedby={errors.message ? "e-msg" : undefined} />
+            <span>Message</span>
+            <textarea rows="4" value={form.message} onChange={set("message")} aria-invalid={!!errors.message} aria-describedby={errors.message ? "e-msg" : undefined} />
             {errors.message && <em id="e-msg" role="alert">{errors.message}</em>}
           </label>
           {/* Honeypot: hidden from people, tempting to bots. */}
@@ -184,7 +168,7 @@ export default function Contact() {
                 <a href={`mailto:${samayProfile.email}`}>{samayProfile.email}</a>.
               </>
             )}
-            {(status === "idle" || status === "sending") && "Your message goes straight to my inbox. I'll reply by email to set up a short call."}
+            {(status === "idle" || status === "sending") && "Your message goes straight to my inbox and I'll reply by email."}
           </p>
         </form>
       </div>

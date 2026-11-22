@@ -3,11 +3,10 @@ import { scrollToTarget, stopScroll, startScroll } from "../lib/scroll";
 import { useTheme } from "../lib/theme";
 
 const links = [
-  { id: "services", label: "Services" },
   { id: "work", label: "Work" },
-  { id: "process", label: "Process" },
   { id: "about", label: "About" },
-  { id: "faq", label: "FAQ" },
+  { id: "experience", label: "Experience" },
+  { id: "lab", label: "Lab" },
 ];
 
 // Scrolls without writing section hashes into the URL, so a refresh stays where you are.
@@ -98,7 +97,7 @@ export default function Nav({ section }) {
         <span className="nav__div" aria-hidden="true" />
         <ThemeSwitch />
         <a className="nav__cta" href="#contact" onClick={(e) => go(e, "contact")}>
-          Start a project <span aria-hidden="true">↗</span>
+          Say hello <span aria-hidden="true">↗</span>
         </a>
         <button type="button" className="nav__menu" aria-expanded={open} aria-controls="nav-sheet" onClick={() => setOpen((o) => !o)}>
           <span>{open ? "Close" : "Menu"}</span>
@@ -117,7 +116,7 @@ export default function Nav({ section }) {
           ))}
         </ol>
         <a className="btn btn--solid nav__sheet-cta" href="#contact" onClick={(e) => go(e, "contact")}>
-          Start a project <span aria-hidden="true" className="btn__ic">↗</span>
+          Say hello <span aria-hidden="true" className="btn__ic">↗</span>
         </a>
       </nav>
     </header>

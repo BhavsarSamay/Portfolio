@@ -73,7 +73,7 @@ export default function Work() {
   return (
     <section id="work" ref={root} className="work" aria-labelledby="work-h">
       <div className="sec__head">
-        <p className="mono-label">[ 02 ] Selected work</p>
+        <p className="mono-label">[ 01 ] Selected work</p>
         <p className="mono-label">{String(work.length).padStart(2, "0")} projects</p>
       </div>
       <h2 id="work-h" className="work__title"><Split text="Selected" className="inl" /> <Split text="work" className="inl it" /></h2>

@@ -23,7 +23,7 @@ export default function Experience() {
   return (
     <section id="experience" ref={root} className="xp" aria-labelledby="xp-h">
       <div className="sec__head">
-        <p className="mono-label">[ 05 ] Experience</p>
+        <p className="mono-label">[ 04 ] Experience</p>
         <p className="mono-label">2024 to now</p>
       </div>
       <h2 id="xp-h" className="sr-only">Professional experience</h2>

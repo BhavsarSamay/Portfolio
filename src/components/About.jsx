@@ -40,7 +40,7 @@ export default function About() {
   return (
     <section id="about" ref={root} className="about" aria-labelledby="about-h">
       <div className="sec__head">
-        <p className="mono-label">[ 04 ] About</p>
+        <p className="mono-label">[ 03 ] About</p>
         <p className="mono-label">{samayProfile.location}</p>
       </div>
 

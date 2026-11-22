@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { useTheme } from "../lib/theme";
@@ -89,11 +89,28 @@ function Scene({ tier, light, onReady }) {
   );
 }
 
+// True while the particle hero's black stage fully covers the viewport (it scrolls away after
+// scrollY = innerHeight; resume a little before that).
+function useHeroCover() {
+  const [covered, setCovered] = useState(() => typeof window === "undefined" || scrollY < innerHeight * 0.95);
+  useEffect(() => {
+    const check = () => setCovered(scrollY < innerHeight * 0.95);
+    addEventListener("scroll", check, { passive: true });
+    addEventListener("resize", check);
+    return () => {
+      removeEventListener("scroll", check);
+      removeEventListener("resize", check);
+    };
+  }, []);
+  return covered;
+}
+
 // Fixed full-screen WebGL layer behind the whole page.
 export default function Cosmos3D({ tier, onShown }) {
   const [theme] = useTheme();
   const light = theme === "light";
   const [on, setOn] = useState(false);
+  const covered = useHeroCover();
   const reveal = () => {
     setOn(true);
     // once the fade has finished the lightweight 2D scene underneath can be dropped
@@ -103,6 +120,8 @@ export default function Cosmos3D({ tier, onShown }) {
     <div className={`backdrop3d${on ? " is-on" : ""}`} aria-hidden="true">
       <Canvas
         flat
+        // Warm up once, then sleep while the hero's opaque stage hides this scene (saves a full-screen render).
+        frameloop={on && covered ? "never" : "always"}
         dpr={[1, tier > 1 ? 1.5 : 1]}
         camera={{ fov: 55, near: 0.1, far: 800, position: [0, 0, 0] }}
         gl={{ alpha: true, antialias: tier > 1, powerPreference: "high-performance" }}

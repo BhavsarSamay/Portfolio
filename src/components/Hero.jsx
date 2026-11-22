@@ -1,101 +1,147 @@
-import { useEffect, useLayoutEffect, useRef } from "react";
-import { gsap, ease, ScrollTrigger, prefersReducedMotion } from "../lib/motion";
+import { Component, lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { ScrollTrigger, prefersReducedMotion } from "../lib/motion";
 import { samayProfile } from "../data/samayProfile";
-import { useTheme, palettes } from "../lib/theme";
-import Split from "./Split";
-import ParticleMonogram from "./ParticleMonogram";
-import Magnetic from "./Magnetic";
+import { PORTRAIT_SRC } from "../hero/sampleParticles";
 import { goTo } from "./Nav";
 
-export default function Hero({ ready }) {
+const ParticlePortrait = lazy(() => import("../hero/ParticlePortrait"));
+
+const CLAIM = ["From the first sketch", "to the system that runs it."];
+const FACTS = [
+  { v: "3", l: "Production platforms architected at Veracity Supply Chain" },
+  { v: "Feb ’26", l: "Star Performer of the Month at SaturnCube" },
+  { v: "AI → Web", l: "Agents, RAG, real-time, payments, shipped end to end" },
+];
+
+// If WebGL fails at runtime, show the static reference instead of a blank stage.
+class PortraitGuard extends Component {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  componentDidCatch(err) {
+    console.error("Particle portrait failed, showing the static portrait:", err);
+  }
+  render() {
+    return this.state.failed ? this.props.fallback : this.props.children;
+  }
+}
+
+// Cinematic opening: a portrait made of particles, centred on black. The section is two
+// viewports tall with a sticky stage, so the portrait holds still while scroll bursts it apart;
+// the burst is fully reversible. Progress is written to a ref and a CSS variable, never to state.
+export default function Hero({ ready, tier }) {
   const root = useRef(null);
   const progress = useRef(0);
-  const [theme] = useTheme();
+  const readyRef = useRef(ready);
+  readyRef.current = ready;
+  const [failed, setFailed] = useState(false);
+  const use3d = tier > 0 && !failed;
 
-  // Scroll-linked: monogram disperses, name fills in, content drifts up.
   useEffect(() => {
-    if (prefersReducedMotion()) return;
-    const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: root.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
-        onUpdate: (s) => (progress.current = s.progress),
-      });
-      // The serif surname warms to the accent as the hero scrolls away.
-      gsap.to(".hero__name .line--2 .c", {
-        color: palettes[theme].fill,
-        stagger: 0.04,
-        scrollTrigger: { trigger: root.current, start: "top top", end: "60% top", scrub: true },
-      });
-      gsap.to(".hero__content", {
-        yPercent: -14,
-        ease: "none",
-        scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true },
-      });
-    }, root);
-    return () => ctx.revert();
-  }, [theme]);
+    const el = root.current;
+    const st = ScrollTrigger.create({
+      trigger: el,
+      start: "top top",
+      end: "bottom bottom",
+      onUpdate: (s) => {
+        progress.current = s.progress;
+        el.style.setProperty("--p", s.progress.toFixed(4));
+      },
+    });
+    return () => st.kill();
+  }, []);
 
-  // Intro sequence, triggered once the loader hands over.
-  useLayoutEffect(() => {
-    if (!ready || prefersReducedMotion()) return;
-    const ctx = gsap.context(() => {
-      gsap
-        .timeline({ defaults: { ease: ease.out } })
-        .fromTo(".hero__name .c", { yPercent: 115, "--wg": 300, "--wd": 85 }, { yPercent: 0, "--wg": 500, "--wd": 100, duration: 1.5, stagger: 0.045 }, 0)
-        .fromTo(".hero__fade", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.08 }, 0.5)
-        .fromTo(".hero__rule", { scaleX: 0 }, { scaleX: 1, duration: 1.3, ease: ease.inOut }, 0.3);
-    }, root);
-    return () => ctx.revert();
+  // Once the intro type has landed, drop its transitions so text tracks the scroll exactly.
+  useEffect(() => {
+    if (!ready) return;
+    const t = setTimeout(() => root.current?.classList.add("is-live"), 3600);
+    return () => clearTimeout(t);
   }, [ready]);
 
-  return (
-    <section id="home" ref={root} className={`hero${ready ? "" : " hero--wait"}`} aria-label="Introduction">
-      <ParticleMonogram progress={progress} ready={ready} />
+  const onFail = useCallback(() => setFailed(true), []);
+  const fallback = <img className="phero__still" src={PORTRAIT_SRC} alt="" width="940" height="1260" decoding="async" />;
 
-      <div className="hero__content">
-        <div className="hero__top mono-label">
-          <span className="hero__fade">{samayProfile.location}</span>
-          <span className="hero__fade hero__disc">AI agents / MVPs / Product / Web</span>
-          <span className="hero__fade hero__avail">
-            <i aria-hidden="true" /> Open for new projects
-          </span>
+  return (
+    <>
+    <section
+      id="home"
+      ref={root}
+      className={`phero${ready ? " is-ready" : ""}${prefersReducedMotion() ? " is-still" : ""}`}
+      aria-labelledby="hero-h"
+    >
+      <div className="phero__stage">
+        <div className="phero__bg" aria-hidden="true" />
+
+        {use3d ? (
+          <PortraitGuard fallback={fallback}>
+            <Suspense fallback={null}>
+              <ParticlePortrait progress={progress} ready={readyRef} tier={tier} onFail={onFail} />
+            </Suspense>
+          </PortraitGuard>
+        ) : (
+          <div className="phero__canvas" aria-hidden="true">{fallback}</div>
+        )}
+
+        <div className="phero__ui">
+          <div className="phero__top mono-label">
+            <span>{samayProfile.location}</span>
+            <span className="phero__avail"><i aria-hidden="true" />Open to new work</span>
+          </div>
+
+          <h1 id="hero-h" className="phero__name">
+            <span className="phero__first">Samay</span>
+            <span className="phero__last">Bhavsar</span>
+          </h1>
+
+          <div className="phero__foot">
+            <p className="phero__role mono-label">Software Engineer / Full-Stack Developer</p>
+            <p className="phero__intro">
+              I build products <em>and the systems that run them,</em> from AI agents to full-stack platforms.
+            </p>
+          </div>
+
+          <a
+            className="phero__scroll"
+            href="#work"
+            onClick={(e) => {
+              e.preventDefault();
+              goTo("work");
+            }}
+          >
+            <span className="mono-label">Scroll</span>
+            <i aria-hidden="true" />
+          </a>
         </div>
 
-        <h1 className="hero__name">
-          <Split text="Samay" className="line line--1" />
-          <Split text="Bhavsar" className="line line--2 it" />
-        </h1>
-
-        <div className="hero__rule" aria-hidden="true" />
-
-        <div className="hero__bottom">
-          <div className="hero__copy">
-            <p className="hero__role hero__fade">Product engineer for startup founders</p>
-            <p className="hero__line hero__fade">I turn your idea into a shipped product, <em>built to keep running.</em></p>
-          </div>
-          <div className="hero__cta hero__fade">
-            <Magnetic
-              as="a"
-              href="#contact"
-              className="btn btn--solid"
-              data-cursor="Start"
-              onClick={(e) => { e.preventDefault(); goTo("contact"); }}
-            >
-              Start a project <span aria-hidden="true" className="btn__ic">↗</span>
-            </Magnetic>
-            <a
-              href="#work"
-              className="btn btn--ghost"
-              onClick={(e) => { e.preventDefault(); goTo("work"); }}
-            >
-              See the work <span aria-hidden="true" className="btn__ic btn__arrow">↓</span>
-            </a>
-          </div>
+        {/* As the portrait scatters, a statement and three credentials condense out of the particles.
+            Each piece has its own entry point (--at) along the hero's scroll progress (--p). */}
+        <div className="phero__reveal">
+          <p className="phero__kicker mono-label" style={{ "--at": 0.55 }}>Product &amp; engineering, in one person</p>
+          <p className="phero__claim">
+            <span className="sr-only">{CLAIM.join(" ")}</span>
+            <span aria-hidden="true">
+              {CLAIM.map((line, li) => (
+                <span key={li} className={`phero__claim-line${li === 1 ? " is-it" : ""}`}>
+                  {line.split(" ").map((w, wi) => (
+                    <span key={wi} className="phero__w" style={{ "--at": 0.64 + (li * 4 + wi) * 0.008 }}>{w} </span>
+                  ))}
+                </span>
+              ))}
+            </span>
+          </p>
+          <ul className="phero__facts">
+            {FACTS.map((f, i) => (
+              <li key={f.l} style={{ "--at": 0.7 + i * 0.03 }}>
+                <strong>{f.v}</strong>
+                <span>{f.l}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>
+    <div className="phero-fade" aria-hidden="true" />
+    </>
   );
 }

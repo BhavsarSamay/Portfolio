@@ -62,7 +62,7 @@ export default function Lab() {
   return (
     <section id="lab" ref={root} className="lab" aria-labelledby="lab-h">
       <div className="sec__head">
-        <p className="mono-label">[ 07 ] Motion lab</p>
+        <p className="mono-label">[ 06 ] Motion lab</p>
         <button type="button" className="chip" aria-pressed={paused} onClick={() => setPaused((p) => !p)}>
           {paused ? "Resume motion" : "Pause motion"}
         </button>
