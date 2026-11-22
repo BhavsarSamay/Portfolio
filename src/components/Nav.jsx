@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import { scrollToTarget, stopScroll, startScroll } from "../lib/scroll";
 import { useTheme } from "../lib/theme";
-import { samayProfile } from "../data/samayProfile";
 
 const links = [
+  { id: "services", label: "Services" },
   { id: "work", label: "Work" },
-  { id: "lab", label: "Lab" },
+  { id: "process", label: "Process" },
   { id: "about", label: "About" },
-  { id: "stack", label: "Skills" },
-  { id: "experience", label: "Experience", short: "Exp" },
-  { id: "contact", label: "Contact" },
+  { id: "faq", label: "FAQ" },
 ];
 
 // Scrolls without writing section hashes into the URL, so a refresh stays where you are.
@@ -99,8 +97,8 @@ export default function Nav({ section }) {
         </nav>
         <span className="nav__div" aria-hidden="true" />
         <ThemeSwitch />
-        <a className="nav__cta" href={`mailto:${samayProfile.email}`}>
-          Say hello <span aria-hidden="true">↗</span>
+        <a className="nav__cta" href="#contact" onClick={(e) => go(e, "contact")}>
+          Start a project <span aria-hidden="true">↗</span>
         </a>
         <button type="button" className="nav__menu" aria-expanded={open} aria-controls="nav-sheet" onClick={() => setOpen((o) => !o)}>
           <span>{open ? "Close" : "Menu"}</span>
@@ -118,8 +116,8 @@ export default function Nav({ section }) {
             </li>
           ))}
         </ol>
-        <a className="btn btn--solid nav__sheet-cta" href={`mailto:${samayProfile.email}`}>
-          Say hello <span aria-hidden="true" className="btn__ic">↗</span>
+        <a className="btn btn--solid nav__sheet-cta" href="#contact" onClick={(e) => go(e, "contact")}>
+          Start a project <span aria-hidden="true" className="btn__ic">↗</span>
         </a>
       </nav>
     </header>

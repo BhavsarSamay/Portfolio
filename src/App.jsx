@@ -9,7 +9,10 @@ import Backdrop from "./components/Backdrop";
 import Hero from "./components/Hero";
 import Marquee from "./components/Marquee";
 import Statement from "./components/Statement";
+import Services from "./components/Services";
 import Work from "./components/Work";
+import Process from "./components/Process";
+import Faq from "./components/Faq";
 import Lab from "./components/Lab";
 import About from "./components/About";
 import Stack from "./components/Stack";
@@ -37,7 +40,7 @@ class Guard3D extends Component {
   }
 }
 
-const sections = ["home", "work", "lab", "about", "contact"];
+const sections = ["home", "services", "work", "process", "about", "faq", "contact"];
 const seen = () => {
   if (prefersReducedMotion()) return true;
   try {
@@ -108,7 +111,7 @@ export default function App() {
 
   // Active section for the nav label.
   useEffect(() => {
-    const els = [...sections, "stack", "experience"].map((id) => document.getElementById(id)).filter(Boolean);
+    const els = [...sections, "experience", "stack", "lab"].map((id) => document.getElementById(id)).filter(Boolean);
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -143,7 +146,7 @@ export default function App() {
 
   return (
     <>
-      <a className="skip" href="#work">Skip to work</a>
+      <a className="skip" href="#services">Skip to services</a>
       {showLoader && <Loader onReady={onReady} onDone={done} />}
       {/* The light 2D scene is always there first; the 3D scene fades in over it after the intro. */}
       {(tier === 0 || !cosmosOn) && <Backdrop />}
@@ -161,11 +164,14 @@ export default function App() {
         <Hero ready={ready} />
         <Marquee />
         <Statement />
+        <Services />
         <Work />
-        <Lab />
+        <Process />
         <About />
-        <Stack />
         <Experience />
+        <Stack />
+        <Lab />
+        <Faq />
         <Contact />
       </main>
       <Footer />

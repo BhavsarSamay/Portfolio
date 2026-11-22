@@ -58,9 +58,9 @@ export default function Hero({ ready }) {
       <div className="hero__content">
         <div className="hero__top mono-label">
           <span className="hero__fade">{samayProfile.location}</span>
-          <span className="hero__fade hero__disc">Product / Systems / Full-Stack / AI</span>
+          <span className="hero__fade hero__disc">AI agents / MVPs / Product / Web</span>
           <span className="hero__fade hero__avail">
-            <i aria-hidden="true" /> Open to conversations
+            <i aria-hidden="true" /> Open for new projects
           </span>
         </div>
 
@@ -73,12 +73,18 @@ export default function Hero({ ready }) {
 
         <div className="hero__bottom">
           <div className="hero__copy">
-            <p className="hero__role hero__fade">Product Manager &amp; Full-Stack Engineer</p>
-            <p className="hero__line hero__fade">I build products, <em>and the systems that run them.</em></p>
+            <p className="hero__role hero__fade">Product engineer for startup founders</p>
+            <p className="hero__line hero__fade">I turn your idea into a shipped product, <em>built to keep running.</em></p>
           </div>
           <div className="hero__cta hero__fade">
-            <Magnetic as="a" href={`mailto:${samayProfile.email}`} className="btn btn--solid" data-cursor="Write">
-              Say hello <span aria-hidden="true" className="btn__ic">↗</span>
+            <Magnetic
+              as="a"
+              href="#contact"
+              className="btn btn--solid"
+              data-cursor="Start"
+              onClick={(e) => { e.preventDefault(); goTo("contact"); }}
+            >
+              Start a project <span aria-hidden="true" className="btn__ic">↗</span>
             </Magnetic>
             <a
               href="#work"

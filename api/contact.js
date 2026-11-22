@@ -67,6 +67,7 @@ export default async function handler(req, res) {
   const name = oneLine(data.name ?? "");
   const email = oneLine(data.email ?? "");
   const message = String(data.message ?? "").trim();
+  const project = oneLine(data.project ?? "").slice(0, 60);
 
   if (!name || name.length > 100) return send(res, 400, { ok: false, error: "Please enter your name." });
   if (!EMAIL_RE.test(email) || email.length > 200) return send(res, 400, { ok: false, error: "Please enter a valid email address." });
@@ -91,9 +92,10 @@ export default async function handler(req, res) {
         from,
         to: [to],
         reply_to: email,
-        subject: `Portfolio message from ${name}`,
-        text: `${message}\n\n-- \n${name} <${email}>`,
+        subject: project ? `New project (${project}) from ${name}` : `Portfolio message from ${name}`,
+        text: `${project ? `Project type: ${project}\n\n` : ""}${message}\n\n-- \n${name} <${email}>`,
         html: `<div style="font-family:system-ui,sans-serif;font-size:15px;line-height:1.6;color:#111">
+          ${project ? `<p style="margin:0 0 12px;color:#555">Project type: <strong>${escapeHtml(project)}</strong></p>` : ""}
           <p style="white-space:pre-wrap;margin:0 0 16px">${escapeHtml(message)}</p>
           <hr style="border:none;border-top:1px solid #ddd;margin:16px 0" />
           <p style="margin:0;color:#555">From <strong>${escapeHtml(name)}</strong> (<a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a>)<br/>Sent from your portfolio contact form. Reply to answer them directly.</p>

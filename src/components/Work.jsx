@@ -73,7 +73,7 @@ export default function Work() {
   return (
     <section id="work" ref={root} className="work" aria-labelledby="work-h">
       <div className="sec__head">
-        <p className="mono-label">[ 01 ] Selected work</p>
+        <p className="mono-label">[ 02 ] Selected work</p>
         <p className="mono-label">{String(work.length).padStart(2, "0")} projects</p>
       </div>
       <h2 id="work-h" className="work__title"><Split text="Selected" className="inl" /> <Split text="work" className="inl it" /></h2>
@@ -116,7 +116,7 @@ export default function Work() {
       </ul>
       <p className="work__note mono-label">Covers are original generative illustrations of each project&rsquo;s idea, not screenshots.</p>
 
-      <div className="ent">
+      <div className="ent" id="work-veracity">
         <div className="sec__head">
           <p className="mono-label">[ 01b ] Inside Veracity</p>
           <p className="mono-label">Confidential · details limited</p>

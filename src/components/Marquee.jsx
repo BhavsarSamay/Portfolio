@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger, prefersReducedMotion } from "../lib/motion";
 
-const words = ["Product", "Systems", "Full-Stack", "AI Agents", "Real-time", "Compliance", "Marketplaces"];
+const words = ["AI agents", "MVPs", "Web apps", "Product strategy", "Systems design", "Landing pages", "Real-time"];
 
 // Band of outlined type. It drifts on its own and speeds up with scroll velocity.
 export default function Marquee() {

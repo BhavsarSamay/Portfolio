@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { gsap, prefersReducedMotion } from "../lib/motion";
 
-const text = "I turn messy operations into products people actually use, then build the systems that keep them running.";
-const hot = new Set(["products", "systems"]);
+const text = "Founders bring me an idea and a deadline. I turn it into a product people actually use, then build the systems that keep it running.";
+const hot = new Set(["product", "systems"]);
 
 // Manifesto: each word lights up as the sentence scrolls through the viewport.
 export default function Statement() {

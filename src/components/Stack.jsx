@@ -32,7 +32,7 @@ export default function Stack() {
   return (
     <section id="stack" ref={root} className="stack" aria-labelledby="stack-h">
       <div className="sec__head">
-        <p className="mono-label">[ 04 ] Stack</p>
+        <p className="mono-label">[ 06 ] Stack</p>
         <p className="mono-label">Tools I use</p>
       </div>
       <h2 id="stack-h" className="sr-only">Technology stack</h2>

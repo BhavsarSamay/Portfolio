@@ -5,6 +5,7 @@ import { useTheme } from "../lib/theme";
 import Split from "./Split";
 import Magnetic from "./Magnetic";
 import RingText from "./RingText";
+import { projectTypes } from "../data/services";
 
 const channels = [
   { label: "Email", value: samayProfile.email, href: `mailto:${samayProfile.email}` },
@@ -18,7 +19,7 @@ const emailOk = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 export default function Contact() {
   const root = useRef(null);
   const [theme] = useTheme();
-  const [form, setForm] = useState({ name: "", email: "", message: "", website: "" });
+  const [form, setForm] = useState({ name: "", email: "", project: "", message: "", website: "" });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
   const [serverError, setServerError] = useState("");
@@ -58,7 +59,7 @@ export default function Contact() {
     const er = {};
     if (!form.name.trim()) er.name = "Please add your name.";
     if (!emailOk(form.email)) er.email = "Please enter a valid email address.";
-    if (form.message.trim().length < 5) er.message = "Please write a short message.";
+    if (form.message.trim().length < 5) er.message = "Please tell me a little about the project.";
     setErrors(er);
     if (Object.keys(er).length) return;
 
@@ -73,7 +74,7 @@ export default function Contact() {
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.ok) {
         setStatus("sent");
-        setForm({ name: "", email: "", message: "", website: "" });
+        setForm({ name: "", email: "", project: "", message: "", website: "" });
       } else {
         setServerError(data.error || "Something went wrong.");
         setStatus("error");
@@ -97,20 +98,19 @@ export default function Contact() {
   return (
     <section id="contact" ref={root} className="contact" aria-labelledby="contact-h">
       <div className="sec__head">
-        <p className="mono-label">[ 06 ] Contact</p>
-        <p className="mono-label">Ahmedabad, IN</p>
+        <p className="mono-label">[ 09 ] Start a project</p>
+        <p className="mono-label">Remote · Ahmedabad, IN</p>
       </div>
 
       <h2 id="contact-h" className="contact__title">
-        <Split text="Have something" />
-        <Split text="interesting" className="it" />
-        <Split text="in mind?" />
+        <Split text="Got an idea?" />
+        <Split text="Let’s build it." className="it" />
       </h2>
 
       <div className="contact__cta contact__fade">
-        <Magnetic as="a" href={`mailto:${samayProfile.email}`} className="orb" data-cursor="Write" strength={0.4}>
-          <RingText text="Let's talk · Say hello · Get in touch · " className="orb__ring" />
-          <span>Say hello</span>
+        <Magnetic as="a" href={`mailto:${samayProfile.email}?subject=${encodeURIComponent("New project")}`} className="orb" data-cursor="Write" strength={0.4}>
+          <RingText text="Start a project · Email me · " className="orb__ring" />
+          <span>Email me</span>
           <i aria-hidden="true">↗</i>
         </Magnetic>
       </div>
@@ -134,7 +134,23 @@ export default function Contact() {
         </ul>
 
         <form className="form contact__fade" onSubmit={submit} noValidate>
-          <p className="mono-label">Or write from here</p>
+          <p className="form__lead">Tell me what you&rsquo;re building. <em>I reply to every message.</em></p>
+          <fieldset className="form__types">
+            <legend>What do you need?</legend>
+            <div role="group">
+              {projectTypes.map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  className="chip"
+                  aria-pressed={form.project === t}
+                  onClick={() => setForm((f) => ({ ...f, project: f.project === t ? "" : t }))}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+          </fieldset>
           <label>
             <span>Name</span>
             <input value={form.name} onChange={set("name")} autoComplete="name" aria-invalid={!!errors.name} aria-describedby={errors.name ? "e-name" : undefined} />
@@ -146,8 +162,8 @@ export default function Contact() {
             {errors.email && <em id="e-email" role="alert">{errors.email}</em>}
           </label>
           <label>
-            <span>Message</span>
-            <textarea rows="4" value={form.message} onChange={set("message")} aria-invalid={!!errors.message} aria-describedby={errors.message ? "e-msg" : undefined} />
+            <span>About the project</span>
+            <textarea rows="4" value={form.message} onChange={set("message")} placeholder="The idea, who it's for, and when you'd like it live." aria-invalid={!!errors.message} aria-describedby={errors.message ? "e-msg" : undefined} />
             {errors.message && <em id="e-msg" role="alert">{errors.message}</em>}
           </label>
           {/* Honeypot: hidden from people, tempting to bots. */}
@@ -157,7 +173,7 @@ export default function Contact() {
               <input tabIndex={-1} autoComplete="off" value={form.website} onChange={set("website")} />
             </label>
           </div>
-          <button type="submit" className="btn btn--dark" disabled={status === "sending"}>
+          <button type="submit" className="btn btn--solid" disabled={status === "sending"}>
             {status === "sending" ? "Sending…" : "Send message"} <span aria-hidden="true" className="btn__ic">↗</span>
           </button>
           <p className={`form__note form__note--${status}`} role="status" aria-live="polite">
@@ -168,7 +184,7 @@ export default function Contact() {
                 <a href={`mailto:${samayProfile.email}`}>{samayProfile.email}</a>.
               </>
             )}
-            {(status === "idle" || status === "sending") && "Your message is sent straight to my inbox and I'll reply by email."}
+            {(status === "idle" || status === "sending") && "Your message goes straight to my inbox. I'll reply by email to set up a short call."}
           </p>
         </form>
       </div>
