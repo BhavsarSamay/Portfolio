@@ -18,14 +18,14 @@ const DEPTH = 3400; // star tunnel length
 const objects = [
   { type: "saturn", z: 1500, x: 0.84, y: -0.26, r: 190 },
   { type: "mars", z: 2000, x: -0.93, y: -0.4, r: 110 },
-  { type: "nebula", z: 2600, x: -0.35, y: 0.1, r: 720, dark: [[120, 110, 255], [60, 190, 215]], light: [[255, 140, 185], [110, 170, 255]] },
+  { type: "nebula", z: 2600, x: -0.35, y: 0.1, r: 720, dark: [[150, 120, 80], [70, 70, 90]], light: [[235, 200, 150], [210, 205, 195]] },
   { type: "moon", z: 3500, x: -0.86, y: 0.3, r: 140 },
   { type: "galaxy", z: 4600, x: 0.7, y: -0.2, r: 400 },
   { type: "asteroids", z: 5400, x: 0.72, y: 0.2, r: 380 },
   { type: "wormhole", z: 6300, x: 0, y: 0, r: 300 },
   { type: "sun", z: 7200, x: -0.78, y: -0.3, r: 130 },
   { type: "earth", z: 8200, x: 0.74, y: 0.34, r: 240 },
-  { type: "nebula", z: 9100, x: 0.3, y: -0.1, r: 760, dark: [[255, 150, 90], [150, 110, 255]], light: [[255, 175, 120], [140, 120, 255]] },
+  { type: "nebula", z: 9100, x: 0.3, y: -0.1, r: 760, dark: [[160, 125, 80], [70, 72, 92]], light: [[240, 205, 155], [205, 200, 190]] },
   { type: "wormhole", z: 10100, x: 0, y: 0, r: 320 },
 ];
 const Z_TOTAL = 10500;
@@ -326,7 +326,7 @@ export default function Backdrop() {
         }
         case "wormhole": {
           // Thin rings expand outward and fade, so passing through feels like the scene opening up.
-          const c = L ? (o.z < 8000 ? [47, 75, 216] : [109, 63, 214]) : o.z < 8000 ? [230, 201, 138] : [169, 155, 255];
+          const c = L ? (o.z < 8000 ? [140, 106, 46] : [165, 129, 74]) : o.z < 8000 ? [226, 197, 140] : [201, 166, 107];
           ctx.save();
           ctx.translate(cx, cy);
           for (let i = 0; i < 12; i++) {

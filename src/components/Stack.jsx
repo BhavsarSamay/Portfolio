@@ -20,8 +20,8 @@ export default function Stack() {
           scrollTrigger: { trigger: row, start: "top 88%" },
         });
         // Alternate rows slide in opposite directions as they cross the viewport.
-        gsap.fromTo(row.querySelector(".stack__items"), { x: i % 2 ? 60 : -60 }, {
-          x: i % 2 ? -60 : 60, ease: "none",
+        gsap.fromTo(row.querySelector(".stack__items"), { x: i % 2 ? 32 : -32 }, {
+          x: i % 2 ? -32 : 32, ease: "none",
           scrollTrigger: { trigger: row, start: "top bottom", end: "bottom top", scrub: true },
         });
       });

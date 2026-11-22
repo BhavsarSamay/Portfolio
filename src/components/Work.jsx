@@ -28,8 +28,8 @@ export default function Work() {
     if (!c) return;
     const r = c.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
-    c.style.setProperty("--rx", `${((0.5 - py) * 9).toFixed(2)}deg`);
-    c.style.setProperty("--ry", `${((px - 0.5) * 11).toFixed(2)}deg`);
+    c.style.setProperty("--rx", `${((0.5 - py) * 4).toFixed(2)}deg`);
+    c.style.setProperty("--ry", `${((px - 0.5) * 5).toFixed(2)}deg`);
     c.style.setProperty("--gx", `${(px * 100).toFixed(1)}%`);
     c.style.setProperty("--gy", `${(py * 100).toFixed(1)}%`);
     c.classList.add("is-tilt");
@@ -76,7 +76,7 @@ export default function Work() {
         <p className="mono-label">[ 01 ] Selected work</p>
         <p className="mono-label">{String(work.length).padStart(2, "0")} projects</p>
       </div>
-      <h2 id="work-h" className="work__title"><Split text="Work" /></h2>
+      <h2 id="work-h" className="work__title"><Split text="Selected" className="inl" /> <Split text="work" className="inl it" /></h2>
 
       <div className="filters" role="group" aria-label="Filter projects by category">
         {workFilters.map((f) => (

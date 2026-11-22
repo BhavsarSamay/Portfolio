@@ -63,8 +63,8 @@ function Reveal({ onReady }) {
 
 function Scene({ tier, light, onReady }) {
   const high = tier > 1;
-  const nebA = { dark: [[[120, 100, 255], [60, 190, 215]], [[255, 90, 170], [110, 90, 255]]], light: [[[255, 150, 190], [120, 175, 255]], [[255, 190, 140], [190, 160, 255]]] };
-  const nebB = { dark: [[[255, 150, 90], [150, 110, 255]], [[90, 160, 255], [255, 110, 150]]], light: [[[255, 180, 120], [150, 130, 255]], [[130, 190, 255], [255, 160, 190]]] };
+  const nebA = { dark: [[[150, 120, 80], [70, 70, 90]], [[120, 95, 70], [60, 62, 80]]], light: [[[235, 200, 150], [210, 205, 195]], [[240, 215, 170], [215, 205, 190]]] };
+  const nebB = { dark: [[[160, 125, 80], [70, 72, 92]], [[80, 82, 100], [140, 110, 75]]], light: [[[240, 205, 155], [205, 200, 190]], [[215, 208, 195], [235, 210, 165]]] };
 
   return (
     <>
@@ -74,17 +74,17 @@ function Scene({ tier, light, onReady }) {
       <directionalLight position={[-30, 18, 22]} intensity={light ? 1.7 : 2.6} color="#fff4e6" />
       <Stars count={high ? 2400 : 1000} light={light} />
 
-      <Saturn position={[15, 5.5, -48]} r={4.6} light={light} />
-      <Mars position={[-13, 6, -80]} r={2} light={light} />
+      <Saturn position={[21, 7, -48]} r={4.6} light={light} />
+      <Mars position={[-19, 8, -80]} r={2} light={light} />
       <Nebula position={[0, 0, -118]} size={95} colors={nebA} light={light} />
-      <Moon position={[-14, -5, -148]} r={2.6} light={light} />
-      <Galaxy position={[12, 3, -198]} radius={30} count={high ? 5200 : 2400} light={light} />
-      <Asteroids position={[11, -3, -242]} spread={9} count={high ? 46 : 24} light={light} />
-      <Wormhole position={[0, 0, -292]} radius={7} color={light ? "#2f4bd8" : "#e6c98a"} light={light} />
-      <Sun position={[-16, 7, -338]} r={3.2} light={light} />
-      <Earth position={[13.5, -4.5, -380]} r={5.2} light={light} big={high} />
+      <Moon position={[-20, -7, -148]} r={2.6} light={light} />
+      <Galaxy position={[16, 4, -198]} radius={30} count={high ? 5200 : 2400} light={light} />
+      <Asteroids position={[17, -5, -242]} spread={9} count={high ? 46 : 24} light={light} />
+      <Wormhole position={[0, 0, -292]} radius={7} color={light ? "#8c6a2e" : "#e2c58c"} light={light} />
+      <Sun position={[-22, 9, -338]} r={3.2} light={light} />
+      <Earth position={[19, -6.5, -380]} r={5.2} light={light} big={high} />
       <Nebula position={[0, 0, -425]} size={100} colors={nebB} light={light} />
-      <Wormhole position={[0, 0, -462]} radius={7.5} color={light ? "#6d3fd6" : "#a99bff"} light={light} />
+      <Wormhole position={[0, 0, -462]} radius={7.5} color={light ? "#a5814a" : "#c9a66b"} light={light} />
     </>
   );
 }

@@ -31,8 +31,8 @@ export default function Marquee() {
 
   const row = words.map((w, i) => (
     <span key={w} className="marquee__item">
-      <span className={i % 2 ? "hollow" : ""}>{w}</span>
-      <i aria-hidden="true" />
+      <span className={i % 2 ? "it" : ""}>{w}</span>
+      <i aria-hidden="true">✦</i>
     </span>
   ));
 

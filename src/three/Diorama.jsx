@@ -7,9 +7,9 @@ import { useVisible } from "../lib/useVisible";
 // Conceptual 3D dioramas for the three Veracity platforms. The real products are under NDA, so these
 // show the idea of each system (dispatch, pipeline, statutory calculation), not the product itself.
 const palettes = {
-  "gig-platform": { bg: "#E6C98A", ink: "#1b160c", a: "#F3F0E8", mid: "#b8923a", route: "#5b3fd6" },
-  "recruitment-platform": { bg: "#B9A6FF", ink: "#150f2e", a: "#F3F0E8", mid: "#8f7be8" },
-  "payroll-platform": { bg: "#F0A878", ink: "#2a1408", a: "#F3F0E8", mid: "#d9824f" },
+  "gig-platform": { bg: "#D9BC85", ink: "#1b160c", a: "#F6F1E6", mid: "#a8843f", route: "#3a2c12" },
+  "recruitment-platform": { bg: "#ECE6D8", ink: "#141210", a: "#FFFFFF", mid: "#b8a27a" },
+  "payroll-platform": { bg: "#C9C2B3", ink: "#15130f", a: "#F6F1E6", mid: "#8f877a" },
 };
 
 const rng = (seed) => () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;

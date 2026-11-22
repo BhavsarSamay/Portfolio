@@ -27,10 +27,9 @@ export default function Contact() {
   useEffect(() => {
     if (prefersReducedMotion()) return;
     const ctx = gsap.context(() => {
-      // The whole closing scene turns lime as it arrives.
-      gsap.fromTo(root.current, { "--sec-bg": getComputedStyle(document.documentElement).getPropertyValue("--bg").trim(), "--sec-fg": getComputedStyle(document.documentElement).getPropertyValue("--fg").trim() }, {
-        "--sec-bg": getComputedStyle(document.documentElement).getPropertyValue("--lime").trim(),
-        "--sec-fg": getComputedStyle(document.documentElement).getPropertyValue("--on-brand").trim(),
+      // A warm light rises over the closing scene as it arrives.
+      gsap.fromTo(root.current, { "--glow": 0 }, {
+        "--glow": 1,
         ease: "none",
         scrollTrigger: { trigger: root.current, start: "top 85%", end: "top 25%", scrub: true },
       });
@@ -104,8 +103,8 @@ export default function Contact() {
 
       <h2 id="contact-h" className="contact__title">
         <Split text="Have something" />
-        <Split text="interesting" />
-        <Split text="in mind?" className="hollow" />
+        <Split text="interesting" className="it" />
+        <Split text="in mind?" />
       </h2>
 
       <div className="contact__cta contact__fade">
@@ -159,7 +158,7 @@ export default function Contact() {
             </label>
           </div>
           <button type="submit" className="btn btn--dark" disabled={status === "sending"}>
-            {status === "sending" ? "Sending…" : "Send message"} <span aria-hidden="true">↗</span>
+            {status === "sending" ? "Sending…" : "Send message"} <span aria-hidden="true" className="btn__ic">↗</span>
           </button>
           <p className={`form__note form__note--${status}`} role="status" aria-live="polite">
             {status === "sent" && "Thanks, your message is on its way. I'll reply to the email you gave."}

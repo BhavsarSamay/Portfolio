@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { scrollToTarget } from "../lib/scroll";
+import { scrollToTarget, stopScroll, startScroll } from "../lib/scroll";
 import { useTheme } from "../lib/theme";
 import { samayProfile } from "../data/samayProfile";
 
@@ -35,6 +35,25 @@ function ThemeSwitch() {
 // Floating pill: slides away while scrolling down and returns as soon as you scroll up.
 export default function Nav({ section }) {
   const [hidden, setHidden] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  // Mobile menu: locks page scroll while open, closes on Escape or when the viewport grows.
+  useEffect(() => {
+    if (!open) return;
+    stopScroll();
+    document.documentElement.classList.add("menu-open");
+    const onKey = (e) => e.key === "Escape" && setOpen(false);
+    const mq = window.matchMedia("(min-width: 761px)");
+    const onMq = () => mq.matches && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    mq.addEventListener("change", onMq);
+    return () => {
+      startScroll();
+      document.documentElement.classList.remove("menu-open");
+      window.removeEventListener("keydown", onKey);
+      mq.removeEventListener("change", onMq);
+    };
+  }, [open]);
 
   useEffect(() => {
     let last = window.scrollY;
@@ -52,15 +71,18 @@ export default function Nav({ section }) {
   const current = section;
   const go = (e, id) => {
     e.preventDefault();
-    goTo(id);
+    setOpen(false);
+    // Let the scroll lock release before travelling.
+    requestAnimationFrame(() => goTo(id));
   };
 
   return (
-    <header className={`nav${hidden ? " is-hidden" : ""}`}>
+    <header className={`nav${hidden && !open ? " is-hidden" : ""}${open ? " is-open" : ""}`}>
       <div className="nav__pill">
         <a href="#home" className="nav__logo" aria-label="Samay Bhavsar, back to top" onClick={(e) => go(e, "home")}>
-          SB<span>.</span>
+          Samay <em>Bhavsar</em>
         </a>
+        <span className="nav__div" aria-hidden="true" />
         <nav className="nav__links" aria-label="Primary">
           {links.map((l) => (
             <a key={l.id} href={"#" + l.id} className="nav__link" aria-current={current === l.id ? "page" : undefined} onClick={(e) => go(e, l.id)}>
@@ -75,11 +97,31 @@ export default function Nav({ section }) {
             </a>
           ))}
         </nav>
+        <span className="nav__div" aria-hidden="true" />
         <ThemeSwitch />
         <a className="nav__cta" href={`mailto:${samayProfile.email}`}>
           Say hello <span aria-hidden="true">↗</span>
         </a>
+        <button type="button" className="nav__menu" aria-expanded={open} aria-controls="nav-sheet" onClick={() => setOpen((o) => !o)}>
+          <span>{open ? "Close" : "Menu"}</span>
+          <i aria-hidden="true" />
+        </button>
       </div>
+      <nav id="nav-sheet" className="nav__sheet" aria-label="Menu" hidden={!open}>
+        <ol>
+          {links.map((l, i) => (
+            <li key={l.id} style={{ "--i": i }}>
+              <a href={"#" + l.id} aria-current={current === l.id ? "page" : undefined} onClick={(e) => go(e, l.id)}>
+                <span className="mono-label">{String(i + 1).padStart(2, "0")}</span>
+                {l.label}
+              </a>
+            </li>
+          ))}
+        </ol>
+        <a className="btn btn--solid nav__sheet-cta" href={`mailto:${samayProfile.email}`}>
+          Say hello <span aria-hidden="true" className="btn__ic">↗</span>
+        </a>
+      </nav>
     </header>
   );
 }

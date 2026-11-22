@@ -23,8 +23,9 @@ export default function Hero({ ready }) {
         scrub: true,
         onUpdate: (s) => (progress.current = s.progress),
       });
+      // The serif surname warms to the accent as the hero scrolls away.
       gsap.to(".hero__name .line--2 .c", {
-        "--fill": palettes[theme].fill,
+        color: palettes[theme].fill,
         stagger: 0.04,
         scrollTrigger: { trigger: root.current, start: "top top", end: "60% top", scrub: true },
       });
@@ -43,7 +44,7 @@ export default function Hero({ ready }) {
     const ctx = gsap.context(() => {
       gsap
         .timeline({ defaults: { ease: ease.out } })
-        .fromTo(".hero__name .c", { yPercent: 115, "--wg": 200, "--wd": 75 }, { yPercent: 0, "--wg": 800, "--wd": 100, duration: 1.5, stagger: 0.045 }, 0)
+        .fromTo(".hero__name .c", { yPercent: 115, "--wg": 300, "--wd": 85 }, { yPercent: 0, "--wg": 500, "--wd": 100, duration: 1.5, stagger: 0.045 }, 0)
         .fromTo(".hero__fade", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.08 }, 0.5)
         .fromTo(".hero__rule", { scaleX: 0 }, { scaleX: 1, duration: 1.3, ease: ease.inOut }, 0.3);
     }, root);
@@ -64,8 +65,8 @@ export default function Hero({ ready }) {
         </div>
 
         <h1 className="hero__name">
-          <Split text="SAMAY" className="line line--1" />
-          <Split text="BHAVSAR" className="line line--2 hollow" />
+          <Split text="Samay" className="line line--1" />
+          <Split text="Bhavsar" className="line line--2 it" />
         </h1>
 
         <div className="hero__rule" aria-hidden="true" />
@@ -73,18 +74,18 @@ export default function Hero({ ready }) {
         <div className="hero__bottom">
           <div className="hero__copy">
             <p className="hero__role hero__fade">Product Manager &amp; Full-Stack Engineer</p>
-            <p className="hero__line hero__fade">I build products, and the systems that run them.</p>
+            <p className="hero__line hero__fade">I build products, <em>and the systems that run them.</em></p>
           </div>
           <div className="hero__cta hero__fade">
             <Magnetic as="a" href={`mailto:${samayProfile.email}`} className="btn btn--solid" data-cursor="Write">
-              Say hello <span aria-hidden="true">↗</span>
+              Say hello <span aria-hidden="true" className="btn__ic">↗</span>
             </Magnetic>
             <a
               href="#work"
               className="btn btn--ghost"
               onClick={(e) => { e.preventDefault(); goTo("work"); }}
             >
-              See the work <span aria-hidden="true" className="btn__arrow">↓</span>
+              See the work <span aria-hidden="true" className="btn__ic btn__arrow">↓</span>
             </a>
           </div>
         </div>

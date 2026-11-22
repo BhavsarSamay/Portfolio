@@ -2,12 +2,12 @@
 // project's idea (chat, agent graph, telemetry, publishing, inventory, service mesh),
 // not screenshots of the real products.
 const palettes = {
-  siteassist: { bg: "#E6C98A", ink: "#15110a", a: "#F3F0E8" },
-  "agentic-ai": { bg: "#F3F0E8", ink: "#080808", a: "#FF5B2E" },
-  cosmicquest: { bg: "#15183F", ink: "#F3F0E8", a: "#8C9BFF" },
-  "echoing-ideas": { bg: "#FF5B2E", ink: "#080808", a: "#F3F0E8" },
-  bizcart: { bg: "#1A1A1A", ink: "#F3F0E8", a: "#E6C98A" },
-  microservices: { bg: "#0F2A22", ink: "#F3F0E8", a: "#7AFFC1" },
+  siteassist: { bg: "#17140f", ink: "#ECE7DC", a: "#E2C58C" },
+  "agentic-ai": { bg: "#ECE6D8", ink: "#141210", a: "#B08A4A" },
+  cosmicquest: { bg: "#0E0E12", ink: "#ECE7DC", a: "#E2C58C" },
+  "echoing-ideas": { bg: "#D9BC85", ink: "#15110a", a: "#F6F1E6" },
+  bizcart: { bg: "#141416", ink: "#ECE7DC", a: "#E2C58C" },
+  microservices: { bg: "#ECE6D8", ink: "#141210", a: "#B08A4A" },
 };
 
 export function palette(id) {

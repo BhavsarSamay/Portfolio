@@ -56,7 +56,7 @@ export default function BlobStudy({ paused }) {
       ctx.globalAlpha = 1;
       ctx.fillStyle = "#080808";
       ctx.fill(path);
-      ctx.fillStyle = "#2F4BD8";
+      ctx.fillStyle = "#8C6A2E";
       ctx.beginPath();
       ctx.arc(d.c.x + base * 0.28, d.c.y - base * 0.28, base * 0.1, 0, 6.283);
       ctx.fill();

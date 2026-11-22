@@ -67,7 +67,7 @@ export default function Lab() {
           {paused ? "Resume motion" : "Pause motion"}
         </button>
       </div>
-      <h2 id="lab-h" className="lab__title"><Split text="Lab" /></h2>
+      <h2 id="lab-h" className="lab__title"><Split text="Motion" className="inl" /> <Split text="lab" className="inl it" /></h2>
       <p className="lab__intro">
         Four small studies I built for this site: working experiments, not client work. Each one runs only while it is on screen.
       </p>

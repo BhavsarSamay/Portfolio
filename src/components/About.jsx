@@ -46,7 +46,7 @@ export default function About() {
 
       <h2 id="about-h" className="about__head">
         <Split text="Start with the operation." />
-        <Split text="Then build the system." className="hollow" />
+        <Split text="Then build the system." className="it" />
       </h2>
 
       <div className="about__body">
