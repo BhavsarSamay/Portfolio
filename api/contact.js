@@ -81,7 +81,7 @@ export default async function handler(req, res) {
   const from = process.env.CONTACT_FROM_EMAIL || "Portfolio Contact <onboarding@resend.dev>";
   if (!key || !to) {
     console.error("contact: RESEND_API_KEY or CONTACT_TO_EMAIL is not set");
-    return send(res, 500, { ok: false, error: "The contact service is not configured yet." });
+    return send(res, 500, { ok: false, error: "Email delivery is not available right now." });
   }
 
   try {
