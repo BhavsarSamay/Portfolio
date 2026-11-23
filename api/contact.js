@@ -7,12 +7,13 @@
 //   CONTACT_FROM_EMAIL  optional  sender shown in your inbox
 //                                 (default "Portfolio Contact <onboarding@resend.dev>")
 
+import { contactEmail } from "./_email.js";
+
 const WINDOW_MS = 60 * 60 * 1000; // rate-limit window: 1 hour
 const MAX_PER_WINDOW = 5; // messages per visitor per window
 const hits = new Map(); // best effort: memory is per serverless instance
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const oneLine = (s) => String(s).replace(/[\r\n]+/g, " ").trim();
 
 function send(res, status, body) {
@@ -67,7 +68,6 @@ export default async function handler(req, res) {
   const name = oneLine(data.name ?? "");
   const email = oneLine(data.email ?? "");
   const message = String(data.message ?? "").trim();
-  const project = oneLine(data.project ?? "").slice(0, 60);
 
   if (!name || name.length > 100) return send(res, 400, { ok: false, error: "Please enter your name." });
   if (!EMAIL_RE.test(email) || email.length > 200) return send(res, 400, { ok: false, error: "Please enter a valid email address." });
@@ -84,6 +84,8 @@ export default async function handler(req, res) {
     return send(res, 500, { ok: false, error: "Email delivery is not available right now." });
   }
 
+  const mail = contactEmail({ name, email, message });
+
   try {
     const r = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -92,14 +94,9 @@ export default async function handler(req, res) {
         from,
         to: [to],
         reply_to: email,
-        subject: project ? `New project (${project}) from ${name}` : `Portfolio message from ${name}`,
-        text: `${project ? `Project type: ${project}\n\n` : ""}${message}\n\n-- \n${name} <${email}>`,
-        html: `<div style="font-family:system-ui,sans-serif;font-size:15px;line-height:1.6;color:#111">
-          ${project ? `<p style="margin:0 0 12px;color:#555">Project type: <strong>${escapeHtml(project)}</strong></p>` : ""}
-          <p style="white-space:pre-wrap;margin:0 0 16px">${escapeHtml(message)}</p>
-          <hr style="border:none;border-top:1px solid #ddd;margin:16px 0" />
-          <p style="margin:0;color:#555">From <strong>${escapeHtml(name)}</strong> (<a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a>)<br/>Sent from your portfolio contact form. Reply to answer them directly.</p>
-        </div>`,
+        subject: mail.subject,
+        text: mail.text,
+        html: mail.html,
       }),
     });
     if (!r.ok) {
