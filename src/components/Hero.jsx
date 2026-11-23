@@ -118,7 +118,7 @@ export default function Hero({ ready, tier }) {
   }, [ready]);
 
   const onFail = useCallback(() => setFailed(true), []);
-  const fallback = <img className="phero__still" src={PORTRAIT_SRC} alt="" width="940" height="1260" decoding="async" />;
+  const fallback = <img className="phero__still" src={PORTRAIT_SRC} alt="Portrait of Samay Bhavsar" width="940" height="1260" decoding="async" />;
 
   return (
     <>

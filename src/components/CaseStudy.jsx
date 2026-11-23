@@ -90,7 +90,7 @@ export default function CaseStudy({ id }) {
 
       <div className="cs__inner">
         <p className="mono-label cs__fade">{p.index} · {p.group} · Personal project</p>
-        <h1 id="cs-h" className="cs__title" aria-label={p.name}>
+        <h1 id="cs-h" className="cs__title">
           <Split text={p.name} as="span" />
         </h1>
         <p className="cs__lede cs__fade">{p.tagline}</p>

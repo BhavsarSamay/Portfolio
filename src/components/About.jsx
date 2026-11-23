@@ -7,8 +7,8 @@ import Split from "./Split";
 import RingText from "./RingText";
 import Chapter from "./Chapter";
 
-const LEAD = "I'm a Product Manager and Full-Stack Engineer at Veracity Supply Chain Limited, where I design the end-to-end architecture for a gig workforce platform, a recruitment platform and a payroll & compliance platform.";
-const HOT = new Set(["architecture", "platform"]);
+const LEAD = "I'm a software engineer and full-stack developer in Ahmedabad. As Product Manager & Full-Stack Engineer at Veracity Supply Chain Limited, I design the end-to-end architecture for a gig workforce platform, a recruitment platform and a payroll & compliance platform.";
+const HOT = new Set(["architecture", "Ahmedabad"]);
 
 const facts = [
   { v: "3", l: "Platforms architected at Veracity Supply Chain" },
@@ -71,7 +71,7 @@ export default function About() {
 
       <div className="about__body">
         <figure className="about__photo" data-cursor="Hi">
-          <img src="/samay-profile.jpg" alt="Portrait of Samay Bhavsar" width="800" height="1000" loading="lazy" decoding="async" />
+          <img src="/samay-profile.jpg" alt="Samay Bhavsar, software engineer in Ahmedabad" width="800" height="1000" loading="lazy" decoding="async" />
           <figcaption className="mono-label">Samay Bhavsar</figcaption>
         </figure>
         <div className="about__badge" aria-hidden="true"><RingText /><span>SB</span></div>
