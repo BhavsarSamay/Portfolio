@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { gsap, ease, prefersReducedMotion } from "../lib/motion";
 import { useVisible } from "../lib/useVisible";
 import Split from "./Split";
+import Chapter from "./Chapter";
 
 const TypeStudy = lazy(() => import("../experiments/TypeStudy"));
 const FlowStudy = lazy(() => import("../experiments/FlowStudy"));
@@ -61,6 +62,7 @@ export default function Lab() {
 
   return (
     <section id="lab" ref={root} className="lab" aria-labelledby="lab-h">
+      <Chapter n="06" />
       <div className="sec__head">
         <p className="mono-label">[ 06 ] Motion lab</p>
         <button type="button" className="chip" aria-pressed={paused} onClick={() => setPaused((p) => !p)}>

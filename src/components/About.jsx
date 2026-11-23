@@ -5,6 +5,10 @@ import { education } from "../data/experience";
 import { howIThink } from "../data/thinking";
 import Split from "./Split";
 import RingText from "./RingText";
+import Chapter from "./Chapter";
+
+const LEAD = "I'm a Product Manager and Full-Stack Engineer at Veracity Supply Chain Limited, where I design the end-to-end architecture for a gig workforce platform, a recruitment platform and a payroll & compliance platform.";
+const HOT = new Set(["architecture", "platform"]);
 
 const facts = [
   { v: "3", l: "Platforms architected at Veracity Supply Chain" },
@@ -30,6 +34,21 @@ export default function About() {
         scale: 1, ease: "none",
         scrollTrigger: { trigger: ".about__photo", start: "top bottom", end: "bottom top", scrub: true },
       });
+      gsap.fromTo(".about__w", { opacity: 0.16 }, {
+        opacity: 1, stagger: 0.1, ease: "none",
+        scrollTrigger: { trigger: ".about__lead", start: "top 80%", end: "bottom 45%", scrub: 0.6 },
+      });
+      // Numbers count up from zero the first time they come into view.
+      gsap.utils.toArray("[data-count]").forEach((el) => {
+        const end = parseFloat(el.dataset.count);
+        const dp = (el.dataset.count.split(".")[1] || "").length;
+        const o = { v: 0 };
+        gsap.to(o, {
+          v: end, duration: 2, ease: "power3.out",
+          onUpdate: () => (el.textContent = o.v.toFixed(dp)),
+          scrollTrigger: { trigger: el, start: "top 88%" },
+        });
+      });
       gsap.utils.toArray(".about__fade").forEach((el) =>
         gsap.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.9, ease: ease.out, scrollTrigger: { trigger: el, start: "top 90%" } })
       );
@@ -39,6 +58,7 @@ export default function About() {
 
   return (
     <section id="about" ref={root} className="about" aria-labelledby="about-h">
+      <Chapter n="03" />
       <div className="sec__head">
         <p className="mono-label">[ 03 ] About</p>
         <p className="mono-label">{samayProfile.location}</p>
@@ -57,9 +77,10 @@ export default function About() {
         <div className="about__badge" aria-hidden="true"><RingText /><span>SB</span></div>
 
         <div className="about__text">
-          <p className="about__lead about__fade">
-            I&rsquo;m a Product Manager and Full-Stack Engineer at Veracity Supply Chain Limited, where I design the end-to-end architecture
-            for a gig workforce platform, a recruitment platform and a payroll &amp; compliance platform.
+          <p className="about__lead">
+            {LEAD.split(" ").map((w, i) => (
+              <span key={i} className={`about__w${HOT.has(w.replace(/[.,]/g, "")) ? " is-hot" : ""}`}>{w} </span>
+            ))}
           </p>
           <p className="about__fade">
             Before that I was a Node.js backend developer at SaturnCube Technology, building agentic AI workflows, a RAG chatbot,
@@ -74,7 +95,7 @@ export default function About() {
           <ul className="facts">
             {facts.map((f) => (
               <li key={f.l} className="about__fade">
-                <strong>{f.v}</strong>
+                <strong data-count={/^[\d.]+$/.test(f.v) ? f.v : undefined}>{f.v}</strong>
                 <span>{f.l}</span>
               </li>
             ))}

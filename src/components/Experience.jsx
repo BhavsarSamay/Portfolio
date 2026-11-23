@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { gsap, ease, prefersReducedMotion } from "../lib/motion";
 import { experience } from "../data/experience";
+import Chapter from "./Chapter";
 
 // Vertical timeline; a connector line draws itself as the section scrolls through.
 export default function Experience() {
@@ -22,6 +23,7 @@ export default function Experience() {
 
   return (
     <section id="experience" ref={root} className="xp" aria-labelledby="xp-h">
+      <Chapter n="04" />
       <div className="sec__head">
         <p className="mono-label">[ 04 ] Experience</p>
         <p className="mono-label">2024 to now</p>

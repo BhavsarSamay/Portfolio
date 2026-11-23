@@ -10,7 +10,7 @@ export default function Split({ text, as: Tag = "span", className = "", chars = 
             <span className="w">
               {chars
                 ? [...word].map((ch, j) => (
-                    <span className="c" key={j}>
+                    <span className="c" key={j} style={{ "--ci": j }}>
                       {ch}
                     </span>
                   ))

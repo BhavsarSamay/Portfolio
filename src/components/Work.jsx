@@ -1,41 +1,21 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { gsap, ease, prefersReducedMotion } from "../lib/motion";
-import { work, workFilters, enterprise } from "../data/work";
+import { useEffect, useRef } from "react";
+import { gsap, ScrollTrigger, ease, prefersReducedMotion } from "../lib/motion";
+import { work, enterprise } from "../data/work";
 import { openCase } from "../lib/route";
 import Split from "./Split";
-import Cover, { palette } from "./Cover";
+import Cover from "./Cover";
 import PlatformArt from "./PlatformArt";
+import Chapter from "./Chapter";
 
+// Selected work as a pinned, horizontal gallery: the section holds still while scrolling down glides the
+// project panels sideways. Each panel's artwork drifts against the motion (parallax), a counter and a
+// progress line track the position. Small screens and reduced motion get a plain vertical list.
 export default function Work() {
   const root = useRef(null);
-  const grid = useRef(null);
-  const [filter, setFilter] = useState("All");
-  const changed = useRef(false);
-
-  // 3D tilt: each card leans toward the pointer in real perspective, with its layers at different depths.
-  const tiltCard = useRef(null);
-  const resetTilt = (c) => {
-    if (!c) return;
-    c.classList.remove("is-tilt");
-    c.style.setProperty("--rx", "0deg");
-    c.style.setProperty("--ry", "0deg");
-  };
-  const onTilt = (e) => {
-    if (e.pointerType === "touch") return;
-    const c = e.target.closest?.(".card");
-    if (tiltCard.current && tiltCard.current !== c) resetTilt(tiltCard.current);
-    tiltCard.current = c || null;
-    if (!c) return;
-    const r = c.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
-    c.style.setProperty("--rx", `${((0.5 - py) * 4).toFixed(2)}deg`);
-    c.style.setProperty("--ry", `${((px - 0.5) * 5).toFixed(2)}deg`);
-    c.style.setProperty("--gx", `${(px * 100).toFixed(1)}%`);
-    c.style.setProperty("--gy", `${(py * 100).toFixed(1)}%`);
-    c.classList.add("is-tilt");
-  };
-
-  const shown = useMemo(() => work.filter((w) => filter === "All" || w.group === filter), [filter]);
+  const pin = useRef(null);
+  const track = useRef(null);
+  const bar = useRef(null);
+  const count = useRef(null);
 
   useEffect(() => {
     if (prefersReducedMotion()) return;
@@ -47,73 +27,82 @@ export default function Work() {
       gsap.utils.toArray(".ent__row").forEach((row) =>
         gsap.fromTo(row, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.9, ease: ease.out, scrollTrigger: { trigger: row, start: "top 90%" } })
       );
+
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 901px)", () => {
+        const panels = gsap.utils.toArray(".panel", track.current);
+        const distance = () => track.current.scrollWidth - pin.current.clientWidth;
+        const slide = gsap.to(track.current, {
+          x: () => -distance(),
+          ease: "none",
+          scrollTrigger: {
+            trigger: pin.current,
+            start: "top top",
+            end: () => "+=" + distance(),
+            pin: true,
+            scrub: 0.7,
+            invalidateOnRefresh: true,
+            onUpdate: (s) => {
+              if (bar.current) bar.current.style.transform = `scaleX(${s.progress})`;
+              const i = Math.min(panels.length, Math.max(1, Math.round(s.progress * (panels.length - 1)) + 1));
+              if (count.current) count.current.textContent = String(i).padStart(2, "0");
+            },
+          },
+        });
+        // Artwork drifts against the slide; panels sharpen and lift as they reach the centre.
+        panels.forEach((panel) => {
+          gsap.fromTo(panel.querySelector(".panel__art"), { xPercent: 9 }, {
+            xPercent: -9, ease: "none",
+            scrollTrigger: { trigger: panel, containerAnimation: slide, start: "left right", end: "right left", scrub: true },
+          });
+          gsap.fromTo(panel, { "--focus": 0.35 }, {
+            "--focus": 1, ease: "none",
+            scrollTrigger: { trigger: panel, containerAnimation: slide, start: "left 95%", end: "center 55%", scrub: true },
+          });
+        });
+        requestAnimationFrame(() => ScrollTrigger.refresh());
+      });
     }, root);
     return () => ctx.revert();
   }, []);
 
-  // Cards enter on first view and re-enter when the filter changes.
-  useEffect(() => {
-    if (prefersReducedMotion() || !grid.current) return;
-    const cards = grid.current.querySelectorAll(".card");
-    const ctx = gsap.context(() => {
-      if (!changed.current) {
-        cards.forEach((c) =>
-          gsap.fromTo(c, { opacity: 0, y: 70, clipPath: "inset(12% 0 0 0)" }, {
-            opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)", duration: 1.1, ease: ease.out, clearProps: "transform,clipPath",
-            scrollTrigger: { trigger: c, start: "top 92%" },
-          })
-        );
-      } else {
-        gsap.fromTo(cards, { opacity: 0, y: 40, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, stagger: 0.07, ease: ease.out, clearProps: "transform" });
-      }
-    }, grid);
-    return () => ctx.revert();
-  }, [shown]);
-
   return (
     <section id="work" ref={root} className="work" aria-labelledby="work-h">
+      <Chapter n="01" />
       <div className="sec__head">
         <p className="mono-label">[ 01 ] Selected work</p>
         <p className="mono-label">{String(work.length).padStart(2, "0")} projects</p>
       </div>
       <h2 id="work-h" className="work__title"><Split text="Selected" className="inl" /> <Split text="work" className="inl it" /></h2>
 
-      <div className="filters" role="group" aria-label="Filter projects by category">
-        {workFilters.map((f) => (
-          <button key={f} type="button" className="chip" aria-pressed={filter === f} onClick={() => { changed.current = true; setFilter(f); }}>
-            {f}
-          </button>
-        ))}
-        <p className="filters__count mono-label" aria-live="polite">{shown.length} shown</p>
-      </div>
-
-      <ul className="grid" ref={grid} onPointerMove={onTilt} onPointerLeave={() => resetTilt(tiltCard.current)}>
-        {shown.map((p, i) => {
-          const pal = palette(p.id);
-          return (
-            <li key={p.id} className={`grid__item grid__item--${i % 6}`}>
-              <a
-                className="card"
-                href={`#/work/${p.id}`}
-                onClick={(e) => openCase(e, p.id)}
-                data-cursor="View"
-                style={{ "--ink": pal.ink, "--bg": pal.bg }}
-              >
-                <div className="card__media"><Cover id={p.id} motif={p.motif} /></div>
-                <div className="card__meta">
-                  <span className="mono-label">{p.index} · {p.group}</span>
-                  <span className="card__arrow" aria-hidden="true">↗</span>
+      <div className="showcase" ref={pin}>
+        <div className="showcase__hud" aria-hidden="true">
+          <span className="mono-label"><span ref={count}>01</span> / {String(work.length).padStart(2, "0")}</span>
+          <span className="showcase__bar"><i ref={bar} /></span>
+          <span className="mono-label">Scroll to explore</span>
+        </div>
+        <ul className="showcase__track" ref={track}>
+          {work.map((p) => (
+            <li key={p.id} className="panel">
+              <a className="panel__link" href={`#/work/${p.id}`} onClick={(e) => openCase(e, p.id)} data-cursor="Open">
+                <div className="panel__media">
+                  <div className="panel__art"><Cover id={p.id} motif={p.motif} /></div>
+                  <span className="panel__index" aria-hidden="true">{p.index}</span>
                 </div>
-                <h3 className="card__name">{p.name}</h3>
-                <p className="card__tag">{p.subtitle}</p>
-                <ul className="card__tech" aria-label="Technologies">
-                  {p.tech.slice(0, 4).map((t) => <li key={t}>{t}</li>)}
-                </ul>
+                <div className="panel__info">
+                  <p className="mono-label panel__group">{p.group}</p>
+                  <h3 className="panel__name">{p.name}</h3>
+                  <p className="panel__sub">{p.subtitle}</p>
+                  <ul className="panel__tech" aria-label="Technologies">
+                    {p.tech.slice(0, 4).map((t) => <li key={t}>{t}</li>)}
+                  </ul>
+                  <span className="panel__go">Case study <i aria-hidden="true">↗</i></span>
+                </div>
               </a>
             </li>
-          );
-        })}
-      </ul>
+          ))}
+        </ul>
+      </div>
       <p className="work__note mono-label">Covers are original generative illustrations of each project&rsquo;s idea, not screenshots.</p>
 
       <div className="ent" id="work-veracity">

@@ -3,6 +3,7 @@ import { gsap, ease, prefersReducedMotion } from "../lib/motion";
 import { services } from "../data/services";
 import { openCase } from "../lib/route";
 import Split from "./Split";
+import Chapter from "./Chapter";
 
 // What founders can hire me for. Each service links to the real project that proves it.
 export default function Services() {
@@ -27,6 +28,7 @@ export default function Services() {
 
   return (
     <section id="services" ref={root} className="services" aria-labelledby="svc-h">
+      <Chapter n="02" />
       <div className="sec__head">
         <p className="mono-label">[ 02 ] What I build</p>
         <p className="mono-label">Four kinds of work</p>
@@ -37,13 +39,28 @@ export default function Services() {
       </h2>
 
 
-      <ul className="svc__grid">
+      {/* The cursor carries a light: each card reads its own --x/--y, so the glow on the border and the
+          wash inside follow the pointer, and neighbouring cards catch the edge of it too. */}
+      <ul
+        className="svc__grid"
+        onPointerMove={(e) => {
+          for (const card of e.currentTarget.children) {
+            const r = card.getBoundingClientRect();
+            card.style.setProperty("--x", `${e.clientX - r.left}px`);
+            card.style.setProperty("--y", `${e.clientY - r.top}px`);
+          }
+        }}
+        onPointerLeave={(e) => {
+          for (const card of e.currentTarget.children) card.style.setProperty("--x", "-999px");
+        }}
+      >
         {services.map((s) => (
           <li key={s.id} className="svc">
             <div className="svc__top">
               <span className="mono-label">{s.n}</span>
               <span className="svc__dot" aria-hidden="true" />
             </div>
+            <span className="svc__big" aria-hidden="true">{s.n}</span>
             <h3 className="svc__name">
               {s.title[0]} <em>{s.title[1]}</em>
             </h3>

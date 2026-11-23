@@ -52,6 +52,52 @@ export default function Hero({ ready, tier }) {
     return () => st.kill();
   }, []);
 
+  // Metallic name: every letter carries the same champagne gradient, offset by its own position in the
+  // word, so the gradient reads as one continuous sheet of metal across the letters. A light band
+  // drifts slowly across it and leans toward the cursor.
+  const nameRef = useRef(null);
+  useEffect(() => {
+    const name = nameRef.current;
+    if (!name) return;
+    const letters = [...name.querySelectorAll(".phero__ch")];
+    const measure = () => {
+      for (const word of name.querySelectorAll(".phero__first, .phero__last")) {
+        word.style.setProperty("--ww", word.offsetWidth);
+        for (const ch of word.querySelectorAll(".phero__ch")) ch.style.setProperty("--ox", ch.offsetLeft - word.offsetLeft);
+      }
+    };
+    measure();
+    document.fonts?.ready.then(measure);
+    const ro = new ResizeObserver(measure);
+    ro.observe(name);
+
+    if (prefersReducedMotion()) return () => ro.disconnect();
+    let raf = 0, t = 0, target = 0.5, mx = 0.5, last = performance.now(), visible = true;
+    const onMove = (e) => (target = e.clientX / innerWidth);
+    const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting));
+    io.observe(name);
+    const tick = (now) => {
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      if (visible) {
+        t += dt;
+        mx += (target - mx) * Math.min(1, dt * 3);
+        // sheen position: a slow idle sweep plus the pointer's pull, in 0..1 of the gradient travel
+        name.style.setProperty("--sheen", (0.5 + 0.32 * Math.sin(t * 0.35) + (mx - 0.5) * 0.5).toFixed(4));
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      removeEventListener("pointermove", onMove);
+      io.disconnect();
+      ro.disconnect();
+      letters.length = 0;
+    };
+  }, []);
+
   // Once the intro type has landed, drop its transitions so text tracks the scroll exactly.
   useEffect(() => {
     if (!ready) return;
@@ -89,9 +135,15 @@ export default function Hero({ ready, tier }) {
             <span className="phero__avail"><i aria-hidden="true" />Open to new work</span>
           </div>
 
-          <h1 id="hero-h" className="phero__name">
-            <span className="phero__first">Samay</span>
-            <span className="phero__last">Bhavsar</span>
+          <h1 id="hero-h" className="phero__name" ref={nameRef}>
+            <span className="sr-only">Samay Bhavsar</span>
+            {["Samay", "Bhavsar"].map((word, wi) => (
+              <span key={word} className={wi ? "phero__last" : "phero__first"} aria-hidden="true">
+                {[...word].map((ch, ci) => (
+                  <span key={ci} className="phero__ch" style={{ "--i": wi ? word.length - 1 - ci : ci }}>{ch}</span>
+                ))}
+              </span>
+            ))}
           </h1>
 
           <div className="phero__foot">

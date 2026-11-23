@@ -5,6 +5,7 @@ import { useTheme } from "../lib/theme";
 import Split from "./Split";
 import Magnetic from "./Magnetic";
 import RingText from "./RingText";
+import Chapter from "./Chapter";
 
 const channels = [
   { label: "Email", value: samayProfile.email, href: `mailto:${samayProfile.email}` },
@@ -96,6 +97,7 @@ export default function Contact() {
 
   return (
     <section id="contact" ref={root} className="contact" aria-labelledby="contact-h">
+      <Chapter n="07" />
       <div className="sec__head">
         <p className="mono-label">[ 07 ] Contact</p>
         <p className="mono-label">Remote · Ahmedabad, IN</p>
