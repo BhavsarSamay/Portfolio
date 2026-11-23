@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://samaybhavsar.in/</loc>
+    <loc>https://www.samaybhavsar.in/</loc>
     <lastmod>2026-11-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://samaybhavsar.in/assets/samay-portrait.jpg</image:loc>
+      <image:loc>https://www.samaybhavsar.in/assets/samay-portrait.jpg</image:loc>
       <image:title>Samay Bhavsar, software engineer in Ahmedabad</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://samaybhavsar.in/og-image.jpg</image:loc>
+      <image:loc>https://www.samaybhavsar.in/og-image.jpg</image:loc>
       <image:title>Samay Bhavsar — Software Engineer &amp; Full-Stack Developer</image:title>
     </image:image>
   </url>

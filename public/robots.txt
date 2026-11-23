@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://samaybhavsar.in/sitemap.xml
+Sitemap: https://www.samaybhavsar.in/sitemap.xml
