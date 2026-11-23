@@ -98,6 +98,18 @@ export default function Hero({ ready, tier }) {
     };
   }, []);
 
+  // The sheet after the hero (light theme) flattens its rounded edge as it rises into view.
+  const sheetRef = useRef(null);
+  useEffect(() => {
+    const el = sheetRef.current;
+    if (!el || prefersReducedMotion()) return;
+    const st = ScrollTrigger.create({
+      trigger: el, start: "top bottom", end: "top 35%", scrub: true,
+      onUpdate: (s) => el.style.setProperty("--sheet", s.progress.toFixed(3)),
+    });
+    return () => st.kill();
+  }, []);
+
   // Once the intro type has landed, drop its transitions so text tracks the scroll exactly.
   useEffect(() => {
     if (!ready) return;
@@ -193,7 +205,7 @@ export default function Hero({ ready, tier }) {
         </div>
       </div>
     </section>
-    <div className="phero-fade" aria-hidden="true" />
+    <div className="phero-fade" ref={sheetRef} aria-hidden="true" />
     </>
   );
 }

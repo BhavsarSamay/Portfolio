@@ -281,9 +281,17 @@ main, footer { position: relative; z-index: 1; }
    flow, so the next section's content never sits on the transition). Longer in the light theme,
    where the jump from black to cream is bigger. */
 .phero-fade { position: relative; z-index: 1; height: 32vh; pointer-events: none; background: linear-gradient(to bottom, rgba(3, 3, 4, 1) 0%, rgba(3, 3, 4, 0.985) 8%, rgba(3, 3, 4, 0.94) 16%, rgba(3, 3, 4, 0.86) 25%, rgba(3, 3, 4, 0.75) 34%, rgba(3, 3, 4, 0.62) 43%, rgba(3, 3, 4, 0.48) 52%, rgba(3, 3, 4, 0.35) 61%, rgba(3, 3, 4, 0.23) 70%, rgba(3, 3, 4, 0.13) 79%, rgba(3, 3, 4, 0.055) 88%, rgba(3, 3, 4, 0) 100%); }
-:root[data-theme="light"] .phero-fade { height: 56vh;
-  /* Opaque here: blends black into the cream page through warm mid-tones and hides the space scene behind it. */
-  background: linear-gradient(to bottom, color-mix(in oklab, var(--bg) 0%, #030304) 0%, color-mix(in oklab, var(--bg) 1.5%, #030304) 8%, color-mix(in oklab, var(--bg) 6%, #030304) 16%, color-mix(in oklab, var(--bg) 14%, #030304) 25%, color-mix(in oklab, var(--bg) 25%, #030304) 34%, color-mix(in oklab, var(--bg) 38%, #030304) 43%, color-mix(in oklab, var(--bg) 52%, #030304) 52%, color-mix(in oklab, var(--bg) 65%, #030304) 61%, color-mix(in oklab, var(--bg) 77%, #030304) 70%, color-mix(in oklab, var(--bg) 87%, #030304) 79%, color-mix(in oklab, var(--bg) 94.5%, #030304) 88%, color-mix(in oklab, var(--bg) 100%, #030304) 100%); }
+/* Light theme: no long grey gradient. The cream page rises over the dark hero as a rounded sheet with a
+   thin gold horizon on its edge; --sheet (0 → 1, scroll-driven in Hero.jsx) flattens the curve as it arrives. */
+:root[data-theme="light"] .phero-fade {
+  --sheet: 0; z-index: 3; height: 120px; margin-top: -120px; background: var(--bg);
+  border-radius: calc((1 - var(--sheet)) * 72px + 20px) calc((1 - var(--sheet)) * 72px + 20px) 0 0;
+  box-shadow: 0 -40px 90px -20px rgba(226, 197, 140, 0.18), 0 -1px 0 rgba(226, 197, 140, 0.55);
+}
+:root[data-theme="light"] .phero-fade::before {
+  content: ""; position: absolute; left: 50%; top: 22px; width: 44px; height: 3px; border-radius: 3px; transform: translateX(-50%);
+  background: color-mix(in srgb, var(--accent) 50%, transparent);
+}
 .phero__canvas { position: absolute; inset: 0; z-index: 1; }
 .phero__canvas canvas { display: block; width: 100% !important; height: 100% !important; }
 .phero__still { position: absolute; left: 50%; top: 50%; height: 60%; width: auto; max-width: 86%; object-fit: contain; transform: translate(-50%, -50%); opacity: calc(1 - var(--p) * 1.6); -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent); mask-image: radial-gradient(closest-side, #000 72%, transparent); }
@@ -771,7 +779,7 @@ main, footer { position: relative; z-index: 1; }
 .backdrop3d { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity 0.9s ease; }
 .backdrop3d.is-on { opacity: 0.6; }
 /* On the light page the planets sit behind dark text; keep the scene as a faint texture there. */
-:root[data-theme="light"] .backdrop3d.is-on, :root[data-theme="light"] .backdrop { opacity: 0.12; }
+:root[data-theme="light"] .backdrop3d.is-on, :root[data-theme="light"] .backdrop { opacity: 0.9; mix-blend-mode: multiply; }
 .backdrop3d > div:first-child { position: absolute !important; inset: 0; }
 .backdrop3d canvas { display: block; width: 100% !important; height: 100% !important; }
 
