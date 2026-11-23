@@ -119,6 +119,7 @@ export const photoFragmentShader = /* glsl */ `
   }
   uniform sampler2D uMap;
   uniform float uOpacity;
+  uniform float uTone;
   uniform vec2 uPointer;
   uniform float uPointerOn;
   varying vec2 vUv;
@@ -133,7 +134,7 @@ export const photoFragmentShader = /* glsl */ `
     float key = smoothstep(0.045, 0.11, lum);
     float a = uOpacity * edge * key;
     if (a < 0.003) discard;
-    gl_FragColor = vec4(tex.rgb, a);
+    gl_FragColor = vec4(tex.rgb * uTone, a);
   }
 `;
 

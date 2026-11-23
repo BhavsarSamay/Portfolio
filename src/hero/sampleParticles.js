@@ -5,6 +5,9 @@
 
 export const PORTRAIT_SRC = "/assets/samay-portrait.jpg";
 
+// Brightness of the portrait on the page (photo and particles alike): 1 = as shot, lower = dimmer.
+export const PHOTO_TONE = 0.8;
+
 const BLACK = 0.055; // luminance below this is the photo's backdrop (measured ~0.035-0.045; the shirt is ~0.06)
 
 function rng(seed) {
@@ -92,9 +95,9 @@ export function sampleParticles(img, count, { seed = 7 } = {}) {
       scatter[n * 3] = Math.cos(ang) * reach * (1.1 + r() * 0.6);
       scatter[n * 3 + 1] = Math.sin(ang) * reach * 0.8 + (r() - 0.35) * 0.6;
       scatter[n * 3 + 2] = sz;
-      color[n * 3] = (px[i] / 255) * fade;
-      color[n * 3 + 1] = (px[i + 1] / 255) * fade;
-      color[n * 3 + 2] = (px[i + 2] / 255) * fade;
+      color[n * 3] = (px[i] / 255) * fade * PHOTO_TONE;
+      color[n * 3 + 1] = (px[i + 1] / 255) * fade * PHOTO_TONE;
+      color[n * 3 + 2] = (px[i + 2] / 255) * fade * PHOTO_TONE;
       data[n * 4] = r();
       data[n * 4 + 1] = 0.65 + r() * 0.7;
       data[n * 4 + 2] = v;

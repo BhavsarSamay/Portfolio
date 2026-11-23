@@ -2,14 +2,15 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { vertexShader, fragmentShader, photoVertexShader, photoFragmentShader } from "./particleShaders";
-import { loadImage, sampleParticles, PORTRAIT_SRC } from "./sampleParticles";
+import { loadImage, sampleParticles, PORTRAIT_SRC, PHOTO_TONE } from "./sampleParticles";
 import { isTouch } from "../lib/motion";
 
 const { damp, smoothstep, clamp, degToRad } = THREE.MathUtils;
 const CAMERA_Z = 3;
-// Photo opacity over the particles at rest: 1 = solid photo, 0 = particles only. 0.45 matches the
-// lightly dotted look of the first moment of scrolling.
-const PHOTO_REST = 0.45;
+// Photo opacity at rest: 1 = the clean photo exactly as given, 0 = particles only.
+// While the photo is fully shown the particles fade out underneath it, so no dots show through
+// its soft edges (hair, shirt); scrolling dissolves the photo back into the particles.
+const PHOTO_REST = 1;
 
 // How many particles each kind of device draws. The photo itself is shown at rest, so the
 // particles only need to be dense enough to carry its colours through the burst.
@@ -131,7 +132,7 @@ function Cloud({ buffers, progress, ready, pointer }) {
     return {
       tex,
       geo: new THREE.PlaneGeometry(buffers.aspect, 1),
-      uniforms: { uMap: { value: tex }, uOpacity: { value: 0 }, uPointer: { value: new THREE.Vector2(9, 9) }, uPointerOn: { value: 0 } },
+      uniforms: { uMap: { value: tex }, uTone: { value: PHOTO_TONE }, uOpacity: { value: 0 }, uPointer: { value: new THREE.Vector2(9, 9) }, uPointerOn: { value: 0 } },
     };
   }, [buffers]);
   useEffect(() => () => { photo.tex.dispose(); photo.geo.dispose(); }, [photo]);
@@ -191,7 +192,9 @@ function Cloud({ buffers, progress, ready, pointer }) {
     // scrolling dissolves the rest of it into particles.
     // Write to the material's own uniforms (the renderer may not share the object passed as a prop).
     const pu = photoMat.current.uniforms;
-    pu.uOpacity.value = PHOTO_REST * smoothstep(intro.current, 0.8, 1) * (1 - smoothstep(eased.current, 0.0, 0.07));
+    const photoA = PHOTO_REST * smoothstep(intro.current, 0.8, 1) * (1 - smoothstep(eased.current, 0.0, 0.07));
+    pu.uOpacity.value = photoA;
+    u.uFade.value *= 1 - photoA;
     pu.uPointer.value.copy(u.uPointer.value);
     pu.uPointerOn.value = u.uPointerOn.value;
   });
